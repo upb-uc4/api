@@ -1,0 +1,345 @@
+swagger: "2.0"
+info:
+  description: "This is the API for UC4."
+  version: "0.0.1"
+  title: "UC4"
+  termsOfService: "uc4.cs.upb.de"
+  contact:
+    email: "apiteam@uc4.cs.upb.de"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "uc4.cs.upb.de"
+basePath: "/v2"
+tags:
+- name: "course"
+  description: "Everything about the courses"
+  externalDocs:
+    description: "Find out more (add link to our documentation wiki)"
+    url: "https://github.com/upb-uc4"
+schemes:
+- "https"
+paths:
+  /course:
+    post:
+      tags:
+      - "course"
+      summary: "Add a new course to the database"
+      description: ""
+      operationId: "addCourse"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Course object that needs to be added to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/Course"
+      responses:
+        "201":
+          description: "successful operation"
+        "409":
+          description: "ID already exists"
+    put:
+      tags:
+      - "course"
+      summary: "Update an existing course"
+      description: ""
+      operationId: "updateCourse"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "CourseObject"
+        description: "Course object that needs to be added to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/Course"
+      responses:
+        "200":
+          description: "successful operation"
+        "404":
+          description: "course not found"
+    delete:
+      tags:
+      - "course"
+      summary: "Deletes a course"
+      description: ""
+      operationId: "deleteCourse"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "query"
+        description: "Course ID to delete"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "successful operation"
+        "404":
+          description: "Course not found"
+    get:
+      tags:
+      - "course"
+      summary: "Get all courses"
+      description: "Returns all courses"
+      operationId: "getAllCourses"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Course"
+  /course/findByLecturerId:
+    get:
+      tags:
+      - "course"
+      summary: "Find courses by lecturer Id"
+      description: "Find courses by lecturer with the provided ID"
+      operationId: "findCourseByLecturerId"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "query"
+        description: "Lecturer ID to filter by"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Course"
+  /course/findByCourseName:
+    get:
+      tags:
+      - "course"
+      summary: "Find courses by course name"
+      description: "Find courses by course name"
+      operationId: "findCoursesByCourseName"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Course Name to filter by"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Course"
+  /course/findByCourseId:
+    get:
+      tags:
+      - "course"
+      summary: "Find course by course Id"
+      description: "Find course by course ID"
+      operationId: "findCourseByCourseId"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "query"
+        description: "Course ID to filter by"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Course"
+        "404":
+          description: "ID not found"
+  /lecturer:
+    get:
+      tags:
+      - "lecturer"
+      summary: "Get all lecturers"
+      description: "Get all lecturers"
+      operationId: "getAllLecturers"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Course"
+        "400":
+          description: "Invalid status value"
+    post:
+      tags:
+      - "lecturer"
+      summary: "Add a new Lecturer to the database"
+      description: ""
+      operationId: "addLecturer"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Course object to be added to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/Course"
+      responses:
+        "405":
+          description: "Invalid input"
+    put:
+      tags:
+      - "lecturer"
+      summary: "Update an existing lecturer"
+      description: ""
+      operationId: "updateLecturer"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Course object that needs to be added to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/Course"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Course not found"
+        "405":
+          description: "Validation exception"
+    delete:
+      tags:
+      - "lecturer"
+      summary: "Deletes a lecturer"
+      description: ""
+      operationId: "deleteLecturer"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "courseId"
+        in: "path"
+        description: "Course ID to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Course not found"
+securityDefinitions:
+  petstore_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:pets: "modify pets in your account"
+      read:pets: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Course:
+    type: "object"
+    properties:
+      courseId:
+        type: "integer"
+        format: "int64"
+      courseName:
+        type: "string"
+      courseType:
+        type: "string"
+      startDate:
+        type: "string"
+        format: "date-time"
+      endDate:
+        type: "string"
+        format: "date-time"
+      ects:
+        type: "integer"
+        format: "int32"
+      lecturerId:
+        type: "integer"
+        format: "int64"
+      maxStudents: 
+        type: "integer"
+        format: "int32"
+      currentParticipants: 
+        type: "integer"
+        format: "int32"
+      language: 
+        type: "string"
+      description:
+        type: "string"
+  #Module:
+  #  type: "object"
+  #  properties:
+  #    moduleId:
+  #      type: "integer"
+  #      format: "int64"
+  #    applicationStartTime:
+  #      type: "string"
+  #      format: "date-time"
+  #    applicationEndTime:
+  #      type: "string"
+  #      format: "date-time"
+  Lecturer:
+    type: "object"
+    properties:
+      lecturerId:
+        type: "integer"
+        format: "int64"
+      firstName:
+        type: "string"
+      middleName:
+        type: "string"
+      lastName:
+        type: "string"
+  #Student:
+  #  type: "object"
+  #  properties:
+  #    studentId:
+  #      type: "integer"
+  #      format: "int64"
+  #    firstName:
+  #      type: "string"
+  #    middleName:
+  #      type: "string"
+  #    lastName:
+  #      type: "string"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

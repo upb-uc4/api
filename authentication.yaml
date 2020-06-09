@@ -1,0 +1,120 @@
+swagger: "2.0"
+info:
+  description: "This is the authentication API for UC4."
+  version: "0.1.1"
+  title: "UC4"
+  termsOfService: "uc4.cs.upb.de"
+  contact:
+    email: "apiteam@uc4.cs.upb.de"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:9000"
+basePath: "/"
+schemes:
+- "https"
+paths:
+  /authentication:
+    post:
+      tags:
+      - "authentication"
+      summary: "Add a new user account to the database"
+      description: "Add a new user account to the database"
+      operationId: "set"
+      security:
+        - uc4_auth: []
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "account"
+        description: "User account object to be added to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "201":
+          description: "User created"
+        "400":
+          schema:
+            $ref: '#/definitions/Error'
+          description: |
+            Bad Request
+            Custom error codes
+            | Error Code (name)| Details |
+            |-----|-----|
+            | 10   |  Invalid name   |
+            | 20 | Invalid password format |
+            | 30 |  Role must be one of ["Admin", "Student", "Lecturer"]   |
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden, not enough privileges for this action."
+    delete:
+      tags:
+      - "authentication"
+      summary: "Deletes a user"
+      description: "Deletes the user account"
+      operationId: "delete"
+      security:
+        - uc4_auth: []
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "Username of account to delete"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Invalid query parameter"
+        "401":
+          $ref: '#/responses/Unauthorized'
+        "403":
+          description: "Forbidden, not enough privileges for this action."
+        "404":
+          description: "Username not found"
+responses:
+  BadRequest:
+    description: Bad Request
+    schema:
+      $ref: '#/definitions/Error'
+  NotFound:
+    description: The specified resource was not found
+    schema:
+      $ref: '#/definitions/Error'
+  Unauthorized:
+    description: Unauthorized
+securityDefinitions:
+  uc4_auth:
+    type: basic
+definitions:
+  User:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      password:
+        type: "string"
+      role:
+        type: "string"
+        enum: ["Admin", "Student", "Lecturer"]
+  # Schema for error response body
+  Error:
+    type: object
+    properties:
+      name:
+        type: string
+      detail:
+        type: string
+    required:
+      - code
+      - message
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

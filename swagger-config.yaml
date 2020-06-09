@@ -1,5 +1,5 @@
 urls: 
     - name: CourseAPI
       url: https://raw.githubusercontent.com/upb-uc4/api/develop/course.yaml
-    - name: LecturerAPI
-      url: https://raw.githubusercontent.com/upb-uc4/api/develop/lecturer.yaml
+    - name: Authentication
+      url: https://raw.githubusercontent.com/upb-uc4/api/develop/authentication.yaml

@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.1.1"
+  version: "0.1.2"
   title: "UC4"
   termsOfService: "uc4.cs.upb.de"
   contact:
@@ -173,7 +173,7 @@ paths:
         in: "query"
         description: "Lecturer ID to filter by"
         required: true
-        type: "integer"
+        type: "string"
       responses:
         "200":
           description: "successful operation"
@@ -260,8 +260,7 @@ definitions:
         type: "integer"
         format: "int32"
       lecturerId:
-        type: "integer"
-        format: "int64"
+        type: "string"
       maxParticipants: 
         type: "integer"
         format: "int32"

@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: "This is the authentication API for UC4."
-  version: "0.1.1"
+  version: "0.1.2"
   title: "UC4"
   termsOfService: "uc4.cs.upb.de"
   contact:
@@ -15,6 +15,23 @@ schemes:
 - "https"
 paths:
   /authentication:
+    get:
+      tags:
+      - "authentication"
+      summary: "Get role of the authenticated user"
+      description: "Returns the role of the user specificied in the authentication header"
+      operationId: "get"
+      security:
+        - uc4_auth: []
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "operation successful"
+          schema:
+            $ref: "#/definitions/Role"
+        "401":
+          description: "Unauthorized"
     post:
       tags:
       - "authentication"
@@ -101,6 +118,12 @@ definitions:
         type: "string"
       password:
         type: "string"
+      role:
+        type: "string"
+        enum: ["Admin", "Student", "Lecturer"]
+  Role:
+    type: "object"
+    properties:
       role:
         type: "string"
         enum: ["Admin", "Student", "Lecturer"]

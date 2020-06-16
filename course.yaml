@@ -1,29 +1,23 @@
 swagger: "2.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.1.2"
+  version: "0.1.3"
   title: "UC4"
-  termsOfService: "uc4.cs.upb.de"
-  contact:
-    email: "apiteam@uc4.cs.upb.de"
-  license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "uc4.cs.upb.de"
-basePath: "/v2"
+host: "localhost:9000"
+basePath: "/course-management"
 tags:
-- name: "course"
+- name: "Course Management"
   description: "Everything about the courses"
   externalDocs:
-    description: "Find out more (add link to our documentation wiki)"
+    description: "Find out more"
     url: "https://github.com/upb-uc4"
 schemes:
-- "https"
+- "http"
 paths:
-  /course:
+  /courses:
     post:
       tags:
-      - "course"
+      - "Course Management"
       summary: "Add a new course to the database"
       description: ""
       operationId: "addCourse"
@@ -67,9 +61,87 @@ paths:
           description: "Forbidden"
         "409":
           description: "ID already exists"
+    get:
+      tags:
+      - "Course Management"
+      summary: "Get all courses"
+      security:
+        - uc4_auth: [] 
+      description: "Returns all courses"
+      operationId: "getAllCourses"
+      parameters:
+      - name: "courseName"
+        in: "query"
+        description: "Course name to filter by (fuzzy)"
+        required: false
+        type: "string"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Course"
+        "401":
+          description: "Unauthorized"
+  /courses/{id}:
+    get:
+      tags:
+      - "Course Management"
+      security:
+        - uc4_auth: []
+      summary: "Find course by course id"
+      description: "Find course by course id"
+      operationId: "findCourseByCourseId"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "course id to filter by"
+        required: true
+        type: "string"
+      responses:
+          "200":
+            description: "successful operation"
+            schema:
+              $ref: "#/definitions/Course"
+          "401":
+            description: "Unauthorized"
+          "404":
+            description: "No course with this ID not found"
+    delete:
+      tags:
+      - "Course Management"
+      summary: "Deletes a course"
+      description: ""
+      security:
+        - uc4_auth: [] 
+      operationId: "deleteCourse"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of course to delete"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "successful operation"
+        "400":
+          description: "Bad Request (query parameter)"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Course not found"
     put:
       tags:
-      - "course"
+      - "Course Management"
       summary: "Update an existing course"
       description: ""
       operationId: "updateCourse"
@@ -80,6 +152,11 @@ paths:
       produces:
       - "application/json"
       parameters:
+      - name: "id"
+        in: "path"
+        description: "id of course to update"
+        required: true
+        type: "string"
       - in: "body"
         name: "CourseObject"
         description: "Course object that needs to be added to the database"
@@ -95,7 +172,8 @@ paths:
             Custom error codes
             | Error Code (name)| Details |
             |-----|-----|
-            | 10   |  Course name must not be empty   |
+            | 00 | Course ID and ID in path do not match |
+            | 10 |  Course name must not be empty   |
             | 11 | Course name has invalid characters |
             | 20 | Course type must be one of ["Lecture", "Seminar", "Project Group"]  |
             | 30 | startDate must be the following format "yyyy-mm-dd" |
@@ -111,130 +189,6 @@ paths:
           description: "Forbidden"
         "404":
           description: "Course not found"
-    delete:
-      tags:
-      - "course"
-      summary: "Deletes a course"
-      description: ""
-      security:
-        - uc4_auth: [] 
-      operationId: "deleteCourse"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "id"
-        in: "query"
-        description: "Course ID to delete"
-        required: true
-        type: "integer"
-      responses:
-        "200":
-          description: "successful operation"
-        "400":
-          description: "Bad Request (query parameter)"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "Course not found"
-    get:
-      tags:
-      - "course"
-      summary: "Get all courses"
-      security:
-        - uc4_auth: [] 
-      description: "Returns all courses"
-      operationId: "getAllCourses"
-      produces:
-      - "application/json"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Course"
-        "401":
-          description: "Unauthorized"
-  /course/findByLecturerId:
-    get:
-      tags:
-      - "course"
-      security:
-        - uc4_auth: [] 
-      summary: "Find courses by lecturer Id"
-      description: "Find courses by lecturer with the provided ID"
-      operationId: "findCourseByLecturerId"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "id"
-        in: "query"
-        description: "Lecturer ID to filter by"
-        required: true
-        type: "string"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Course"
-        "401":
-          description: "Unauthorized"
-  /course/findByCourseName:
-    get:
-      tags:
-      - "course"
-      security:
-        - uc4_auth: [] 
-      summary: "Find courses by course name"
-      description: "Find courses by course name"
-      operationId: "findCoursesByCourseName"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "name"
-        in: "query"
-        description: "Course Name to filter by"
-        required: true
-        type: "string"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Course"
-        "401":
-          description: "Unauthorized"
-  /course/findByCourseId:
-    get:
-      tags:
-      - "course"
-      security:
-        - uc4_auth: [] 
-      summary: "Find course by course Id"
-      description: "Find course by course ID"
-      operationId: "findCourseByCourseId"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "id"
-        in: "query"
-        description: "Course ID to filter by"
-        required: true
-        type: "integer"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Course"
-        "401":
-          description: "Unauthorized"
-        "404":
-          description: "ID not found"
 securityDefinitions:
   uc4_auth:
     type: basic

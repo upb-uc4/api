@@ -19,7 +19,7 @@ paths:
       tags:
       - "Course Management"
       summary: "Add a new course to the database"
-      description: ""
+      description: "Adds a new course to the database after verification. ID field is not used and can be set arbitrarily"
       operationId: "addCourse"
       security:
         - uc4_auth: [] 

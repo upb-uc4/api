@@ -113,7 +113,7 @@ securityDefinitions:
   uc4_auth:
     type: basic
 definitions:
-  User:
+  AuthUser:
     type: "object"
     properties:
       username:

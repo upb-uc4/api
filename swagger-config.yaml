@@ -3,3 +3,5 @@ urls:
       url: https://raw.githubusercontent.com/upb-uc4/api/develop/course.yaml
     - name: Authentication
       url: https://raw.githubusercontent.com/upb-uc4/api/develop/authentication.yaml
+    - name: User-management
+      url: https://raw.githubusercontent.com/upb-uc4/api/develop/user-management.yaml

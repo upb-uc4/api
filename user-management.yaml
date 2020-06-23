@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.2.1"
+  version: "0.2.2"
   title: "UC4"
 servers:
   - url: http://localhost:9000/user-management
@@ -324,7 +324,7 @@ paths:
           description: "Unauthorized"
         "403":
           description: "Forbidden"
-  /users/lecturer/{username}:
+  /users/lecturers/{username}:
     get:
       tags:
       - "Lecturer Management"
@@ -436,7 +436,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Admin'
+              $ref: '#/components/schemas/PostMessageAdmin'
       responses:
         "201":
           description: "Admin Created"
@@ -495,7 +495,7 @@ paths:
           description: "Unauthorized"
         "403":
           description: "Forbidden"
-  /users/admin/{username}:
+  /users/admins/{username}:
     get:
       tags:
       - "Admin Management"
@@ -647,6 +647,9 @@ components:
           type: string
         lastName:
           type: string
+        birthDate:
+          type: string
+          format: date
         picture:
           type: string
         email:
@@ -663,7 +666,7 @@ components:
           properties:
             immatriculationStatus:
               type: string
-            immatriculationId:
+            matriculationId:
               type: string
             semesterCount:
               type: number

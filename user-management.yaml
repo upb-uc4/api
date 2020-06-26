@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.2.2"
+  version: "0.2.3"
   title: "UC4"
 servers:
   - url: http://localhost:9000/user-management
@@ -73,6 +73,32 @@ paths:
           description: "Forbidden"
         "404":
           description: "No user with this username found"
+  /users/{username}/role:  
+    get:
+      tags:
+      - "User Management"
+      summary: "Returns the role of a user"
+      description: "Returns the role of the user with the specified username"
+      security:
+        - uc4_auth: [] 
+      operationId: "getRole"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        "401":
+          description: "Unauthorized"
+        "404":
+          description: "No user with this username found"
   /users/students:
     post:
       tags:
@@ -112,10 +138,10 @@ paths:
             | Error Code (name)| Details |
             |-----|-----|
             | 01 | username must only contain [..] |
-            | 10 |  password must not be empty   |
+            | 10 | password must not be empty   |
             | 20 | role must be one of [..] |
             | 30 | address fields must not be empty  |
-            | 40 | email must be valid |
+            | 40 | email format invalid |
             | 50 | first name must not contain XYZ | 
             | 60 | last name must not contain XYZ |
             | 70 | picture invalid |
@@ -176,29 +202,6 @@ paths:
             description: "Unauthorized"
           "404":
             description: "No student with this username found"
-    delete:
-      tags:
-      - "Student Management"
-      summary: "Deletes a student"
-      description: "Deletes a student (when invoked by an administrator)"
-      security:
-        - uc4_auth: [] 
-      operationId: "deleteStudent"
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      responses:
-        "200":
-          description: "successful operation"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "No student with this username found"
     put:
       tags:
       - "Student Management"
@@ -233,12 +236,21 @@ paths:
             |-----|-----|
             | 10 | username must not be changed [..] |
             | 20 | role may not be changed [..] |
+        "422":
+          description: |
+            Unprocessable Entity
+            Custom error codes
+            | Error Code (name)| Details |
+            |-----|-----|
+            | 01 | username must only contain [..] |
+            | 10 | password must not be empty   |
+            | 20 | role must be one of [..] |
             | 30 | address fields must not be empty  |
-            | 40 | email must be valid |
+            | 40 | email format invalid |
             | 50 | first name must not contain XYZ | 
             | 60 | last name must not contain XYZ |
             | 70 | picture invalid |
-            | -1xx- | Student User Error codes |
+            | <b>1xx</b> | <b>Student User Error codes</b> |
             | 100 | student id invalid |
             | 110 | semester count must be a positive integer |
             | 120 | fields of study must be one of [...] |
@@ -287,10 +299,10 @@ paths:
             | Error Code (name)| Details |
             |-----|-----|
             | 01 | username must only contain [..] |
-            | 10 |  password must not be empty   |
+            | 10 | password must not be empty   |
             | 20 | role must be one of [..] |
             | 30 | address fields must not be empty  |
-            | 40 | email must be valid |
+            | 40 | email format invalid |
             | 50 | first name must not contain XYZ | 
             | 60 | last name must not contain XYZ |
             | 70 | picture invalid |
@@ -350,29 +362,6 @@ paths:
             description: "Unauthorized"
           "404":
             description: "No lecturer with this username found"
-    delete:
-      tags:
-      - "Lecturer Management"
-      summary: "Deletes a lecturer"
-      description: "Deletes a lecturer (when invoked by an administrator)"
-      security:
-        - uc4_auth: [] 
-      operationId: "deleteLecturer"
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      responses:
-        "200":
-          description: "successful operation"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "No lecturer with this username found"
     put:
       tags:
       - "Lecturer Management"
@@ -407,12 +396,23 @@ paths:
             |-----|-----|
             | 10 | username must not be changed [..] |
             | 20 | role may not be changed [..] |
+        "422":
+          description: |
+            Unprocessable entity
+            Custom error codes
+            | Error Code (name)| Details |
+            |-----|-----|
+            | Error Code (name)| Details |
+            |-----|-----|
+            | 01 | username must only contain [..] |
+            | 10 | password must not be empty   |
+            | 20 | role must be one of [..] |
             | 30 | address fields must not be empty  |
-            | 40 | email must be valid |
+            | 40 | email format invalid |
             | 50 | first name must not contain XYZ | 
             | 60 | last name must not contain XYZ |
             | 70 | picture invalid |
-            | -2xx- | Lecturer User Error codes |
+            | <b>2xx</b> | <b>Lecturer User Error codes</b> |
             | 200 | free text must only contain the following characters |
             | 210 | research area must only contain the following characters |
         "401":
@@ -421,6 +421,34 @@ paths:
           description: "Forbidden"
         "404":
           description: "No lecturer with this username found"
+  /users/lecturers/{username}/courses:
+    get:
+      tags:
+      - "Lecturer Management"
+      security:
+        - uc4_auth: []
+      summary: "Get all courses of lecturer with a specific username"
+      description: "Get a list of all courses of the lecturer with the specified username"
+      operationId: "getCoursesByLecturerUsername"
+      parameters:
+      - in: "path"
+        name: "username"
+        required: true
+        schema: 
+          type: "string"
+      responses:
+          "200":
+            description: "successful operation"
+            content:
+              application/json:
+                schema:
+                  type: "array"
+                  items:
+                    $ref: "https://raw.githubusercontent.com/upb-uc4/api/develop/course.yaml#/definitions/Course"
+          "401":
+            description: "Unauthorized"
+          "404":
+            description: "No lecturer with this username found"
   /users/admins:
     post:
       tags:
@@ -463,7 +491,7 @@ paths:
             | 10 |  password must not be empty   |
             | 20 | role must be one of [..] |
             | 30 | address fields must not be empty  |
-            | 40 | email must be valid |
+            | 40 | email format invalid |
             | 50 | first name must not contain XYZ | 
             | 60 | last name must not contain XYZ |
             | 70 | picture invalid |
@@ -521,29 +549,6 @@ paths:
             description: "Unauthorized"
           "404":
             description: "No admin with this username found"
-    delete:
-      tags:
-      - "Admin Management"
-      summary: "Deletes a admin"
-      description: "Deletes a admin (when invoked by an administrator)"
-      security:
-        - uc4_auth: [] 
-      operationId: "deleteAdmin"
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      responses:
-        "200":
-          description: "successful operation"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "No admin with this username found"
     put:
       tags:
       - "Admin Management"
@@ -575,8 +580,17 @@ paths:
             |-----|-----|
             | 10 | username must not be changed [..] |
             | 20 | role may not be changed [..] |
+        "422":
+          description: |
+            Unprocessable entity
+            Custom error codes
+            | Error Code (name)| Details |
+            |-----|-----|
+            | 01 | username must only contain [..] |
+            | 10 | password must not be empty   |
+            | 20 | role must be one of [..] |
             | 30 | address fields must not be empty  |
-            | 40 | email must be valid |
+            | 40 | email format invalid |
             | 50 | first name must not contain XYZ | 
             | 60 | last name must not contain XYZ |
             | 70 | picture invalid |
@@ -670,11 +684,14 @@ components:
               type: string
             semesterCount:
               type: number
+              minimum: 1
             fieldsOfStudy:
               type: array
               items:
                 type: string
-                enum: ["Informatik", "Philosophie", "Medienwissenschaften", "Wirtschaftswissenschaften", "Mathematik", "Physik", "Chemie", "Lehramt", "Sportwissenschaften", "Japanologie", "Spanische Kultur", "Pädagogik", "Wirtschaftsinformatik", "Linguistik"]
+                enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
+                
+                
     Lecturer:
       allOf: 
         - $ref: '#/components/schemas/User'
@@ -707,6 +724,12 @@ components:
           type: string
         country:
           type: string
+    Role:
+      type: "object"
+      properties:
+        role:
+          type: "string"
+          enum: ["Admin", "Student", "Lecturer"]
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

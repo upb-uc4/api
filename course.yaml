@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.1.4"
+  version: "0.1.5"
   title: "UC4"
 host: "localhost:9000"
 basePath: "/course-management"
@@ -73,6 +73,11 @@ paths:
       - name: "courseName"
         in: "query"
         description: "Course name to filter by (fuzzy)"
+        required: false
+        type: "string"
+      - name: "lecturerId"
+        in: "query"
+        description: "LecturerId (username) to filter by"
         required: false
         type: "string"
       produces:
@@ -212,11 +217,13 @@ definitions:
       ects:
         type: "integer"
         format: "int32"
+        minimum: 1
       lecturerId:
         type: "string"
       maxParticipants: 
         type: "integer"
         format: "int32"
+        minimum: 1
       currentParticipants: 
         type: "integer"
         format: "int32"

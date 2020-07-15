@@ -3,7 +3,7 @@ info:
   description: "This is the Course API for UC4."
   version: "0.3.2"
   title: "UC4"
-host: "https://uc4.cs.upb.de/api"
+host: "uc4.cs.upb.de/api"
 basePath: "/course-management"
 tags:
 - name: "Course Management"

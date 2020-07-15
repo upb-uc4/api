@@ -1,9 +1,9 @@
 swagger: "2.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.3.1"
+  version: "0.3.2"
   title: "UC4"
-host: "localhost:9000"
+host: "https://uc4.cs.upb.de/api"
 basePath: "/course-management"
 tags:
 - name: "Course Management"

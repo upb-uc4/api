@@ -12,7 +12,7 @@ tags:
     description: "Find out more"
     url: "https://github.com/upb-uc4"
 schemes:
-- "http"
+- "https"
 paths:
   /courses:
     post:

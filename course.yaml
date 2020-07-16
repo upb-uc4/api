@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.3.2"
+  version: "0.3.3"
   title: "UC4"
 host: "uc4.cs.upb.de/api"
 basePath: "/course-management"
@@ -36,31 +36,37 @@ paths:
           $ref: "#/definitions/Course"
       responses:
         "201":
-          description: "Course Created"
+          description: "Created"
+          schema:
+            $ref: "#/definitions/Course"
+          headers:
+            Location:
+              type: string
+              description: "URI of the newly created course"
         "400":
+          description: | 
+            Bad Request 
+            
+            detail contains deserialization error
           schema:
             $ref: '#/definitions/Error'
-          description: |
-            Bad Request
-            Custom error codes
-            | Error Code (name)| Details |
-            |-----|-----|
-            | 10   |  Course name must not be empty   |
-            | 11 | Course name has invalid characters |
-            | 20 | Course type must be one of ["Lecture", "Seminar", "Project Group"]  |
-            | 30 | startDate must be the following format "yyyy-mm-dd" |
-            | 40 | endDate must be the following format "yyyy-mm-dd" | 
-            | 50 | ects must be a positive integer number |
-            | 60 | lecturerID unknown |
-            | 70 | maxParticipants must be a positive integer number |
-            | 80 | language must be one of ["German", "English"] |
-            | 90 | description invalid characters |
         "401":
           description: "Unauthorized"
+          schema:
+            $ref: '#/definitions/DetailedError'
         "403":
           description: "Forbidden"
+          schema:
+            $ref: '#/definitions/DetailedError'
         "409":
-          description: "ID already exists"
+          description: "Conflict"
+          schema:
+            $ref: '#/definitions/DetailedError'
+        "422":
+          description: "Unprocessable Entity"
+          schema:
+            $ref: '#/definitions/DetailedError'
+          
     get:
       tags:
       - "Course Management"
@@ -84,13 +90,15 @@ paths:
       - "application/json"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
           schema:
             type: "array"
             items:
               $ref: "#/definitions/Course"
         "401":
           description: "Unauthorized"
+          schema:
+            $ref: '#/definitions/DetailedError'
   /courses/{id}:
     get:
       tags:
@@ -110,13 +118,17 @@ paths:
         type: "string"
       responses:
           "200":
-            description: "successful operation"
+            description: "OK"
             schema:
               $ref: "#/definitions/Course"
           "401":
             description: "Unauthorized"
+            schema:
+              $ref: '#/definitions/DetailedError'
           "404":
-            description: "No course with this ID not found"
+            description: "Not Found"
+            schema:
+              $ref: '#/definitions/DetailedError'
     delete:
       tags:
       - "Course Management"
@@ -135,15 +147,23 @@ paths:
         type: "integer"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
         "400":
-          description: "Bad Request (query parameter)"
+          description: "Bad Request"
+          schema:
+            $ref: '#/definitions/DetailedError'
         "401":
           description: "Unauthorized"
+          schema:
+            $ref: '#/definitions/DetailedError'
         "403":
           description: "Forbidden"
+          schema:
+            $ref: '#/definitions/DetailedError'
         "404":
-          description: "Course not found"
+          description: "Not Found"
+          schema:
+            $ref: '#/definitions/DetailedError'
     put:
       tags:
       - "Course Management"
@@ -170,30 +190,31 @@ paths:
           $ref: "#/definitions/Course"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
         "400":
-          description: |
-            Bad Request
-            Custom error codes
-            | Error Code (name)| Details |
-            |-----|-----|
-            | 00 | Course ID and ID in path do not match |
-            | 10 |  Course name must not be empty   |
-            | 11 | Course name has invalid characters |
-            | 20 | Course type must be one of ["Lecture", "Seminar", "Project Group"]  |
-            | 30 | startDate must be the following format "yyyy-mm-dd" |
-            | 40 | endDate must be the following format "yyyy-mm-dd" | 
-            | 50 | ects must be a positive integer number |
-            | 60 | lecturerID unknown |
-            | 70 | maxParticipants must be a positive integer number |
-            | 80 | language must be one of ["German", "English"] |
-            | 90 | description invalid characters |
+          description: | 
+            Bad Request 
+            
+            detail contains deserialization error
+          schema:
+            $ref: '#/definitions/DetailedError'
         "401":
           description: "Unauthorized"
+          schema:
+            $ref: '#/definitions/DetailedError'
         "403":
           description: "Forbidden"
+          schema:
+            $ref: '#/definitions/DetailedError'
         "404":
-          description: "Course not found"
+          description: "Not Found"
+          schema:
+            $ref: '#/definitions/DetailedError'
+        "422":
+          description: "Unprocessable Entity"
+          schema:
+            $ref: '#/definitions/DetailedError'
+            
 securityDefinitions:
   uc4_auth:
     type: basic
@@ -242,6 +263,27 @@ definitions:
     required:
       - code
       - message
+  DetailedError:
+    type: object
+    properties:
+      type:
+        type: string
+      title:
+        type: string
+      invalidParams:
+        type: array
+        items:
+          $ref: "#/definitions/SimpleError"
+    required:
+      - code
+      - message
+  SimpleError:
+    type: object
+    properties:
+      name:
+        type: string
+      reason:
+        type: string
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

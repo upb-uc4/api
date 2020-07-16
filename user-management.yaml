@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.3.1"
+  version: "0.3.2"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -38,7 +38,7 @@ paths:
       operationId: "getUsers"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
           content:
             application/json:
               schema:
@@ -47,8 +47,16 @@ paths:
                   $ref: '#/components/schemas/GetAllUsersResponse'
         "401":
           description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "403":
           description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
   /users/{username}:
     delete:
       tags:
@@ -66,13 +74,29 @@ paths:
           type: "string"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "401":
           description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "403":
           description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "404":
-          description: "No user with this username found"
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
   /users/{username}/role:  
     get:
       tags:
@@ -90,15 +114,23 @@ paths:
           type: "string"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Role'
         "401":
           description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "404":
-          description: "No user with this username found"
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
   /users/students:
     post:
       tags:
@@ -109,15 +141,24 @@ paths:
       security:
         - uc4_auth: [] 
       requestBody:
-        required: true
         description: "Student object that needs to be added to the database"
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/PostMessageStudent'
       responses:
         "201":
-          description: "Student Created"
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+          headers:
+            Location:
+              schema:
+                type: string
+                description: "URI of the newly created Student"
         "400":
           description: | 
             Bad Request 
@@ -127,34 +168,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        "422":
+        "401":
+          description: "Unauthorized"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-          description: |
-            Bad Request
-            Custom error codes
-            | Error Code (name)| Details |
-            |-----|-----|
-            | 01 | username must only contain [..] |
-            | 10 | password must not be empty   |
-            | 20 | role must be one of [..] |
-            | 30 | address fields must not be empty  |
-            | 40 | email format invalid |
-            | 50 | first name must not contain XYZ | 
-            | 60 | last name must not contain XYZ |
-            | 70 | picture invalid |
-            | <b>1xx</b> | <b>Student User Error codes</b> |
-            | 100 | student id invalid |
-            | 110 | semester count must be a positive integer |
-            | 120 | fields of study must be one of [...] |
-        "401":
-          description: "Unauthorized"
+                $ref: '#/components/schemas/DetailedError'
         "403":
           description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "409":
-          description: "Username already exists"
+          description: "Conflict"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
+        "422":
+          description: "Unprocessable Entity"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
     get:
       tags:
       - "Student Management"
@@ -165,7 +202,7 @@ paths:
       operationId: "getStudents"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
           content:
             application/json:
               schema:
@@ -174,8 +211,16 @@ paths:
                   $ref: '#/components/schemas/Student'
         "401":
           description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "403":
           description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
   /users/students/{username}:
     get:
       tags:
@@ -193,15 +238,23 @@ paths:
           type: "string"
       responses:
           "200":
-            description: "successful operation"
+            description: "OK"
             content:
               application/json:
                 schema:
                   $ref: '#/components/schemas/Student'
           "401":
             description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DetailedError'
           "404":
-            description: "No student with this username found"
+            description: "Not Found"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DetailedError'
     put:
       tags:
       - "Student Management"
@@ -227,39 +280,38 @@ paths:
               $ref: "#/components/schemas/Student"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
         "400":
-          description: |
-            Bad Request
-            Custom error codes
-            | Error Code (name)| Details |
-            |-----|-----|
-            | 10 | username must not be changed [..] |
-            | 20 | role may not be changed [..] |
-        "422":
-          description: |
-            Unprocessable Entity
-            Custom error codes
-            | Error Code (name)| Details |
-            |-----|-----|
-            | 01 | username must only contain [..] |
-            | 10 | password must not be empty   |
-            | 20 | role must be one of [..] |
-            | 30 | address fields must not be empty  |
-            | 40 | email format invalid |
-            | 50 | first name must not contain XYZ | 
-            | 60 | last name must not contain XYZ |
-            | 70 | picture invalid |
-            | <b>1xx</b> | <b>Student User Error codes</b> |
-            | 100 | student id invalid |
-            | 110 | semester count must be a positive integer |
-            | 120 | fields of study must be one of [...] |
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
+        
         "401":
           description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "403":
           description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "404":
-          description: "Student not found"
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
+        "422":
+          description: "Unprocessable Entity"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
   /users/lecturers:
     post:
       tags:
@@ -278,7 +330,16 @@ paths:
               $ref: '#/components/schemas/PostMessageLecturer'
       responses:
         "201":
-          description: "Lecturer Created"
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+          headers:
+            Location:
+              schema:
+                type: string
+                description: "URI of the newly created Lecturer"
         "400":
           description: | 
             Bad Request 
@@ -288,33 +349,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        "422":
+        "401":
+          description: "Unauthorized"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-          description: |
-            Bad Request
-            Custom error codes
-            | Error Code (name)| Details |
-            |-----|-----|
-            | 01 | username must only contain [..] |
-            | 10 | password must not be empty   |
-            | 20 | role must be one of [..] |
-            | 30 | address fields must not be empty  |
-            | 40 | email format invalid |
-            | 50 | first name must not contain XYZ | 
-            | 60 | last name must not contain XYZ |
-            | 70 | picture invalid |
-            | <b>2xx</b> | <b>Lecturer User Error codes</b> |
-            | 200 | free text must only contain the following characters |
-            | 210 | research area must only contain the following characters |
-        "401":
-          description: "Unauthorized"
+                $ref: '#/components/schemas/DetailedError'
         "403":
           description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "409":
-          description: "Username already exists"
+          description: "Conflict"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
+        "422":
+          description: "Unprocessable Entity"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
     get:
       tags:
       - "Lecturer Management"
@@ -325,7 +383,7 @@ paths:
       operationId: "getLecturers"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
           content:
             application/json:
               schema:
@@ -334,8 +392,16 @@ paths:
                   $ref: '#/components/schemas/Lecturer'
         "401":
           description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "403":
           description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
   /users/lecturers/{username}:
     get:
       tags:
@@ -353,15 +419,23 @@ paths:
           type: "string"
       responses:
           "200":
-            description: "successful operation"
+            description: "OK"
             content:
               application/json:
                 schema:
                   $ref: '#/components/schemas/Lecturer'
           "401":
             description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DetailedError'
           "404":
-            description: "No lecturer with this username found"
+            description: "Not Found"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DetailedError'
     put:
       tags:
       - "Lecturer Management"
@@ -387,68 +461,38 @@ paths:
               $ref: "#/components/schemas/Lecturer"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
         "400":
-          description: |
-            Bad Request
-            Custom error codes
-            | Error Code (name)| Details |
-            |-----|-----|
-            | 10 | username must not be changed [..] |
-            | 20 | role may not be changed [..] |
-        "422":
-          description: |
-            Unprocessable entity
-            Custom error codes
-            | Error Code (name)| Details |
-            |-----|-----|
-            | Error Code (name)| Details |
-            |-----|-----|
-            | 01 | username must only contain [..] |
-            | 10 | password must not be empty   |
-            | 20 | role must be one of [..] |
-            | 30 | address fields must not be empty  |
-            | 40 | email format invalid |
-            | 50 | first name must not contain XYZ | 
-            | 60 | last name must not contain XYZ |
-            | 70 | picture invalid |
-            | <b>2xx</b> | <b>Lecturer User Error codes</b> |
-            | 200 | free text must only contain the following characters |
-            | 210 | research area must only contain the following characters |
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "401":
           description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "403":
           description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "404":
-          description: "No lecturer with this username found"
-  /users/lecturers/{username}/courses:
-    get:
-      tags:
-      - "Lecturer Management"
-      security:
-        - uc4_auth: []
-      summary: "Get all courses of lecturer with a specific username"
-      description: "Get a list of all courses of the lecturer with the specified username"
-      operationId: "getCoursesByLecturerUsername"
-      parameters:
-      - in: "path"
-        name: "username"
-        required: true
-        schema: 
-          type: "string"
-      responses:
-          "200":
-            description: "successful operation"
-            content:
-              application/json:
-                schema:
-                  type: "array"
-                  items:
-                    $ref: "https://raw.githubusercontent.com/upb-uc4/api/develop/course.yaml#/definitions/Course"
-          "401":
-            description: "Unauthorized"
-          "404":
-            description: "No lecturer with this username found"
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
+        "422":
+          description: "Unprocessable entity"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
+
   /users/admins:
     post:
       tags:
@@ -467,7 +511,16 @@ paths:
               $ref: '#/components/schemas/PostMessageAdmin'
       responses:
         "201":
-          description: "Admin Created"
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+          headers:
+            Location:
+              schema:
+                type: string
+                description: "URI of the newly created Admin"
         "400":
           description: | 
             Bad Request 
@@ -477,31 +530,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        "422":
+        "401":
+          description: "Unauthorized"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-          description: |
-            Bad Request
-            Custom error codes
-            | Error Code (name)| Details |
-            |-----|-----|
-            | 01 | username must only contain [..] |
-            | 10 |  password must not be empty   |
-            | 20 | role must be one of [..] |
-            | 30 | address fields must not be empty  |
-            | 40 | email format invalid |
-            | 50 | first name must not contain XYZ | 
-            | 60 | last name must not contain XYZ |
-            | 70 | picture invalid |
-            | -3xx- | Admin User Error codes |
-        "401":
-          description: "Unauthorized"
+                $ref: '#/components/schemas/DetailedError'
         "403":
           description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "409":
-          description: "Username already exists"
+          description: "Conflict"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
+        "422":
+          description: "Unprocessable Entity"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
     get:
       tags:
       - "Admin Management"
@@ -512,17 +564,25 @@ paths:
       operationId: "getAdmins"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
           content:
             application/json:
               schema:
                 type: "array"
                 items:
-                  $ref: '#/components/schemas/PostMessageAdmin'
+                  $ref: '#/components/schemas/Admin'
         "401":
           description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "403":
           description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
   /users/admins/{username}:
     get:
       tags:
@@ -540,15 +600,23 @@ paths:
           type: "string"
       responses:
           "200":
-            description: "successful operation"
+            description: "OK"
             content:
               application/json:
                 schema:
                   $ref: '#/components/schemas/Admin'
           "401":
             description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DetailedError'
           "404":
-            description: "No admin with this username found"
+            description: "Not Found"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DetailedError'
     put:
       tags:
       - "Admin Management"
@@ -571,36 +639,37 @@ paths:
               $ref: "#/components/schemas/Admin"
       responses:
         "200":
-          description: "successful operation"
+          description: "OK"
         "400":
-          description: |
-            Bad Request
-            Custom error codes
-            | Error Code (name)| Details |
-            |-----|-----|
-            | 10 | username must not be changed [..] |
-            | 20 | role may not be changed [..] |
-        "422":
-          description: |
-            Unprocessable entity
-            Custom error codes
-            | Error Code (name)| Details |
-            |-----|-----|
-            | 01 | username must only contain [..] |
-            | 10 | password must not be empty   |
-            | 20 | role must be one of [..] |
-            | 30 | address fields must not be empty  |
-            | 40 | email format invalid |
-            | 50 | first name must not contain XYZ | 
-            | 60 | last name must not contain XYZ |
-            | 70 | picture invalid |
-            | -3xx- | Admin User Error codes |
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "401":
           description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "403":
           description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
         "404":
-          description: "No admin with this username found"
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
+        "422":
+          description: "Unprocessable entity"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
 components:
   securitySchemes:
     uc4_auth:
@@ -627,7 +696,7 @@ components:
       properties:
         authUser:
           allOf:
-            - $ref: "https://raw.githubusercontent.com/upb-uc4/api/develop/authentication.yaml#/definitions/AuthUser"
+            - $ref: "#/components/schemas/AuthUser"
         student:
           $ref: '#/components/schemas/Student'
     PostMessageLecturer:
@@ -635,7 +704,7 @@ components:
       properties:
         authUser:
           allOf:
-            - $ref: "https://raw.githubusercontent.com/upb-uc4/api/develop/authentication.yaml#/definitions/AuthUser"
+            - $ref: "#/components/schemas/AuthUser"
         lecturer:
           $ref: '#/components/schemas/Lecturer'
     PostMessageAdmin:
@@ -643,7 +712,7 @@ components:
       properties:
         authUser:
           allOf:
-            - $ref: "https://raw.githubusercontent.com/upb-uc4/api/develop/authentication.yaml#/definitions/AuthUser"
+            - $ref: "#/components/schemas/AuthUser"
         admin:
           $ref: '#/components/schemas/Admin'
     User:
@@ -691,7 +760,6 @@ components:
                 type: string
                 enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
                 
-                
     Lecturer:
       allOf: 
         - $ref: '#/components/schemas/User'
@@ -711,6 +779,27 @@ components:
       required:
         - code
         - message
+    DetailedError:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        invalidParams:
+          type: array
+          items:
+            $ref: "#/components/schemas/SimpleError"
+      required:
+        - code
+        - message
+    SimpleError:
+      type: object
+      properties:
+        name:
+          type: string
+        reason:
+          type: string
     Address:
       type: object
       properties:
@@ -727,6 +816,16 @@ components:
     Role:
       type: "object"
       properties:
+        role:
+          type: "string"
+          enum: ["Admin", "Student", "Lecturer"]
+    AuthUser:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
         role:
           type: "string"
           enum: ["Admin", "Student", "Lecturer"]

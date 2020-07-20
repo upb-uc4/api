@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.3.2"
+  version: "0.4.0"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -97,7 +97,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DetailedError'
-  /users/{username}/role:  
+  /role/{username}:  
     get:
       tags:
       - "User Management"
@@ -131,7 +131,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DetailedError'
-  /users/students:
+  /students:
     post:
       tags:
       - "Student Management"
@@ -221,7 +221,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DetailedError'
-  /users/students/{username}:
+  /students/{username}:
     get:
       tags:
       - "Student Management"
@@ -312,7 +312,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DetailedError'
-  /users/lecturers:
+  /lecturers:
     post:
       tags:
       - "Lecturer Management"
@@ -402,7 +402,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DetailedError'
-  /users/lecturers/{username}:
+  /lecturers/{username}:
     get:
       tags:
       - "Lecturer Management"
@@ -493,7 +493,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DetailedError'
 
-  /users/admins:
+  /admins:
     post:
       tags:
       - "Admin Management"
@@ -583,7 +583,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DetailedError'
-  /users/admins/{username}:
+  /admins/{username}:
     get:
       tags:
       - "Admin Management"

@@ -17,7 +17,7 @@
 ### Immatriculate student
 - ID = immatriculateStudent
 - Send
-    - Immatriculation
+    - ImmatriculationData
 - Receive
     - Done
 
@@ -40,21 +40,20 @@
 }
 ```
 
-### Immatriculation
+### ImmatriculationData
 ```json
 {
-  "username": "string",
+  "matriculationId": "string",
   "firstName": "string",
   "lastName": "string",
   "birthDate": "2020-07-21",
-  "matriculationId": "string",
   "immatriculationStatus": [
     {
       "fieldOfStudy": "Computer Science",
       "intervals": [
         {
-          "firstSemester": "string",
-          "lastSemester": "string"
+          "firstSemester": "WS2018",
+          "lastSemester": "SS2020"
         }
       ]
     }

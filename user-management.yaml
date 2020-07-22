@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.4.0"
+  version: "0.4.1b"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -748,17 +748,11 @@ components:
         - type: object
           properties:
             immatriculationStatus:
-              type: string
-            matriculationId:
-              type: string
-            semesterCount:
-              type: number
-              minimum: 1
-            fieldsOfStudy:
               type: array
               items:
-                type: string
-                enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
+                $ref: '#/components/schemas/ImmatriculationStatus'
+            matriculationId:
+              type: string
                 
     Lecturer:
       allOf: 
@@ -769,6 +763,42 @@ components:
               type: string
             researchArea:
               type: string
+    
+    ImmatriculationData:
+      type: object
+      properties:
+        matriculationId:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        birthDate:
+          type: string
+        immatriculationStatus:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImmatriculationStatus'
+    
+    ImmatriculationStatus:
+      type: object
+      properties:
+        fieldOfStudy:
+          type: string
+          enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
+        intervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Interval'   
+          
+    Interval:
+      type: object
+      properties:
+        firstSemester:
+          type: string
+        lastSemester:
+          type: string
+        
     Error:
       type: object
       properties:

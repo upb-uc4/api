@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.4.1b"
+  version: "0.4.0"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -699,6 +699,10 @@ components:
             - $ref: "#/components/schemas/AuthUser"
         student:
           $ref: '#/components/schemas/Student'
+        immatriculationStatus:
+          type: array
+            items:
+            $ref: '#/components/schemas/ImmatriculationStatus'
     PostMessageLecturer:
       type: "object"
       properties:
@@ -747,10 +751,6 @@ components:
         - $ref: '#/components/schemas/User'
         - type: object
           properties:
-            immatriculationStatus:
-              type: array
-              items:
-                $ref: '#/components/schemas/ImmatriculationStatus'
             matriculationId:
               type: string
                 

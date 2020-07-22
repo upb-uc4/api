@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.4.0"
+  version: "0.4.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -131,6 +131,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DetailedError'
+  /password/{username}:
+    post:
+      tags:
+      - "User Management"
+      summary: "Changes the password of a user."
+      description: "Changes the password of a the user which is authorized."
+      operationId: "changePassword"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      security:
+        - uc4_auth: [] 
+      requestBody:
+        description: "AuthenticationUser with the new password and the same role."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthUser'
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
+        
+        "401":
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
+        "403":
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'    
+        "422":
+          description: "Unprocessable Entity"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'    
+  
   /students:
     post:
       tags:

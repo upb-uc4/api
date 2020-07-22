@@ -174,7 +174,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'             
+                $ref: '#/components/schemas/DetailedError'    
+        "422":
+          description: "Unprocessable Entity"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'    
   
   /students:
     post:

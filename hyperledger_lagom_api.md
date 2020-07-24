@@ -14,6 +14,28 @@
 - Receive
     - Done
 
+    - ```json
+      {
+        "type": "Unprocessable Entity",
+        "title": "The given string does not conform to the specified json format.",
+        "invalidParams": [
+          {
+            "name": "string",
+            "reason": "string"
+          }
+        ]
+      }
+      ```
+      - Description: This error is returned, if the given parameters could not be parsed. If the string could not be parsed as json, the list of invalidParams is empty. If some attributes within the json are not well formatted, they are listed in invalidParams.
+  - ```json
+      {
+        "type": "Conflict",
+        "title": "There is already a student for the given immatriculationId.",
+        "invalidParams": []
+      }
+      ```
+    - Description: This error is returned, if a course with the same courseId is already present on the ledger.
+
 ### Immatriculate student
 - ID = addStudent
 - Send
@@ -50,19 +72,60 @@
 - Receive
     - Done
 
+    - ```json
+      {
+        "type": "Not found",
+        "title": "There is no student for the given immatriculationId.",
+        "invalidParams": []
+      }
+      ```
+      - Description: This error is returned, if the matriculationID specified in the ImmatriculationData is not present on the ledger.
+
+    - ```json
+      {
+        "type": "Unprocessable Entity",
+        "title": "The given string does not conform to the specified json format.",
+        "invalidParams": [
+          {
+            "name": "string",
+            "reason": "string"
+          }
+        ]
+      }
+      ```
+      - Description: This error is returned, if the given parameters could not be parsed. If the string could not be parsed as json, the list of invalidParams is empty. If some attributes within the json are not well formatted, they are listed in invalidParams.
+
 ### Get immatriculated student
 - ID = getStudent
 - Send
-    - immatriculationId
+    - matriculationId
 - Receive
     - ImmatriculationData
+
+    - ```json
+      {
+        "type": "Not found",
+        "title": "There is no student for the given immatriculationId.",
+        "invalidParams": []
+      }
+      ```
+      - Description: This error is returned, if the matriculationID is not present on the ledger.
 
 ### Delete immatriculated student
 - ID = deleteStudent
 - Send
-    - immatriculationId
+    - matriculationId
 - Receive
     - Done
+
+    - ```json
+      {
+        "type": "Not found",
+        "title": "There is no student for the given immatriculationId.",
+        "invalidParams": []
+      }
+      ```
+      - Description: This error is returned, if the matriculationID is not present on the ledger.
 
 ### Get immatriculation certificate
 - ID = getImmatriculationCertificate
@@ -71,6 +134,15 @@
     - semester
 - Receive
     - *signed transaction*
+
+    - ```json
+      {
+        "type": "Not found",
+        "title": "There is no student for the given immatriculationId.",
+        "invalidParams": []
+      }
+      ```
+      - Description: This error is returned, if the matriculationID is not present on the ledger.
 
 ## Models
 

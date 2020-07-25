@@ -96,6 +96,13 @@
         }
       ```   
       - Description: This error is returned, if the given parameters could not be parsed. If the string could not be parsed as json, the list of invalidParams is empty. If some attributes within the json are not well formatted, they are listed in invalidParams.
+      
+### Get All Students
+- ID = getAllCourses
+- Send
+-Receive
+    - ImmatriculationData  
+    
 ### Immatriculate student
 - ID = addStudent
 - Send

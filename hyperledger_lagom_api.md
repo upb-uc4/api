@@ -13,7 +13,7 @@
     - Course
 - Receive
     - Done
-
+    
     - ```json
       {
         "type": "Unprocessable Entity",
@@ -35,7 +35,67 @@
       }
       ```
     - Description: This error is returned, if a course with the same courseId is already present on the ledger.
-
+### Get All Courses 
+- ID = getAllCourses
+- Send
+    -  optional
+        - courseName
+        - lecturerId
+-Receive
+    - Course List (according to parameters)
+    
+### Find Course by course ID
+- ID = findCourseByCourseId
+- Send = ID
+- Receive
+    - Course
+    
+    - ```json
+        {
+          "type": "Not Found",
+          "title": "The given ID does not fit any existing course.",
+          "invalidParams": [ ]
+        }
+      ```
+### Deletes a course
+- ID = deleteCourseById
+- Send = ID
+- Receive
+    -""
+    - ```json
+        {
+          "type": "Not Found",
+          "title": "The given ID does not fit any existing course.",
+          "invalidParams": []
+        }
+      ```
+### Update an existing course
+- ID = updateExistingCourse
+- Send 
+    - ID
+    - Course Object
+- Receive 
+    - ""
+    - ```json
+         {
+           "type": "Not Found",
+           "title": "The given ID does not fit any existing course.",
+           "invalidParams": []
+         }
+      ```
+   - ```json
+        {
+          "type": "Unprocessable Entity",
+          "title": "The given string does not conform to the specified json format.",
+          "invalidParams": [
+          {
+            "name": "string",
+            "reason": "string"
+          }
+          ]
+        }
+      ```   
+      - Description: This error is returned, if the given parameters could not be parsed. If the string could not be parsed as json, the list of invalidParams is empty. If some attributes within the json are not well formatted, they are listed in invalidParams.
 ### Immatriculate student
 - ID = addStudent
 - Send

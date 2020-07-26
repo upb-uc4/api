@@ -30,7 +30,7 @@
   - ```json
       {
         "type": "Conflict",
-        "title": "There is already a student for the given immatriculationId.",
+        "title": "There is already a student for the given matriculationId.",
         "invalidParams": []
       }
       ```
@@ -46,7 +46,8 @@
     
 ### Find Course by course ID
 - ID = findCourseByCourseId
-- Send = ID
+- Send
+    - courseId
 - Receive
     - Course
     
@@ -57,11 +58,12 @@
           "invalidParams": [ ]
         }
       ```
-### Deletes a course
+### Delete a course
 - ID = deleteCourseById
-- Send = ID
+- Send
+    - courseId
 - Receive
-    -""
+    - ""
     - ```json
         {
           "type": "Not Found",
@@ -101,12 +103,12 @@
 - ID = getAllCourses
 - Send
 -Receive
-    - ImmatriculationData  
+    - MatriculationData  
     
 ### Immatriculate student
 - ID = addStudent
 - Send
-    - ImmatriculationData
+    - MatriculationData
 - Receive
     - ""
       - Description: Done.
@@ -126,27 +128,27 @@
   - ```json
       {
         "type": "Conflict",
-        "title": "There is already a student for the given immatriculationId.",
+        "title": "There is already a student for the given matriculationId.",
         "invalidParams": []
       }
       ```
-    - Description: This error is returned, if a student with the given immatriculationId is already present on the ledger.
+    - Description: This error is returned, if a student with the given matriculationId is already present on the ledger.
 
-### Update immatriculated student
+### Update student
 - ID = updateStudent
 - Send
-    - ImmatriculationData
+    - MatriculationData
 - Receive
     - Done
 
     - ```json
       {
         "type": "Not found",
-        "title": "There is no student for the given immatriculationId.",
+        "title": "There is no student for the given matriculationId.",
         "invalidParams": []
       }
       ```
-      - Description: This error is returned, if the matriculationID specified in the ImmatriculationData is not present on the ledger.
+      - Description: This error is returned, if the matriculationID specified in the MatriculationData is not present on the ledger.
 
     - ```json
       {
@@ -162,23 +164,23 @@
       ```
       - Description: This error is returned, if the given parameters could not be parsed. If the string could not be parsed as json, the list of invalidParams is empty. If some attributes within the json are not well formatted, they are listed in invalidParams.
 
-### Get immatriculated student
+### Get student
 - ID = getStudent
 - Send
     - matriculationId
 - Receive
-    - ImmatriculationData
+    - MatriculationData
 
     - ```json
       {
         "type": "Not found",
-        "title": "There is no student for the given immatriculationId.",
+        "title": "There is no student for the given matriculationId.",
         "invalidParams": []
       }
       ```
       - Description: This error is returned, if the matriculationID is not present on the ledger.
 
-### Delete immatriculated student
+### Delete student
 - ID = deleteStudent
 - Send
     - matriculationId
@@ -188,7 +190,7 @@
     - ```json
       {
         "type": "Not found",
-        "title": "There is no student for the given immatriculationId.",
+        "title": "There is no student for the given matriculationId.",
         "invalidParams": []
       }
       ```
@@ -205,7 +207,7 @@
     - ```json
       {
         "type": "Not found",
-        "title": "There is no student for the given immatriculationId.",
+        "title": "There is no student for the given matriculationId.",
         "invalidParams": []
       }
       ```
@@ -230,14 +232,14 @@
 }
 ```
 
-### ImmatriculationData
+### MatriculationData
 ```json
 {
   "matriculationId": "string",
   "firstName": "string",
   "lastName": "string",
   "birthDate": "2020-07-21",
-  "immatriculationStatus": [
+  "matriculationStatus": [
     {
       "fieldOfStudy": "Computer Science",
       "intervals": [

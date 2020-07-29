@@ -51,19 +51,27 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           schema:
-            $ref: '#/definitions/DetailedError'
+            $ref: '#/definitions/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges, owner mismatch
           schema:
-            $ref: '#/definitions/DetailedError'
+            $ref: '#/definitions/GenericError'
         "409":
-          description: "Conflict"
+          description: |
+            Conflict  
+            types: key duplicate
           schema:
-            $ref: '#/definitions/DetailedError'
+            $ref: '#/definitions/GenericError'
         "422":
-          description: "Unprocessable Entity"
+          description: |
+            Unprocessable Entity  
+            types: validation error
           schema:
             $ref: '#/definitions/DetailedError'
           
@@ -96,9 +104,11 @@ paths:
             items:
               $ref: "#/definitions/Course"
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           schema:
-            $ref: '#/definitions/DetailedError'
+            $ref: '#/definitions/GenericError'
   /courses/{id}:
     get:
       tags:
@@ -122,13 +132,17 @@ paths:
             schema:
               $ref: "#/definitions/Course"
           "401":
-            description: "Unauthorized"
+            description: |
+              Unauthorized  
+              types: authorization error
             schema:
-              $ref: '#/definitions/DetailedError'
+              $ref: '#/definitions/GenericError'
           "404":
-            description: "Not Found"
+            description: |
+              Not Found  
+              types: key not found
             schema:
-              $ref: '#/definitions/DetailedError'
+              $ref: '#/definitions/GenericError'
     delete:
       tags:
       - "Course Management"
@@ -148,22 +162,24 @@ paths:
       responses:
         "200":
           description: "OK"
-        "400":
-          description: "Bad Request"
-          schema:
-            $ref: '#/definitions/DetailedError'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           schema:
-            $ref: '#/definitions/DetailedError'
+            $ref: '#/definitions/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges, owner mismatch
           schema:
-            $ref: '#/definitions/DetailedError'
+            $ref: '#/definitions/GenericError'
         "404":
-          description: "Not Found"
+          description: |
+            Not Found  
+            types: key not found
           schema:
-            $ref: '#/definitions/DetailedError'
+            $ref: '#/definitions/GenericError'
     put:
       tags:
       - "Course Management"
@@ -192,26 +208,34 @@ paths:
         "200":
           description: "OK"
         "400":
-          description: | 
-            Bad Request 
-            
-            detail contains deserialization error
+          description: |
+            Bad Request  
+            types: path parameter mismatch  
+            Note: on deserialization exception, Error of schema "Error" is thrown
           schema:
-            $ref: '#/definitions/DetailedError'
+            $ref: '#/definitions/GenericError'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           schema:
-            $ref: '#/definitions/DetailedError'
+            $ref: '#/definitions/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges, owner mismatch
           schema:
-            $ref: '#/definitions/DetailedError'
+            $ref: '#/definitions/GenericError'
         "404":
-          description: "Not Found"
+          description: |
+            Not Found  
+            types: key not found
           schema:
-            $ref: '#/definitions/DetailedError'
+            $ref: '#/definitions/GenericError'
         "422":
-          description: "Unprocessable Entity"
+          description: |
+            Unprocessable Entity  
+            types: validation error
           schema:
             $ref: '#/definitions/DetailedError'
             
@@ -263,11 +287,35 @@ definitions:
     required:
       - code
       - message
+  GenericError:
+    type: object
+    properties:
+      type:
+        type: string
+        enum: [
+          "path parameter mismatch", 
+          "wrong object",
+          "authorization error",
+          "not enough privileges",
+          "owner mismatch",
+          "key not found",
+          "key duplicate",
+          "teapot"
+        ]
+      title:
+        type: string
+    required:
+      - code
+      - message
   DetailedError:
     type: object
     properties:
       type:
         type: string
+        enum: [
+          "validation error", 
+          "uneditable fields"
+        ]
       title:
         type: string
       invalidParams:
@@ -284,6 +332,18 @@ definitions:
         type: string
       reason:
         type: string
+#    Error:
+#      allOf:
+#        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/Error'
+#        - type: object
+#    GenericError:
+#      allOf:
+#        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
+#        - type: object
+#    DetailedError:
+#      allOf:
+#        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+#        - type: object
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

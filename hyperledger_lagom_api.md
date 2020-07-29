@@ -240,16 +240,31 @@
   "lastName": "string",
   "birthDate": "2020-07-21",
   "matriculationStatus": [
-    {
-      "fieldOfStudy": "Computer Science",
-      "intervals": [
-        {
-          "firstSemester": "WS2018",
-          "lastSemester": "SS2020"
-        }
-      ]
-    }
+    SubjectMatriculationInterval_1,
+    ...,
+    SubjectMatriculationInterval_N
   ]
+}
+```
+
+### SubjectMatriculationInterval
+```json
+{
+  "fieldOfStudy": "Computer Science",
+  "intervals": [
+    MatriculationInterval_1,
+    ...,
+    MatriculationInterval_N
+  ]
+}
+
+```
+
+### MatriculationInterval
+```json
+{
+  "firstSemester": "WS2018",
+  "lastSemester": "SS2020"
 }
 ```
 

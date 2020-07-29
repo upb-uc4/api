@@ -143,7 +143,7 @@
 
     - ```json
       {
-        "type": "Not found",
+        "type": "Not Found",
         "title": "There is no student for the given matriculationId.",
         "invalidParams": []
       }
@@ -173,7 +173,7 @@
 
     - ```json
       {
-        "type": "Not found",
+        "type": "Not Found",
         "title": "There is no student for the given matriculationId.",
         "invalidParams": []
       }
@@ -189,7 +189,7 @@
 
     - ```json
       {
-        "type": "Not found",
+        "type": "Not Found",
         "title": "There is no student for the given matriculationId.",
         "invalidParams": []
       }
@@ -206,7 +206,7 @@
 
     - ```json
       {
-        "type": "Not found",
+        "type": "Not Found",
         "title": "There is no student for the given matriculationId.",
         "invalidParams": []
       }

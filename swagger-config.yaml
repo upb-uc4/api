@@ -1,5 +1,11 @@
 urls: 
-    - name: CourseAPI
-      url: https://raw.githubusercontent.com/upb-uc4/api/develop/course.yaml
-    - name: User-management
+    - name: Course-Management
+      url: https://raw.githubusercontent.com/upb-uc4/api/develop/course-management.yaml
+    - name: User-Management
       url: https://raw.githubusercontent.com/upb-uc4/api/develop/user-management.yaml
+    - name: Authentication-Management
+      url: https://raw.githubusercontent.com/upb-uc4/api/develop/authentication-management.yaml
+    - name: HL-Course-Management
+      url: https://raw.githubusercontent.com/upb-uc4/api/develop/hl-course-management.yaml
+    - name: Hyperledger-Management
+      url: https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-management.yaml

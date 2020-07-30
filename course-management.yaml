@@ -1,11 +1,11 @@
 openapi: "3.0.0"
 info:
-  description: "This is the Hl-Course API for UC4."
+  description: "This is the Course API for UC4."
   version: "0.4.2"
   title: "UC4"
   
 servers:
-  - url: https://uc4.cs.upb.de/api/hl-course-management
+  - url: https://uc4.cs.upb.de/api/course-management
 
 tags:
 - name: "Version Management"

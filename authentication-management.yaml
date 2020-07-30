@@ -33,7 +33,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/JsonVersionNumber'
   /users/{username}:
-    post:
+    put:
       tags:
       - "Authentication Management"
       summary: "Changes the password of a user."

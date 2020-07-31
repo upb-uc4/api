@@ -1,11 +1,16 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.4.0"
+  version: "0.4.3"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
 tags:
+- name: "Version Management"
+  description: "Everything about the Version"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
 - name: "User Management"
   description: "Everything about the user"
   externalDocs:
@@ -27,6 +32,20 @@ tags:
     description: "Find out more"
     url: "https://github.com/upb-uc4"
 paths:
+  /version:
+    get:
+      tags:
+      - "Version Management"
+      summary: "Get version"
+      description: "Returns the version of the current service"
+      operationId: "getVersion"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonVersionNumber'
   /users:
     get:
       tags:
@@ -46,17 +65,21 @@ paths:
                 items:
                   $ref: '#/components/schemas/GetAllUsersResponse'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
   /users/{username}:
     delete:
       tags:
@@ -75,28 +98,30 @@ paths:
       responses:
         "200":
           description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "404":
-          description: "Not Found"
+          description: |
+            Not Found  
+            types: key not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
   /role/{username}:  
     get:
       tags:
@@ -120,17 +145,78 @@ paths:
               schema:
                 $ref: '#/components/schemas/Role'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "404":
-          description: "Not Found"
+          description: |
+            Not Found  
+            types: key not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /password/{username}:
+    post:
+      tags:
+      - "User Management"
+      summary: "Changes the password of a user."
+      description: "Changes the password of a the user which is authorized."
+      operationId: "changePassword"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      security:
+        - uc4_auth: [] 
+      requestBody:
+        description: "AuthenticationUser with the new password and the same role."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthUser'
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        
+        "401":
+          description: |
+            Unauthorized  
+            types: authorization error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: not enough privileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: validation error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DetailedError'
+  
   /students:
     post:
       tags:
@@ -169,25 +255,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "409":
-          description: "Conflict"
+          description: |
+            Conflict  
+            types: key duplicate
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "422":
-          description: "Unprocessable Entity"
+          description: |
+            Unprocessable Entity  
+            types: validation error
           content:
             application/json:
               schema:
@@ -210,17 +304,21 @@ paths:
                 items:
                   $ref: '#/components/schemas/Student'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
   /students/{username}:
     get:
       tags:
@@ -244,17 +342,21 @@ paths:
                 schema:
                   $ref: '#/components/schemas/Student'
           "401":
-            description: "Unauthorized"
+            description: |
+              Unauthorized  
+              types: authorization error
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/DetailedError'
+                  $ref: '#/components/schemas/GenericError'
           "404":
-            description: "Not Found"
+            description: |
+              Not Found  
+              types: key not found
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/DetailedError'
+                  $ref: '#/components/schemas/GenericError'
     put:
       tags:
       - "Student Management"
@@ -282,32 +384,43 @@ paths:
         "200":
           description: "OK"
         "400":
-          description: "Bad Request"
+          description: |
+            Bad Request  
+            types: path parameter mismatch  
+            Note: on deserialization exception, Error of schema "Error" is thrown
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "404":
-          description: "Not Found"
+          description: |
+            Not Found  
+            types: key not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "422":
-          description: "Unprocessable Entity"
+          description: |
+            Unprocessable Entity  
+            types: validation error, uneditable fields
           content:
             application/json:
               schema:
@@ -350,25 +463,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "409":
-          description: "Conflict"
+          description: |
+            Conflict  
+            types: key duplicate
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "422":
-          description: "Unprocessable Entity"
+          description: |
+            Unprocessable Entity  
+            types: validation error
           content:
             application/json:
               schema:
@@ -391,17 +512,21 @@ paths:
                 items:
                   $ref: '#/components/schemas/Lecturer'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
   /lecturers/{username}:
     get:
       tags:
@@ -425,17 +550,21 @@ paths:
                 schema:
                   $ref: '#/components/schemas/Lecturer'
           "401":
-            description: "Unauthorized"
+            description: |
+              Unauthorized  
+              types: authorization error
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/DetailedError'
+                  $ref: '#/components/schemas/GenericError'
           "404":
-            description: "Not Found"
+            description: |
+              Not Found  
+              types: key not found
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/DetailedError'
+                  $ref: '#/components/schemas/GenericError'
     put:
       tags:
       - "Lecturer Management"
@@ -463,31 +592,42 @@ paths:
         "200":
           description: "OK"
         "400":
-          description: "Bad Request"
+          description: |
+            Bad Request  
+            types: path parameter mismatch  
+            Note: on deserialization exception, Error of schema "Error" is thrown
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "404":
-          description: "Not Found"
+          description: |
+            Not Found  
+            types: key not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "422":
-          description: "Unprocessable entity"
+          description: |
+            Unprocessable Entity  
+            types: validation error, uneditable fields
           content:
             application/json:
               schema:
@@ -531,25 +671,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "409":
-          description: "Conflict"
+          description: |
+            Conflict  
+            types: key duplicate
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "422":
-          description: "Unprocessable Entity"
+          description: |
+            Unprocessable Entity  
+            types: validation error
           content:
             application/json:
               schema:
@@ -572,17 +720,21 @@ paths:
                 items:
                   $ref: '#/components/schemas/Admin'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
   /admins/{username}:
     get:
       tags:
@@ -606,17 +758,21 @@ paths:
                 schema:
                   $ref: '#/components/schemas/Admin'
           "401":
-            description: "Unauthorized"
+            description: |
+              Unauthorized  
+              types: authorization error
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/DetailedError'
+                  $ref: '#/components/schemas/GenericError'
           "404":
-            description: "Not Found"
+            description: |
+              Not Found  
+              types: key not found
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/DetailedError'
+                  $ref: '#/components/schemas/GenericError'
     put:
       tags:
       - "Admin Management"
@@ -641,31 +797,42 @@ paths:
         "200":
           description: "OK"
         "400":
-          description: "Bad Request"
+          description: |
+            Bad Request  
+            types: path parameter mismatch  
+            Note: on deserialization exception, Error of schema "Error" is thrown
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "401":
-          description: "Unauthorized"
+          description: |
+            Unauthorized  
+            types: authorization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "403":
-          description: "Forbidden"
+          description: |
+            Forbidden  
+            types: not enough privileges
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "404":
-          description: "Not Found"
+          description: |
+            Not Found  
+            types: key not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "422":
-          description: "Unprocessable entity"
+          description: |
+            Unprocessable Entity  
+            types: validation error
           content:
             application/json:
               schema:
@@ -699,10 +866,6 @@ components:
             - $ref: "#/components/schemas/AuthUser"
         student:
           $ref: '#/components/schemas/Student'
-        immatriculationStatus:
-          type: array
-            items:
-            $ref: '#/components/schemas/ImmatriculationStatus'
     PostMessageLecturer:
       type: "object"
       properties:
@@ -751,8 +914,18 @@ components:
         - $ref: '#/components/schemas/User'
         - type: object
           properties:
+            immatriculationStatus:
+              type: string
             matriculationId:
               type: string
+            semesterCount:
+              type: number
+              minimum: 1
+            fieldsOfStudy:
+              type: array
+              items:
+                type: string
+                enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
                 
     Lecturer:
       allOf: 
@@ -763,73 +936,6 @@ components:
               type: string
             researchArea:
               type: string
-    
-    ImmatriculationData:
-      type: object
-      properties:
-        matriculationId:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        birthDate:
-          type: string
-        immatriculationStatus:
-          type: array
-          items:
-            $ref: '#/components/schemas/ImmatriculationStatus'
-    
-    ImmatriculationStatus:
-      type: object
-      properties:
-        fieldOfStudy:
-          type: string
-          enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
-        intervals:
-          type: array
-          items:
-            $ref: '#/components/schemas/Interval'   
-          
-    Interval:
-      type: object
-      properties:
-        firstSemester:
-          type: string
-        lastSemester:
-          type: string
-        
-    Error:
-      type: object
-      properties:
-        name:
-          type: string
-        detail:
-          type: string
-      required:
-        - code
-        - message
-    DetailedError:
-      type: object
-      properties:
-        type:
-          type: string
-        title:
-          type: string
-        invalidParams:
-          type: array
-          items:
-            $ref: "#/components/schemas/SimpleError"
-      required:
-        - code
-        - message
-    SimpleError:
-      type: object
-      properties:
-        name:
-          type: string
-        reason:
-          type: string
     Address:
       type: object
       properties:
@@ -859,6 +965,79 @@ components:
         role:
           type: "string"
           enum: ["Admin", "Student", "Lecturer"]
+    Error:
+      type: object
+      properties:
+        name:
+          type: string
+        detail:
+          type: string
+      required:
+        - code
+        - message
+    GenericError:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [
+            "path parameter mismatch", 
+            "wrong object",
+            "authorization error",
+            "not enough privileges",
+            "owner mismatch",
+            "key not found",
+            "key duplicate",
+            "teapot"
+          ]
+        title:
+          type: string
+      required:
+        - code
+        - message
+    DetailedError:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [
+            "validation error", 
+            "uneditable fields"
+          ]
+        title:
+          type: string
+        invalidParams:
+          type: array
+          items:
+            $ref: "#/components/schemas/SimpleError"
+      required:
+        - code
+        - message
+    SimpleError:
+      type: object
+      properties:
+        name:
+          type: string
+        reason:
+          type: string
+    JsonVersionNumber:
+      type: object
+      properties:
+        versionNumber:
+          type: string
+#    Error:
+#      allOf:
+#        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/Error'
+#        - type: object
+#    GenericError:
+#      allOf:
+#        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
+#        - type: object
+#    DetailedError:
+#      allOf:
+#        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+#        - type: object
+       
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

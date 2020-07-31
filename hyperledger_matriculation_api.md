@@ -154,7 +154,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
 ```json
 {
   "fieldOfStudy": "Computer Science",
-  "semersters": ["WS2019/20", "SS2020"]
+  "semesters": ["WS2019/20", "SS2020"]
 }
 
 ```

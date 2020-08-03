@@ -858,7 +858,7 @@ components:
         - $ref: '#/components/schemas/User'
         - type: object
           properties:
-            newestImmatrikulaion:
+            latestImmatriculation:
               type: string
             matriculationId:
               type: string

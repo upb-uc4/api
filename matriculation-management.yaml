@@ -1,0 +1,262 @@
+openapi: "3.0.0"
+info:
+  description: "This is the Matriculation API for UC4."
+  version: "0.5.0"
+  title: "UC4"
+servers:
+  - url: https://uc4.cs.upb.de/api/matriculation-management
+tags:
+- name: "Version Management"
+  description: "Everything about the Version"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+- name: "Matriculation Management"
+  description: "Everything about the user"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+paths:
+  /version:
+    get:
+      tags:
+      - "Version Management"
+      summary: "Get version"
+      description: "Returns the version of the current service"
+      operationId: "getVersion"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonVersionNumber'
+  /immatriculation/{username}:
+    put:
+      tags:
+      - "Matriculation Management"
+      summary: "Add fieldOfStudy with semester to MatriculationData"
+      description: "Update MatriculationData with the given information, enrolling the student in the given semester, in the given fieldOfStudy. If MatriculationData does not exist, it will be created. Can only be invoked by Admins."
+      operationId: "updateMatriculationData"
+      security:
+        - uc4_auth: [] 
+      requestBody:
+        description: "PutMessageMatriculationData, containing the semester the student will be enrolled in, and the corresponding fieldOfStudy."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutMessageMatriculationData'
+      parameters:
+      - in: "path"
+        name: "username"
+        required: true
+        schema: 
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatriculationData'
+          headers:
+            Location:
+              schema:
+                type: string
+                description: "URI of the newly created MatriculationData"
+        "400":
+          description: | 
+            Bad Request 
+            
+            detail contains deserialization error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: |
+            Unauthorized  
+            types: authorization error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: not enough privileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
+  /immatriculation/history/{username}:
+    get:
+      tags:
+      - "Matriculation Management"
+      security:
+        - uc4_auth: []
+      summary: "Get MatriculationData for the specified student"
+      description: "Get MatriculationData of specified student."
+      operationId: "getMatriculationData"
+      parameters:
+      - in: "path"
+        name: "username"
+        required: true
+        schema: 
+          type: "string"
+      responses:
+          "200":
+            description: "OK"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/MatriculationData'
+          "401":
+            description: |
+              Unauthorized  
+              types: authorization error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "403":
+            description: |
+              Forbidden  
+              types: not enough privileges
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "404":
+            description: |
+              Not Found  
+              types: key not found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+components:
+  securitySchemes:
+    uc4_auth:
+      type: http
+      scheme: basic
+  schemas:
+    PutMessageMatriculationData:
+      type: "object"
+      properties:
+        fieldOfStudy:
+          type: string
+          enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
+        semester:
+          type: string
+    MatriculationData:
+      type: "object"
+      properties:
+        matriculationId:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        matriculationStatus:
+          $ref: '#/components/schemas/SubjectMatriculation'
+    SubjectMatriculation:
+      type: "object"
+      properties:
+        fieldOfStudy:
+          type: string
+          enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
+        semesters:
+          type: array
+          items:
+            type: string
+    Error:
+      type: object
+      properties:
+        name:
+          type: string
+        detail:
+          type: string
+      required:
+        - code
+        - message
+    GenericError:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [
+            "path parameter mismatch", 
+            "wrong object",
+            "authorization error",
+            "not enough privileges",
+            "owner mismatch",
+            "key not found",
+            "key duplicate",
+            "teapot"
+          ]
+        title:
+          type: string
+      required:
+        - code
+        - message
+    DetailedError:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [
+            "validation error", 
+            "uneditable fields"
+          ]
+        title:
+          type: string
+        invalidParams:
+          type: array
+          items:
+            $ref: "#/components/schemas/SimpleError"
+      required:
+        - code
+        - message
+    SimpleError:
+      type: object
+      properties:
+        name:
+          type: string
+        reason:
+          type: string
+    JsonVersionNumber:
+      type: object
+      properties:
+        versionNumber:
+          type: string
+#    Error:
+#      allOf:
+#        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/Error'
+#        - type: object
+#    GenericError:
+#      allOf:
+#        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
+#        - type: object
+#    DetailedError:
+#      allOf:
+#        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+#        - type: object
+       
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

@@ -160,62 +160,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /password/{username}:
-    post:
-      tags:
-      - "User Management"
-      summary: "Changes the password of a user."
-      description: "Changes the password of a the user which is authorized."
-      operationId: "changePassword"
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      security:
-        - uc4_auth: [] 
-      requestBody:
-        description: "AuthenticationUser with the new password and the same role."
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthUser'
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: not enough privileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: validation error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
   
   /students:
     post:

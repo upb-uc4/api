@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.4.3"
+  version: "0.5.0"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -914,19 +914,10 @@ components:
         - $ref: '#/components/schemas/User'
         - type: object
           properties:
-            immatriculationStatus:
+            newestImmatrikulaion:
               type: string
             matriculationId:
               type: string
-            semesterCount:
-              type: number
-              minimum: 1
-            fieldsOfStudy:
-              type: array
-              items:
-                type: string
-                enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
-                
     Lecturer:
       allOf: 
         - $ref: '#/components/schemas/User'

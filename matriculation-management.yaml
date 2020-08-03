@@ -1,33 +1,18 @@
 openapi: "3.0.0"
 info:
-  description: "This is the User API for UC4."
-  version: "0.4.3"
+  description: "This is the Matriculation API for UC4."
+  version: "0.5.0"
   title: "UC4"
 servers:
-  - url: https://uc4.cs.upb.de/api/user-management
+  - url: https://uc4.cs.upb.de/api/matriculation-management
 tags:
 - name: "Version Management"
   description: "Everything about the Version"
   externalDocs:
     description: "Find out more"
     url: "https://github.com/upb-uc4"
-- name: "User Management"
+- name: "Matriculation Management"
   description: "Everything about the user"
-  externalDocs:
-    description: "Find out more"
-    url: "https://github.com/upb-uc4"
-- name: "Student Management"
-  description: "Everything about the student"
-  externalDocs:
-    description: "Find out more"
-    url: "https://github.com/upb-uc4"
-- name: "Lecturer Management"
-  description: "Everything about the lecturer"
-  externalDocs:
-    description: "Find out more"
-    url: "https://github.com/upb-uc4"
-- name: "Admin Management"
-  description: "Everything about the admin"
   externalDocs:
     description: "Find out more"
     url: "https://github.com/upb-uc4"
@@ -46,205 +31,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonVersionNumber'
-  /users:
-    get:
+  /immatriculation/{username}:
+    put:
       tags:
-      - "User Management"
-      summary: "Get all users"
-      security:
-        - uc4_auth: [] 
-      description: "Returns all users, may only be used by administrators"
-      operationId: "getUsers"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: "array"
-                items:
-                  $ref: '#/components/schemas/GetAllUsersResponse'
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: not enough privileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-  /users/{username}:
-    delete:
-      tags:
-      - "User Management"
-      summary: "Deletes a user"
-      description: "Deletes a user (when invoked by an administrator)"
-      security:
-        - uc4_auth: [] 
-      operationId: "deleteUser"
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      responses:
-        "200":
-          description: "OK"
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: not enough privileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: key not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-  /role/{username}:  
-    get:
-      tags:
-      - "User Management"
-      summary: "Returns the role of a user"
-      description: "Returns the role of the user with the specified username"
-      security:
-        - uc4_auth: [] 
-      operationId: "getRole"
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Role'
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: key not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-  /password/{username}:
-    post:
-      tags:
-      - "User Management"
-      summary: "Changes the password of a user."
-      description: "Changes the password of a the user which is authorized."
-      operationId: "changePassword"
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
+      - "Matriculation Management"
+      summary: "Add fieldOfStudy with semester to MatriculationData"
+      description: "Update MatriculationData with the given information, enrolling the student in the given semester, in the given fieldOfStudy. If MatriculationData does not exist, it will be created. Can only be invoked by Admins."
+      operationId: "updateMatriculationData"
       security:
         - uc4_auth: [] 
       requestBody:
-        description: "AuthenticationUser with the new password and the same role."
+        description: "PutMessageMatriculationData, containing the semester the student will be enrolled in, and the corresponding fieldOfStudy."
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AuthUser'
+              $ref: '#/components/schemas/PutMessageMatriculationData'
+      parameters:
+      - in: "path"
+        name: "username"
+        required: true
+        schema: 
+          type: "string"
       responses:
         "200":
           description: "OK"
-        "400":
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: not enough privileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: validation error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
-  
-  /students:
-    post:
-      tags:
-      - "Student Management"
-      summary: "Add a new student to the database"
-      description: "Adds a new student to the database after verification."
-      operationId: "addStudent"
-      security:
-        - uc4_auth: [] 
-      requestBody:
-        description: "Student object that needs to be added to the database"
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostMessageStudent'
-      responses:
         "201":
           description: "Created"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Student'
+                $ref: '#/components/schemas/MatriculationData'
           headers:
             Location:
               schema:
                 type: string
-                description: "URI of the newly created Student"
+                description: "URI of the newly created MatriculationData"
         "400":
           description: | 
             Bad Request 
@@ -270,14 +92,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-        "409":
-          description: |
-            Conflict  
-            types: key duplicate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
         "422":
           description: |
             Unprocessable Entity  
@@ -286,48 +100,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DetailedError'
+  /immatriculation/history/{username}:
     get:
       tags:
-      - "Student Management"
-      summary: "Get all students"
-      security:
-        - uc4_auth: [] 
-      description: "Returns all students, may only be used by administrators"
-      operationId: "getStudents"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: "array"
-                items:
-                  $ref: '#/components/schemas/Student'
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: not enough privileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-  /students/{username}:
-    get:
-      tags:
-      - "Student Management"
+      - "Matriculation Management"
       security:
         - uc4_auth: []
-      summary: "Get student object of specific student"
-      description: "Get student object of specific student"
-      operationId: "getStudentByStudentName"
+      summary: "Get MatriculationData for the specified student"
+      description: "Get MatriculationData of specified student."
+      operationId: "getMatriculationData"
       parameters:
       - in: "path"
         name: "username"
@@ -340,11 +121,19 @@ paths:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/Student'
+                  $ref: '#/components/schemas/MatriculationData'
           "401":
             description: |
               Unauthorized  
               types: authorization error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "403":
+            description: |
+              Forbidden  
+              types: not enough privileges
             content:
               application/json:
                 schema:
@@ -357,542 +146,25 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/GenericError'
-    put:
-      tags:
-      - "Student Management"
-      summary: "Update an existing student"
-      description: |
-        Updates a user if invoked by an administrator or by the user itself. Can only change specific attributes if invoked by a regular user&#58;
-          Address, Email and profile picture
-      operationId: "updateStudent"
-      security:
-        - uc4_auth: [] 
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      requestBody:
-        description: "Student object that needs to be updated"
-        required: true
-        content:
-          application/json:
-            schema:       
-              $ref: "#/components/schemas/Student"
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          description: |
-            Bad Request  
-            types: path parameter mismatch  
-            Note: on deserialization exception, Error of schema "Error" is thrown
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: not enough privileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: key not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: validation error, uneditable fields
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
-  /lecturers:
-    post:
-      tags:
-      - "Lecturer Management"
-      summary: "Add a new lecturer to the database"
-      description: "Adds a new lecturer to the database after verification."
-      operationId: "addLecturer"
-      security:
-        - uc4_auth: [] 
-      requestBody:
-        required: true
-        description: "Lecturer object that needs to be added to the database"
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostMessageLecturer'
-      responses:
-        "201":
-          description: "Created"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Lecturer'
-          headers:
-            Location:
-              schema:
-                type: string
-                description: "URI of the newly created Lecturer"
-        "400":
-          description: | 
-            Bad Request 
-            
-            detail contains deserialization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: not enough privileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "409":
-          description: |
-            Conflict  
-            types: key duplicate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: validation error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
-    get:
-      tags:
-      - "Lecturer Management"
-      summary: "Get all lecturers"
-      security:
-        - uc4_auth: [] 
-      description: "Returns all lecturers, may only be used by administrators"
-      operationId: "getLecturers"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: "array"
-                items:
-                  $ref: '#/components/schemas/Lecturer'
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: not enough privileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-  /lecturers/{username}:
-    get:
-      tags:
-      - "Lecturer Management"
-      security:
-        - uc4_auth: []
-      summary: "Get lecturer object of specific username"
-      description: "Get lecturer object of specific username"
-      operationId: "getLecturerByUsername"
-      parameters:
-      - in: "path"
-        name: "username"
-        required: true
-        schema: 
-          type: "string"
-      responses:
-          "200":
-            description: "OK"
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Lecturer'
-          "401":
-            description: |
-              Unauthorized  
-              types: authorization error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "404":
-            description: |
-              Not Found  
-              types: key not found
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-    put:
-      tags:
-      - "Lecturer Management"
-      summary: "Update an existing lecturer"
-      description: |
-        Updates a user if invoked by an administrator or by the user itself. Can only change specific attributes if invoked by a regular user&#58;
-          Address, Email and profile picture, free text and research area
-      operationId: "updateLecturer"
-      security:
-        - uc4_auth: [] 
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      requestBody:
-        description: "Lecturer object that needs to be updated"
-        required: true
-        content:
-          application/json:
-            schema:       
-              $ref: "#/components/schemas/Lecturer"
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          description: |
-            Bad Request  
-            types: path parameter mismatch  
-            Note: on deserialization exception, Error of schema "Error" is thrown
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: not enough privileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: key not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: validation error, uneditable fields
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
-
-  /admins:
-    post:
-      tags:
-      - "Admin Management"
-      summary: "Add a new admin to the database"
-      description: "Adds a new admin to the database after verification."
-      operationId: "addAdmin"
-      security:
-        - uc4_auth: [] 
-      requestBody:
-        required: true
-        description: "Admin object that needs to be added to the database"
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostMessageAdmin'
-      responses:
-        "201":
-          description: "Created"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Admin'
-          headers:
-            Location:
-              schema:
-                type: string
-                description: "URI of the newly created Admin"
-        "400":
-          description: | 
-            Bad Request 
-            
-            detail contains deserialization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: not enough privileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "409":
-          description: |
-            Conflict  
-            types: key duplicate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: validation error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
-    get:
-      tags:
-      - "Admin Management"
-      summary: "Get all admins"
-      security:
-        - uc4_auth: [] 
-      description: "Returns all admins, may only be used by administrators"
-      operationId: "getAdmins"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: "array"
-                items:
-                  $ref: '#/components/schemas/Admin'
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: not enough privileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-  /admins/{username}:
-    get:
-      tags:
-      - "Admin Management"
-      security:
-        - uc4_auth: []
-      summary: "Get admin object of specific username"
-      description: "Get admin object of specific username"
-      operationId: "getAdminByUsername"
-      parameters:
-      - in: "path"
-        name: "username"
-        required: true
-        schema: 
-          type: "string"
-      responses:
-          "200":
-            description: "OK"
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Admin'
-          "401":
-            description: |
-              Unauthorized  
-              types: authorization error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "404":
-            description: |
-              Not Found  
-              types: key not found
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-    put:
-      tags:
-      - "Admin Management"
-      summary: "Update an existing admin"
-      operationId: "updateAdmin"
-      security:
-        - uc4_auth: [] 
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      requestBody:
-        description: "Admin object that needs to be updated"
-        required: true
-        content:
-          application/json:
-            schema:       
-              $ref: "#/components/schemas/Admin"
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          description: |
-            Bad Request  
-            types: path parameter mismatch  
-            Note: on deserialization exception, Error of schema "Error" is thrown
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "401":
-          description: |
-            Unauthorized  
-            types: authorization error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: not enough privileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: key not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: validation error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
 components:
   securitySchemes:
     uc4_auth:
       type: http
       scheme: basic
   schemas:
-    GetAllUsersResponse:
+    PutMessageMatriculationData:
       type: "object"
       properties:
-        students:
-          type: array
-          items:
-            $ref: '#/components/schemas/Student'
-        lecturer:
-          type: array
-          items:
-            $ref: '#/components/schemas/Lecturer'
-        admins:
-          type: array
-          items:
-            $ref: '#/components/schemas/Admin'
-    PostMessageStudent:
-      type: "object"
-      properties:
-        authUser:
-          allOf:
-            - $ref: "#/components/schemas/AuthUser"
-        student:
-          $ref: '#/components/schemas/Student'
-    PostMessageLecturer:
-      type: "object"
-      properties:
-        authUser:
-          allOf:
-            - $ref: "#/components/schemas/AuthUser"
-        lecturer:
-          $ref: '#/components/schemas/Lecturer'
-    PostMessageAdmin:
-      type: "object"
-      properties:
-        authUser:
-          allOf:
-            - $ref: "#/components/schemas/AuthUser"
-        admin:
-          $ref: '#/components/schemas/Admin'
-    User:
-      type: "object"
-      properties:
-        username:
+        fieldOfStudy:
           type: string
-        role:
+          enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
+        semester:
           type: string
-          enum: ["Admin", "Student", "Lecturer"]
-        address:
-          allOf: 
-            - $ref: '#/components/schemas/Address'
+    MatriculationData:
+      type: "object"
+      properties:
+        matriculationId:
+          type: string
         firstName:
           type: string
         lastName:
@@ -900,71 +172,18 @@ components:
         birthDate:
           type: string
           format: date
-        picture:
-          type: string
-        email:
-          type: string
-          format: email
-    Admin:
-      allOf:
-        - $ref: '#/components/schemas/User'
-        - type: object    
-    Student:
-      allOf: 
-        - $ref: '#/components/schemas/User'
-        - type: object
-          properties:
-            immatriculationStatus:
-              type: string
-            matriculationId:
-              type: string
-            semesterCount:
-              type: number
-              minimum: 1
-            fieldsOfStudy:
-              type: array
-              items:
-                type: string
-                enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
-                
-    Lecturer:
-      allOf: 
-        - $ref: '#/components/schemas/User'
-        - type: object
-          properties:    
-            freeText:
-              type: string
-            researchArea:
-              type: string
-    Address:
-      type: object
-      properties:
-        street:
-          type: string
-        houseNumber:
-          type: string
-        zipCode:
-          type: string
-        city:
-          type: string
-        country:
-          type: string
-    Role:
+        matriculationStatus:
+          $ref: '#/components/schemas/SubjectMatriculation'
+    SubjectMatriculation:
       type: "object"
       properties:
-        role:
-          type: "string"
-          enum: ["Admin", "Student", "Lecturer"]
-    AuthUser:
-      type: "object"
-      properties:
-        username:
-          type: "string"
-        password:
-          type: "string"
-        role:
-          type: "string"
-          enum: ["Admin", "Student", "Lecturer"]
+        fieldOfStudy:
+          type: string
+          enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
+        semesters:
+          type: array
+          items:
+            type: string
     Error:
       type: object
       properties:

@@ -105,51 +105,18 @@ components:
         role:
           type: "string"
           enum: ["Admin", "Student", "Lecturer"]
+    Error:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/Error'
+        - type: object
     GenericError:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: [
-            "path parameter mismatch", 
-            "wrong object",
-            "authorization error",
-            "not enough privileges",
-            "owner mismatch",
-            "key not found",
-            "key duplicate",
-            "teapot"
-          ]
-        title:
-          type: string
-      required:
-        - code
-        - message
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
+        - type: object
     DetailedError:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: [
-            "validation error", 
-            "uneditable fields"
-          ]
-        title:
-          type: string
-        invalidParams:
-          type: array
-          items:
-            $ref: "#/components/schemas/SimpleError"
-      required:
-        - code
-        - message
-    SimpleError:
-      type: object
-      properties:
-        name:
-          type: string
-        reason:
-          type: string
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+        - type: object
     JsonVersionNumber:
       type: object
       properties:

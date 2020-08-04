@@ -31,7 +31,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonVersionNumber'
-  /immatriculation/{username}:
+  /{username}:
     put:
       tags:
       - "Matriculation Management"
@@ -100,7 +100,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DetailedError'
-  /immatriculation/history/{username}:
+  /history/{username}:
     get:
       tags:
       - "Matriculation Management"

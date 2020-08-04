@@ -173,7 +173,9 @@ components:
           type: string
           format: date
         matriculationStatus:
-          $ref: '#/components/schemas/SubjectMatriculation'
+          type: array
+          items:
+            $ref: '#/components/schemas/SubjectMatriculation'
     SubjectMatriculation:
       type: "object"
       properties:

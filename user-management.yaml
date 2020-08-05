@@ -53,8 +53,15 @@ paths:
       summary: "Get all users"
       security:
         - uc4_auth: [] 
-      description: "Returns all users, may only be used by administrators"
+      description: "Without parameter \"usernames\", returns all users, and may only be used by administrators. With \"usernames\" set, returns all users with the given usernames, which can be invoked by all roles."
       operationId: "getUsers"
+      parameters:
+      - name: "usernames"
+        in: "query"
+        description: "A comma seperated list of usernames to filter by"
+        required: false
+        schema:
+          type: "string"
       responses:
         "200":
           description: "OK"

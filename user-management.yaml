@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.5.0"
+  version: "0.5.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -245,6 +245,13 @@ paths:
         - uc4_auth: [] 
       description: "Returns all students, may only be used by administrators"
       operationId: "getStudents"
+      parameters:
+      - name: "usernames"
+        in: "query"
+        description: "A comma seperated list of usernames to filter by"
+        required: false
+        schema:
+          type: "string"
       responses:
         "200":
           description: "OK"
@@ -453,6 +460,13 @@ paths:
         - uc4_auth: [] 
       description: "Returns all lecturers, may only be used by administrators"
       operationId: "getLecturers"
+      parameters:
+      - name: "usernames"
+        in: "query"
+        description: "A comma seperated list of usernames to filter by"
+        required: false
+        schema:
+          type: "string"
       responses:
         "200":
           description: "OK"
@@ -661,6 +675,13 @@ paths:
         - uc4_auth: [] 
       description: "Returns all admins, may only be used by administrators"
       operationId: "getAdmins"
+      parameters:
+      - name: "usernames"
+        in: "query"
+        description: "A comma seperated list of usernames to filter by"
+        required: false
+        schema:
+          type: "string"
       responses:
         "200":
           description: "OK"

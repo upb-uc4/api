@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Hl-Course API for UC4."
-  version: "0.5.0"
+  version: "0.5.1"
   title: "UC4"
   
 servers:
@@ -250,14 +250,14 @@ paths:
         "200":
           description: "OK"
         "400":
-          description: |
-            Bad Request  
-            types: path parameter mismatch  
-            Note: on deserialization exception, Error of schema "Error" is thrown
+          description: | 
+            Bad Request 
+            
+            detail contains deserialization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericError'
+                $ref: '#/components/schemas/Error'
         "401":
           description: |
             Unauthorized  

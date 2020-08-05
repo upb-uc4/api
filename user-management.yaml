@@ -673,7 +673,7 @@ paths:
       summary: "Get all admins"
       security:
         - uc4_auth: [] 
-      description: "Returns all admins, may only be used by administrators"
+      description: ""Without parameter \"usernames\", returns all admins, and may only be used by administrators. With \"usernames\" set, returns all admins with the given usernames, which can be invoked by all roles.""
       operationId: "getAdmins"
       parameters:
       - name: "usernames"

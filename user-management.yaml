@@ -458,7 +458,7 @@ paths:
       summary: "Get all lecturers"
       security:
         - uc4_auth: [] 
-      description: "Returns all lecturers, may only be used by administrators"
+      description: ""Without parameter \"usernames\", returns all lecturers, and may only be used by administrators. With \"usernames\" set, returns all lecturers with the given usernames, which can be invoked by all roles.""
       operationId: "getLecturers"
       parameters:
       - name: "usernames"

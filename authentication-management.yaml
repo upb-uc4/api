@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Authentication API for UC4."
-  version: "0.4.1"
+  version: "0.5.0"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/authentication-management
@@ -58,11 +58,14 @@ paths:
         "200":
           description: "OK"
         "400":
-          description: "Bad Request"
+          description: | 
+            Bad Request 
+            
+            detail contains deserialization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericError'
+                $ref: '#/components/schemas/Error'
         
         "401":
           description: |

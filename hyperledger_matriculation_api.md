@@ -31,8 +31,8 @@ In the following, the chaincode api is described. It is identical to the hyperle
       -  Description: Done
     - ```json
       {
-        "type": "hl: unprocessable entity",
-        "title": "The given parameters do not conform to the specified format.",
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams": [
           {
             "name": "string",
@@ -89,8 +89,8 @@ In the following, the chaincode api is described. It is identical to the hyperle
 
     - ```json
       {
-        "type": "hl: unprocessable entity",
-        "title": "The given parameters do not conform to the specified format.",
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams": [
           {
             "name": "string",
@@ -144,8 +144,8 @@ This method adds a single entry to the list of semesters in the MatriculationDat
       - Description: This error is returned, if the matriculationID is not present on the ledger.
     - ```json
       {
-        "type": "hl: unprocessable entity",
-        "title": "The given parameters do not conform to the specified format.",
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams": [
           {
             "name": "string",

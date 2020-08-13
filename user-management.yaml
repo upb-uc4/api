@@ -243,7 +243,7 @@ paths:
       summary: "Get all students"
       security:
         - uc4_auth: [] 
-      description: ""Without parameter \"usernames\", returns all students, and may only be used by administrators. With \"usernames\" set, returns all students with the given usernames, which can be invoked by all roles.""
+      description: "Without parameter \"usernames\", returns all students, and may only be used by administrators. With \"usernames\" set, returns all students with the given usernames, which can be invoked by all roles."
       operationId: "getStudents"
       parameters:
       - name: "usernames"
@@ -458,7 +458,7 @@ paths:
       summary: "Get all lecturers"
       security:
         - uc4_auth: [] 
-      description: ""Without parameter \"usernames\", returns all lecturers, and may only be used by administrators. With \"usernames\" set, returns all lecturers with the given usernames, which can be invoked by all roles.""
+      description: "Without parameter \"usernames\", returns all lecturers, and may only be used by administrators. With \"usernames\" set, returns all lecturers with the given usernames, which can be invoked by all roles."
       operationId: "getLecturers"
       parameters:
       - name: "usernames"
@@ -673,7 +673,7 @@ paths:
       summary: "Get all admins"
       security:
         - uc4_auth: [] 
-      description: ""Without parameter \"usernames\", returns all admins, and may only be used by administrators. With \"usernames\" set, returns all admins with the given usernames, which can be invoked by all roles.""
+      description: "Without parameter \"usernames\", returns all admins, and may only be used by administrators. With \"usernames\" set, returns all admins with the given usernames, which can be invoked by all roles."
       operationId: "getAdmins"
       parameters:
       - name: "usernames"
@@ -877,6 +877,10 @@ components:
         email:
           type: string
           format: email
+        phoneNumber:
+          type: string
+          format: phonenumber
+          example: "+49123456789"
     Admin:
       allOf:
         - $ref: '#/components/schemas/User'

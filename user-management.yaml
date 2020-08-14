@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.5.0"
+  version: "0.5.2"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -53,8 +53,15 @@ paths:
       summary: "Get all users"
       security:
         - uc4_auth: [] 
-      description: "Returns all users, may only be used by administrators"
+      description: "Without parameter \"usernames\", returns all users, and may only be used by administrators. With \"usernames\" set, returns all users with the given usernames, which can be invoked by all roles."
       operationId: "getUsers"
+      parameters:
+      - name: "usernames"
+        in: "query"
+        description: "A comma seperated list of usernames to filter by"
+        required: false
+        schema:
+          type: "string"
       responses:
         "200":
           description: "OK"
@@ -236,8 +243,15 @@ paths:
       summary: "Get all students"
       security:
         - uc4_auth: [] 
-      description: "Returns all students, may only be used by administrators"
+      description: "Without parameter \"usernames\", returns all students, and may only be used by administrators. With \"usernames\" set, returns all students with the given usernames, which can be invoked by all roles."
       operationId: "getStudents"
+      parameters:
+      - name: "usernames"
+        in: "query"
+        description: "A comma seperated list of usernames to filter by"
+        required: false
+        schema:
+          type: "string"
       responses:
         "200":
           description: "OK"
@@ -328,14 +342,14 @@ paths:
         "200":
           description: "OK"
         "400":
-          description: |
-            Bad Request  
-            types: path parameter mismatch  
-            Note: on deserialization exception, Error of schema "Error" is thrown
+          description: | 
+            Bad Request 
+            
+            detail contains deserialization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericError'
+                $ref: '#/components/schemas/Error'
         
         "401":
           description: |
@@ -444,8 +458,15 @@ paths:
       summary: "Get all lecturers"
       security:
         - uc4_auth: [] 
-      description: "Returns all lecturers, may only be used by administrators"
+      description: "Without parameter \"usernames\", returns all lecturers, and may only be used by administrators. With \"usernames\" set, returns all lecturers with the given usernames, which can be invoked by all roles."
       operationId: "getLecturers"
+      parameters:
+      - name: "usernames"
+        in: "query"
+        description: "A comma seperated list of usernames to filter by"
+        required: false
+        schema:
+          type: "string"
       responses:
         "200":
           description: "OK"
@@ -536,14 +557,14 @@ paths:
         "200":
           description: "OK"
         "400":
-          description: |
-            Bad Request  
-            types: path parameter mismatch  
-            Note: on deserialization exception, Error of schema "Error" is thrown
+          description: | 
+            Bad Request 
+            
+            detail contains deserialization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericError'
+                $ref: '#/components/schemas/Error'
         "401":
           description: |
             Unauthorized  
@@ -652,8 +673,15 @@ paths:
       summary: "Get all admins"
       security:
         - uc4_auth: [] 
-      description: "Returns all admins, may only be used by administrators"
+      description: "Without parameter \"usernames\", returns all admins, and may only be used by administrators. With \"usernames\" set, returns all admins with the given usernames, which can be invoked by all roles."
       operationId: "getAdmins"
+      parameters:
+      - name: "usernames"
+        in: "query"
+        description: "A comma seperated list of usernames to filter by"
+        required: false
+        schema:
+          type: "string"
       responses:
         "200":
           description: "OK"
@@ -741,14 +769,14 @@ paths:
         "200":
           description: "OK"
         "400":
-          description: |
-            Bad Request  
-            types: path parameter mismatch  
-            Note: on deserialization exception, Error of schema "Error" is thrown
+          description: | 
+            Bad Request 
+            
+            detail contains deserialization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericError'
+                $ref: '#/components/schemas/Error'
         "401":
           description: |
             Unauthorized  
@@ -849,6 +877,10 @@ components:
         email:
           type: string
           format: email
+        phoneNumber:
+          type: string
+          format: phonenumber
+          example: "+49123456789"
     Admin:
       allOf:
         - $ref: '#/components/schemas/User'

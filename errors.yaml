@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.4.0"
+  version: "0.6.1"
   title: "UC4"
 tags:
 - name: "Errors"
@@ -19,16 +19,6 @@ paths:
           description: "Ok"
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        name:
-          type: string
-        detail:
-          type: string
-      required:
-        - code
-        - message
     GenericError:
       type: object
       properties:

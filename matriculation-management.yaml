@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Matriculation API for UC4."
-  version: "0.5.0"
+  version: "0.6.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/matriculation-management
@@ -75,7 +75,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
         "401":
           description: |
             Unauthorized  
@@ -186,10 +188,6 @@ components:
           type: array
           items:
             type: string
-    Error:
-      allOf:
-        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/Error'
-        - type: object
     GenericError:
       allOf:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'

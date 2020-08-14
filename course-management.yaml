@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.5.1"
+  version: "0.6.1"
   title: "UC4"
 
 servers:
@@ -65,13 +65,13 @@ paths:
                 description: "URI of the newly created course"
         "400":
           description: | 
-            Bad Request 
-            
-            detail contains deserialization error
+            Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
         "401":
           description: |
             Unauthorized  
@@ -252,12 +252,12 @@ paths:
         "400":
           description: | 
             Bad Request 
-            
-            detail contains deserialization error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
         "401":
           description: |
             Unauthorized  
@@ -336,10 +336,6 @@ components:
       properties:
         versionNumber:
           type: string
-    Error:
-      allOf:
-        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/Error'
-        - type: object
     GenericError:
       allOf:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'

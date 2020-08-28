@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.6.1"
+  version: "0.6.2"
   title: "UC4"
 tags:
 - name: "Errors"
@@ -25,6 +25,14 @@ components:
         type:
           type: string
           enum: [
+            "malformed refresh token",
+            "malformed login token",
+            "jwt authorization error",
+            "basic authorization error",
+            "refresh token expired",
+            "login token expired",
+            "refresh token signature invalid",
+            "login token signature invalid",
             "path parameter mismatch", 
             "wrong object",
             "authorization error",

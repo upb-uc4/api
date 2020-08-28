@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Matriculation API for UC4."
-  version: "0.6.1"
+  version: "0.6.2"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/matriculation-management
@@ -39,7 +39,7 @@ paths:
       description: "Update MatriculationData with the given information, enrolling the student in the given semester, in the given fieldOfStudy. If MatriculationData does not exist, it will be created. Can only be invoked by Admins."
       operationId: "updateMatriculationData"
       security:
-        - uc4_auth: [] 
+        - uc4_token_login: [] 
       requestBody:
         description: "PutMessageMatriculationData, containing the semester the student will be enrolled in, and the corresponding fieldOfStudy."
         required: true
@@ -71,7 +71,8 @@ paths:
           description: | 
             Bad Request 
             
-            detail contains deserialization error
+            detail contains deserialization error  
+            types: malformed login token
           content:
             application/json:
               schema:
@@ -81,7 +82,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -97,7 +98,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error
+            types: validation error, login token signature invalid
           content:
             application/json:
               schema:
@@ -107,7 +108,7 @@ paths:
       tags:
       - "Matriculation Management"
       security:
-        - uc4_auth: []
+        - uc4_token_login: []
       summary: "Get MatriculationData for the specified student"
       description: "Get MatriculationData of specified student."
       operationId: "getMatriculationData"
@@ -124,10 +125,18 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/MatriculationData'
+          "400":
+            description: |
+              Bad Request    
+              types: malformed login token
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
           "401":
             description: |
               Unauthorized  
-              types: authorization error
+              types: jwt authorization error, login token expired
             content:
               application/json:
                 schema:
@@ -148,11 +157,20 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/GenericError'
+          "422":
+            description: |
+              Unprocessable Entity  
+              types: login token signature invalid
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/DetailedError'
 components:
   securitySchemes:
-    uc4_auth:
-      type: http
-      scheme: basic
+    uc4_token_login:
+      type: apiKey
+      in: cookie
+      name: login
   schemas:
     PutMessageMatriculationData:
       type: "object"

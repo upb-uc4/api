@@ -508,14 +508,14 @@ components:
         - $ref: '#/components/schemas/PostMessageUser'
         - type: object
           properties:
-            admin:
+            student:
               $ref: '#/components/schemas/Student'
     PostMessageLecturer:
       allOf: 
         - $ref: '#/components/schemas/PostMessageUser'
         - type: object
           properties:
-            admin:
+            lecturer:
               $ref: '#/components/schemas/Lecturer'
     PostMessageAdmin:
       allOf: 

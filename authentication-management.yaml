@@ -103,6 +103,11 @@ paths:
       responses:
         "200":
           description: "OK"
+          headers: 
+            Set-Cookie:
+              schema: 
+                type: string
+                example: login=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb2dpbiIsImV4cCI6MTU5ODYxMzM2NSwidXNlcm5hbWUiOiJhZG1pbiIsImF1dGhlbnRpY2F0aW9uUm9sZSI6IkFkbWluIn0.hb1F2_wql4CwTcLXOPCqE7yRjYH3XL4jomexigKt6OI; Path=/, HttpOnly, Secure, SameSite=Strict; refresh=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWZyZXNoIiwiZXhwIjoxNjAwMzQwNzY1LCJ1c2VybmFtZSI6ImFkbWluIiwiYXV0aGVudGljYXRpb25Sb2xlIjoiQWRtaW4ifQ.YGs4XDg95vvN_wkwHGBttoHxkUDxCGkWqqQugOEh0sE0.hb1F2_wql4CwTcLXOPCqE7yRjYH3XL4jomexigKt6OI; Path=/, HttpOnly, Secure, SameSite=Strict;
         "401":
           description: |
             Unauthorized  
@@ -127,6 +132,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonUsername'
+          headers: 
+            Set-Cookie:
+              schema: 
+                type: string
+                example: login=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb2dpbiIsImV4cCI6MTU5ODYxMzM2NSwidXNlcm5hbWUiOiJhZG1pbiIsImF1dGhlbnRpY2F0aW9uUm9sZSI6IkFkbWluIn0.hb1F2_wql4CwTcLXOPCqE7yRjYH3XL4jomexigKt6OI; Path=/, HttpOnly, Secure, SameSite=Strict;
         "400":
           description: |
             Bad Request  

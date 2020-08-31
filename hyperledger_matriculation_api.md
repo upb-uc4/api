@@ -215,3 +215,16 @@ This method adds a single entry to the list of semesters in the MatriculationDat
   ]
 }
 ```
+
+### InvalidParameter
+```json
+{
+  "name": "string",
+  "reason": "string"
+}
+```
+name:
+- name of the invalid parameter in simple dot- and array notation, i.e. if the second semester entry in the ```semesters``` field of the first ```SubjectMatriculation``` object in the ```matriculationStatus``` field of a ```MatriculationData``` object is invalid, the ```name``` field of the ```InvalidParameter``` object would be ```"matriculationStatus[0].semesters[1]"```
+
+reason:
+- a textual representation of why the parameter is invalid

@@ -32,7 +32,7 @@ Any Method can at any point return 2 types of errors.
 - Receive
     - "" :: String
         => Success
-    - TransactionError :: Json (refer to chapter: "Errors - GenericError")
+    - TransactionError :: Json (refer to: [GenericError](#genericError---example))
         => error is returned, 
           If the matriculationID specified in the MatriculationData is not present on the ledger.
           If the given matriculation data could not be parsed as json.

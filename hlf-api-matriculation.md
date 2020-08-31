@@ -16,7 +16,7 @@ Any Method can at any point return 2 types of errors.
 - Receive
     - "" :: String
         => Success
-    - TransactionError :: Json (refer to chapter: "Errors - DetailedError")
+    - TransactionError :: Json (refer to: [DetailedError](#detailedError---example))
         => error is returned
           If the given parameters could not be parsed.
             If the string could not be parsed as json, the list of invalidParams is empty.

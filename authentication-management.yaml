@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Authentication API for UC4."
-  version: "0.6.1"
+  version: "0.6.2"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/authentication-management
@@ -46,7 +46,7 @@ paths:
         schema:
           type: "string"
       security:
-        - uc4_auth: [] 
+        - uc4_token_login: []
       requestBody:
         description: "AuthenticationUser with the new password and the same role."
         required: true
@@ -59,7 +59,8 @@ paths:
           description: "OK"
         "400":
           description: | 
-            Bad Request 
+            Bad Request  
+            types: malformed refresh token
           content:
             application/json:
               schema:
@@ -69,7 +70,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -85,17 +86,106 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error
+            types: validation error, login token signature invalid
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DetailedError'
+  /login:
+    get:
+      tags:
+      - "Authentication Management"
+      summary: "Retrieve login and refresh token"
+      security:
+        - uc4_basic: [] 
+      description: "Provides the user with login credientals, thereby the user retrieves a login and refresh token as HTTP cookies. All further calls to API use the login token to authenticate the user. The refresh token can be used to request a new login token."
+      operationId: "login"
+      responses:
+        "200":
+          description: "OK"
+          headers: 
+            Set-Cookie:
+              schema: 
+                type: string
+                example: login=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb2dpbiIsImV4cCI6MTU5ODYxMzM2NSwidXNlcm5hbWUiOiJhZG1pbiIsImF1dGhlbnRpY2F0aW9uUm9sZSI6IkFkbWluIn0.hb1F2_wql4CwTcLXOPCqE7yRjYH3XL4jomexigKt6OI, Path=/, HttpOnly, Secure, SameSite=Strict; refresh=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWZyZXNoIiwiZXhwIjoxNjAwMzQwNzY1LCJ1c2VybmFtZSI6ImFkbWluIiwiYXV0aGVudGljYXRpb25Sb2xlIjoiQWRtaW4ifQ.YGs4XDg95vvN_wkwHGBttoHxkUDxCGkWqqQugOEh0sE0.hb1F2_wql4CwTcLXOPCqE7yRjYH3XL4jomexigKt6OI, Path=/, HttpOnly, Secure, SameSite=Strict;
+        "401":
+          description: |
+            Unauthorized  
+            types: basic authorization error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /refresh:
+    get:
+      tags:
+      - "Authentication Management"
+      summary: "Retrieve new login token"
+      security:
+        - uc4_token_refresh: []
+      description: "Provides the user with a new valid login token. The long lived refresh token is used to request a new short lived login token."
+      operationId: "refresh"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonUsername'
+          headers: 
+            Set-Cookie:
+              schema: 
+                type: string
+                example: login=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb2dpbiIsImV4cCI6MTU5ODYxMzM2NSwidXNlcm5hbWUiOiJhZG1pbiIsImF1dGhlbnRpY2F0aW9uUm9sZSI6IkFkbWluIn0.hb1F2_wql4CwTcLXOPCqE7yRjYH3XL4jomexigKt6OI, Path=/, HttpOnly, Secure, SameSite=Strict;
+        "400":
+          description: |
+            Bad Request  
+            types: malformed refresh token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: jwt authorization error, login token expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: refresh token signature invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /logout:
+    get:
+      tags:
+      - "Authentication Management"
+      summary: "Logout user"
+      security: [] 
+      description: "Invalidate the login and refresh token stored as HTTP cookies. "
+      operationId: "logout"
+      responses:
+        "200":
+          description: "OK"
 
 components:
   securitySchemes:
-    uc4_auth:
+    uc4_basic:
       type: http
       scheme: basic
+    uc4_token_login:
+      type: apiKey
+      in: cookie
+      name: login
+    uc4_token_refresh:
+      type: apiKey
+      in: cookie
+      name: refresh
   schemas:
     AuthUser:
       type: "object"
@@ -107,6 +197,11 @@ components:
         role:
           type: "string"
           enum: ["Admin", "Student", "Lecturer"]
+    JsonUsername:
+      type: "object"
+      properties:
+        username:
+           type: "string"
     GenericError:
       allOf:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'

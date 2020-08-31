@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.6.1"
+  version: "0.6.2"
   title: "UC4"
 
 servers:
@@ -43,7 +43,7 @@ paths:
       description: "Adds a new course to the database after verification. ID field is not used and can be set arbitrarily"
       operationId: "addCourse"
       security:
-        - uc4_auth: []
+        - uc4_token_login: []
       requestBody:
         description: "Course object that needs to be added to the database"
         required: true
@@ -65,7 +65,8 @@ paths:
                 description: "URI of the newly created course"
         "400":
           description: | 
-            Bad Request
+            Bad Request  
+            types: malformed login token
           content:
             application/json:
               schema:
@@ -75,7 +76,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:  
               schema:
@@ -99,18 +100,20 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error
+            types: validation error, login token signature invalid
           content:
             application/json: 
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
 
     get:
       tags:
       - "Course Management"
       summary: "Get all courses"
       security:
-        - uc4_auth: [] 
+        - uc4_token_login: [] 
       description: "Returns all courses"
       operationId: "getAllCourses"
       parameters:
@@ -135,10 +138,26 @@ paths:
                 type: "array"
                 items:
                   $ref: '#/components/schemas/Course'
+        "400":
+          description: |
+            Bad Request    
+            types: malformed login token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types:  jwt authorization error, login token expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: login token signature invalid
           content:
             application/json:
               schema:
@@ -148,7 +167,7 @@ paths:
       tags:
       - "Course Management"
       security:
-        - uc4_auth: []
+        - uc4_token_login: []
       summary: "Find course by course id"
       description: "Find course by course id"
       operationId: "findCourseByCourseId"
@@ -166,10 +185,18 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/Course'
+          "400":
+            description: |
+              Bad Request    
+              types: malformed login token
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
           "401":
             description: |
               Unauthorized  
-              types: authorization error
+              types: jwt authorization error, login token expired
             content:
               application/json:
                 schema:
@@ -182,13 +209,21 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/GenericError'
+          "422":
+            description: |
+              Unprocessable Entity   
+              types: login token signature invalid
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
     delete:
       tags:
       - "Course Management"
       summary: "Deletes a course"
       description: ""
       security:
-        - uc4_auth: [] 
+        - uc4_token_login: [] 
       operationId: "deleteCourse"
       parameters:
       - name: "id"
@@ -200,10 +235,18 @@ paths:
       responses:
         "200":
           description: "OK"
+        "400":
+            description: |
+              Bad Request    
+              types: malformed login token
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -224,6 +267,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+        "422":
+            description: |
+              Unprocessable Entity   
+              types: login token signature invalid
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
     put:
       tags:
       - "Course Management"
@@ -231,7 +282,7 @@ paths:
       description: ""
       operationId: "updateCourse"
       security:
-        - uc4_auth: [] 
+        - uc4_token_login: [] 
       parameters:
       - name: "id"
         in: "path"
@@ -251,7 +302,8 @@ paths:
           description: "OK"
         "400":
           description: | 
-            Bad Request 
+            Bad Request  
+            types: malformed login token
           content:
             application/json:
               schema:
@@ -261,7 +313,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -285,7 +337,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error
+            types: validation error, login token signature invalid
           content:
             application/json:
               schema:
@@ -293,9 +345,10 @@ paths:
 
 components:
   securitySchemes:
-    uc4_auth:
-      type: http
-      scheme: basic
+    uc4_token_login:
+      type: apiKey
+      in: cookie
+      name: login
   schemas:
     Course:
       type: "object"

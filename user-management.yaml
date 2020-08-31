@@ -72,10 +72,18 @@ paths:
                 type: "array"
                 items:
                   $ref: '#/components/schemas/GetAllUsersResponse'
+        "400":
+          description: |
+            Bad Request    
+            types: malformed login token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -84,6 +92,14 @@ paths:
           description: |
             Forbidden  
             types: not enough privileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: login token signature invalid
           content:
             application/json:
               schema:
@@ -138,7 +154,8 @@ paths:
                 description: "URI of the newly created Student"
         "400":
           description: | 
-            Bad Request 
+            Bad Request  
+            types: malformed login token
           content:
             application/json:
               schema:
@@ -148,7 +165,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -172,7 +189,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error
+            types: validation error, login token signature invalid
           content:
             application/json:
               schema:
@@ -210,10 +227,18 @@ paths:
                     $ref: '#/components/examples/ExampleLecturer'
                   admin:
                     $ref: '#/components/examples/ExampleAdmin'
+          "400":
+            description: |
+              Bad Request    
+              types: malformed login token
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
           "401":
             description: |
               Unauthorized  
-              types: authorization error
+              types: jwt authorization error, login token expired
             content:
               application/json:
                 schema:
@@ -222,6 +247,14 @@ paths:
             description: |
               Not Found  
               types: key not found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "422":
+            description: |
+              Unprocessable Entity   
+              types: login token signature invalid
             content:
               application/json:
                 schema:
@@ -264,7 +297,8 @@ paths:
           description: "OK"
         "400":
           description: | 
-            Bad Request
+            Bad Request  
+            types: malformed login token
           content:
             application/json:
               schema:
@@ -275,7 +309,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -299,7 +333,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error, uneditable fields
+            types: validation error, uneditable fields, login token signature invalid
           content:
             application/json:
               schema:
@@ -321,10 +355,18 @@ paths:
       responses:
         "200":
           description: "OK"
+        "400":
+          description: |
+            Bad Request    
+            types: malformed login token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -341,6 +383,14 @@ paths:
           description: |
             Not Found  
             types: key not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: login token signature invalid
           content:
             application/json:
               schema:
@@ -367,10 +417,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Role'
+        "400":
+          description: |
+            Bad Request    
+            types: malformed login token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -379,6 +437,14 @@ paths:
           description: |
             Not Found  
             types: key not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: login token signature invalid
           content:
             application/json:
               schema:
@@ -409,10 +475,18 @@ paths:
                 type: "array"
                 items:
                   $ref: '#/components/schemas/Student'
+        "400":
+          description: |
+            Bad Request    
+            types: malformed login token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -421,6 +495,14 @@ paths:
           description: |
             Forbidden  
             types: not enough privileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: login token signature invalid
           content:
             application/json:
               schema:
@@ -451,10 +533,18 @@ paths:
                 type: "array"
                 items:
                   $ref: '#/components/schemas/Lecturer'
+        "400":
+          description: |
+            Bad Request    
+            types: malformed login token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -463,6 +553,14 @@ paths:
           description: |
             Forbidden  
             types: not enough privileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: login token signature invalid
           content:
             application/json:
               schema:
@@ -493,10 +591,18 @@ paths:
                 type: "array"
                 items:
                   $ref: '#/components/schemas/Admin'
+        "400":
+          description: |
+            Bad Request    
+            types: malformed login token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
         "401":
           description: |
             Unauthorized  
-            types: authorization error
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -505,6 +611,14 @@ paths:
           description: |
             Forbidden  
             types: not enough privileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: login token signature invalid
           content:
             application/json:
               schema:

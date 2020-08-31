@@ -129,8 +129,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 - ID = addEntryToMatriculationData
 - Send
     - matriculationId
-    - fieldOfStudy
-    - semester
+    - listOfSubjectMatriculation
 - Receive
     - ""
       - Description: Done

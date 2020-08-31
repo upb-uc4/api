@@ -22,7 +22,7 @@ Any Method can at any point return 2 types of errors.
             If the string could not be parsed as json, the list of invalidParams is empty.
             If some attributes within the json are not well formatted, they are listed in invalidParams.
           If a matriculation data with the given matriculationId is already present on the ledger.
-    - TransactionError :: Json (refer to chapter: "Errors - GenericError")
+    - TransactionError :: Json (refer to: [GenericError](#genericError---example))
         => error is returned
           If the given matriculation data could not be parsed as json.
 

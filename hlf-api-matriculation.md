@@ -57,7 +57,7 @@ Any Method can at any point return 2 types of errors.
 ### AddEntriesToMatriculationData
 - Send
     - matriculationId
-    - listOf(SubjectMatriculation) :: List<SubjectMatriculation> (refer to chapter: "Model - SubjectMatriculation")
+    - listOf(SubjectMatriculation) :: List<SubjectMatriculation> (refer to: [SubjectMatriculation](#subjectMatriculation))
 - Receive
     - "" :: String
       => Success

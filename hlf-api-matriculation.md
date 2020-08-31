@@ -46,7 +46,7 @@ Any Method can at any point return 2 types of errors.
 - Send
     - matriculationId :: String
 - Receive
-    - MatriculationData :: Json (refer to chapter: "Model - MatriculationData")
+    - MatriculationData :: Json (refer to: [MatriculationData](#matriculationData))
         => Success
     - TransactionError :: Json (refer to chapter: "Errors - GenericError")
         => error is returned,

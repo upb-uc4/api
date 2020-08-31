@@ -1,7 +1,7 @@
 # Hyperledger Matriculation Api
 
 In the following, the hlf-api for the "matriculation data" - handling will be explained.
-For insight in the General hlf-api, please refer to it`s .Readme - File
+For insight in the General hlf-api, please refer to it's .Readme - File
 
 ## Methods
 

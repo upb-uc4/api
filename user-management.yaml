@@ -345,8 +345,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-    
-  /role/{username}:  
+  /users/{username}/role:
     get:
       tags:
       - "User Management"

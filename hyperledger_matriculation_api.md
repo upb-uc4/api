@@ -24,7 +24,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
 
 ### Add Matriculation Data
 - ID = addMatriculationData
-- Send
+- Send (*transient*)
     - MatriculationData
 - Receive
     - ""
@@ -64,7 +64,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
 
 ### Update Matriculation Data
 - ID = updateMatriculationData
-- Send
+- Send (*transient*)
     - MatriculationData
 - Receive
     - ""

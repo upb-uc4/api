@@ -66,7 +66,7 @@ Any Method can at any point return 2 types of errors.
           If the matriculationID is not present on the ledger.
           If the state of data on the ledger is not consistent with the curent model.
             This error should only occurr if the model changes while the old ledger state remains without modification.
-     TransactionError :: Json (refer to chapter: "Errors - DetailedError")
+     TransactionError :: Json (refer to: [DetailedError](#detailedError---example))
         => error is returned
           If the given parameters could not be parsed.
             If the string could not be parsed as json, the list of invalidParams is empty. 

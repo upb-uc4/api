@@ -48,7 +48,7 @@ Any Method can at any point return 2 types of errors.
 - Receive
     - MatriculationData :: Json (refer to: [MatriculationData](#matriculationData))
         => Success
-    - TransactionError :: Json (refer to chapter: "Errors - GenericError")
+    - TransactionError :: Json (refer to: [GenericError](#genericError---example))
         => error is returned,
           If the matriculationID is not present on the ledger.
           If the state of data on the ledger is not consistent with the curent model.

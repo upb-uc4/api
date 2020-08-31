@@ -36,7 +36,7 @@ Any Method can at any point return 2 types of errors.
         => error is returned, 
           If the matriculationID specified in the MatriculationData is not present on the ledger.
           If the given matriculation data could not be parsed as json.
-    - TransactionError :: Json (refer to chapter: "Errors - DetailedError")
+    - TransactionError :: Json (refer to: [DetailedError](#detailedError---example))
         => error is returned
           If the given parameters could not be parsed.
             If the string could not be parsed as json, the list of invalidParams is empty.

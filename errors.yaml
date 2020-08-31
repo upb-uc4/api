@@ -25,22 +25,22 @@ components:
         type:
           type: string
           enum: [
-            "malformed refresh token",
-            "malformed login token",
-            "jwt authorization error",
-            "basic authorization error",
-            "refresh token expired",
-            "login token expired",
-            "refresh token signature invalid",
-            "login token signature invalid",
-            "path parameter mismatch", 
-            "wrong object",
-            "authorization error",
-            "not enough privileges",
-            "owner mismatch",
-            "key not found",
-            "key duplicate",
-            "teapot"
+            "MalformedRefreshToken",
+            "MalformedLoginToken",
+            "JwtAuthorization",
+            "BasicAuthorization",
+            "RefreshTokenExpired",
+            "LoginTokenExpired",
+            "RefreshTokenSignature",
+            "LoginTokenSignature",
+            "PathParameterMismatch", 
+            "UnexpectedEntity",
+            "Authorization",
+            "NotEnoughPrivileges",
+            "OwnerMismatch",
+            "KeyNotFound",
+            "KeyDuplicate",
+            "Teapot"
           ]
         title:
           type: string
@@ -53,8 +53,8 @@ components:
         type:
           type: string
           enum: [
-            "validation error", 
-            "uneditable fields"
+            "Validation", 
+            "UneditableFields"
           ]
         title:
           type: string

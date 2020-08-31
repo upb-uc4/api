@@ -126,11 +126,10 @@ In the following, the chaincode api is described. It is identical to the hyperle
 ### Add Semester to Matriculation Data
 This method adds a single entry to the list of semesters in the MatriculationData, to provide secure updates.
 
-- ID = addEntryToMatriculationData
+- ID = addEntriesToMatriculationData
 - Send
     - matriculationId
-    - fieldOfStudy
-    - semester
+    - listOfSubjectMatriculation
 - Receive
     - ""
       - Description: Done

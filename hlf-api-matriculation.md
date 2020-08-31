@@ -12,7 +12,7 @@ Any Method can at any point return 2 types of errors.
 
 ### Add Matriculation Data
 - Pass (*transient*)
-    - MatriculationData :: Json (refer to chapter: "Model - MatriculationData")
+    - MatriculationData :: Json (refer to: [MatriculationData](#matriculationData))
 - Receive
     - "" :: String
         => Success

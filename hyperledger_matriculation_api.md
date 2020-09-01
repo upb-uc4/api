@@ -25,14 +25,14 @@ In the following, the chaincode api is described. It is identical to the hyperle
 ### Add Matriculation Data
 - ID = addMatriculationData
 - Send (*transient*)
-    - MatriculationData
+    - newMatriculationData :: MatriculationData
 - Receive
     - ""
       -  Description: Done
     - ```json
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "hl: unprocessable entity",
+        "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
             "name": "string",
@@ -42,16 +42,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
       }
       ```
     
-       - Description: This error is returned, if the given parameters could not be parsed. If the string could not be parsed as json, the list of invalidParams is empty. If some attributes within the json are not well formatted, they are listed in invalidParams.
-
-    - ```json
-      {
-        "type": "hl: unprocessable entity",
-        "title": "The given parameters do not conform to the specified format."
-      }
-      ```
-    
-       - Description: This error is returned, if the given matriculation data could not be parsed as json.
+       - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.
 
   - ```json
       {
@@ -65,7 +56,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
 ### Update Matriculation Data
 - ID = updateMatriculationData
 - Send (*transient*)
-    - MatriculationData
+    - updatedMatriculationData :: MatriculationData
 - Receive
     - ""
       - Description: Done.
@@ -81,16 +72,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
     - ```json
       {
         "type": "hl: unprocessable entity",
-        "title": "The given parameters do not conform to the specified format."
-      }
-      ```
-    
-       - Description: This error is returned, if the given matriculation data could not be parsed as json.
-
-    - ```json
-      {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
             "name": "string",
@@ -99,12 +81,12 @@ In the following, the chaincode api is described. It is identical to the hyperle
         ]
       }
       ```
-      - Description: This error is returned, if the given parameters could not be parsed. If the string could not be parsed as json, the list of invalidParams is empty. If some attributes within the json are not well formatted, they are listed in invalidParams.
+      - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.
 
 ### Get Matriculation Data
 - ID = getMatriculationData
 - Send
-    - matriculationId
+    - matriculationId :: String
 - Receive
     - MatriculationData
 
@@ -128,8 +110,8 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 
 - ID = addEntriesToMatriculationData
 - Send
-    - matriculationId
-    - listOfSubjectMatriculation
+    - matriculationId :: String
+    - matriculation :: List\<SubjectMatriculation\>
 - Receive
     - ""
       - Description: Done
@@ -143,8 +125,8 @@ This method adds a single entry to the list of semesters in the MatriculationDat
       - Description: This error is returned, if the matriculationID is not present on the ledger.
     - ```json
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "hl: unprocessable entity",
+        "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
             "name": "string",
@@ -153,7 +135,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
         ]
       }
       ```
-      - Description: This error is returned, if the given parameters could not be parsed. If the string could not be parsed as json, the list of invalidParams is empty. If some attributes within the json are not well formatted, they are listed in invalidParams.
+      - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.
     - ```json
       {
         "type": "hl: unprocessable ledger state",
@@ -223,7 +205,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 }
 ```
 name:
-- name of the invalid parameter in simple dot- and array notation, i.e. if the second semester entry in the ```semesters``` field of the first ```SubjectMatriculation``` object in the ```matriculationStatus``` field of a ```MatriculationData``` object is invalid, the ```name``` field of the ```InvalidParameter``` object would be ```"matriculationStatus[0].semesters[1]"```
+- name of the invalid parameter in simple dot- and array notation, i.e. if the second semester entry in the ```semesters``` field of the first ```SubjectMatriculation``` object in the ```matriculationStatus``` field of a ```MatriculationData``` object passed as a parameter named ```data``` is invalid, the ```name``` field of the ```InvalidParameter``` object would be ```"data.matriculationStatus[0].semesters[1]"```
 
 reason:
 - a textual representation of why the parameter is invalid

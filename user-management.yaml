@@ -74,7 +74,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -82,7 +82,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -90,7 +90,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -98,7 +98,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: login token signature invalid
+            types: LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -124,7 +124,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -132,7 +132,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -140,7 +140,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -148,7 +148,7 @@ paths:
         "404":
           description: |
             Not Found  
-            types: key not found
+            types: KeyNotFound
           content:
             application/json:
               schema:
@@ -156,7 +156,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: login token signature invalid
+            types: LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -186,7 +186,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -194,7 +194,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -202,7 +202,7 @@ paths:
         "404":
           description: |
             Not Found  
-            types: key not found
+            types: KeyNotFound
           content:
             application/json:
               schema:
@@ -210,7 +210,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: login token signature invalid
+            types: LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -247,7 +247,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -257,7 +257,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -265,7 +265,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -273,7 +273,7 @@ paths:
         "409":
           description: |
             Conflict  
-            types: key duplicate
+            types: KeyDuplicate
           content:
             application/json:
               schema:
@@ -281,7 +281,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error, login token signature invalid
+            types: Validation, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -315,7 +315,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -323,7 +323,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -331,7 +331,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -339,7 +339,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: login token signature invalid
+            types: LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -369,7 +369,7 @@ paths:
           "400":
             description: |
               Bad Request    
-              types: malformed login token
+              types: MalformedLoginToken
             content:
               application/json:
                 schema:
@@ -377,7 +377,7 @@ paths:
           "401":
             description: |
               Unauthorized  
-              types: jwt authorization error, login token expired
+              types: JwtAuthorization, LoginTokenExpired
             content:
               application/json:
                 schema:
@@ -385,7 +385,7 @@ paths:
           "404":
             description: |
               Not Found  
-              types: key not found
+              types: KeyNotFound
             content:
               application/json:
                 schema:
@@ -393,7 +393,7 @@ paths:
           "422":
             description: |
               Unprocessable Entity   
-              types: login token signature invalid
+              types: LoginTokenSignatureInvalid
             content:
               application/json:
                 schema:
@@ -427,7 +427,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -438,7 +438,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -446,7 +446,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -454,7 +454,7 @@ paths:
         "404":
           description: |
             Not Found  
-            types: key not found
+            types: KeyNotFound
           content:
             application/json:
               schema:
@@ -462,7 +462,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error, uneditable fields, login token signature invalid
+            types: Validation, UneditableFields, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -502,7 +502,7 @@ paths:
             Bad Request 
             
             detail contains deserialization error  
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -512,7 +512,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -520,7 +520,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -528,7 +528,7 @@ paths:
         "409":
           description: |
             Conflict  
-            types: key duplicate
+            types: KeyDuplicate
           content:
             application/json:
               schema:
@@ -536,7 +536,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error, login token signature invalid
+            types: Validation, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -570,7 +570,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -578,7 +578,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -586,7 +586,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -594,7 +594,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: login token signature invalid
+            types: LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -624,7 +624,7 @@ paths:
           "400":
             description: |
               Bad Request    
-              types: malformed login token
+              types: MalformedLoginToken
             content:
               application/json:
                 schema:
@@ -632,7 +632,7 @@ paths:
           "401":
             description: |
               Unauthorized  
-              types: jwt authorization error, login token expired
+              types: JwtAuthorization, LoginTokenExpired
             content:
               application/json:
                 schema:
@@ -640,7 +640,7 @@ paths:
           "404":
             description: |
               Not Found  
-              types: key not found
+              types: KeyNotFound
             content:
               application/json:
                 schema:
@@ -648,7 +648,7 @@ paths:
           "422":
             description: |
               Unprocessable Entity   
-              types: login token signature invalid
+              types: LoginTokenSignatureInvalid
             content:
               application/json:
                 schema:
@@ -682,7 +682,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -692,7 +692,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -700,7 +700,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -708,7 +708,7 @@ paths:
         "404":
           description: |
             Not Found  
-            types: key not found
+            types: KeyNotFound
           content:
             application/json:
               schema:
@@ -716,7 +716,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error, uneditable fields, login token signature invalid
+            types: Validation, UneditableFields, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -755,7 +755,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -765,7 +765,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -773,7 +773,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -781,7 +781,7 @@ paths:
         "409":
           description: |
             Conflict  
-            types: key duplicate
+            types: KeyDuplicate
           content:
             application/json:
               schema:
@@ -789,7 +789,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error, login token signature invalid
+            types: Validation, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -823,7 +823,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -831,7 +831,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -839,7 +839,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -847,7 +847,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: login token signature invalid
+            types: LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -877,7 +877,7 @@ paths:
           "400":
             description: |
               Bad Request    
-              types: malformed login token
+              types: MalformedLoginToken
             content:
               application/json:
                 schema:
@@ -885,7 +885,7 @@ paths:
           "401":
             description: |
               Unauthorized  
-              types: jwt authorization error, login token expired
+              types: JwtAuthorization, LoginTokenExpired
             content:
               application/json:
                 schema:
@@ -893,7 +893,7 @@ paths:
           "404":
             description: |
               Not Found  
-              types: key not found
+              types: KeyNotFound
             content:
               application/json:
                 schema:
@@ -901,7 +901,7 @@ paths:
           "422":
             description: |
               Unprocessable Entity   
-              types: login token signature invalid
+              types: LoginTokenSignatureInvalid
             content:
               application/json:
                 schema:
@@ -932,7 +932,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -942,7 +942,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -950,7 +950,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -958,7 +958,7 @@ paths:
         "404":
           description: |
             Not Found  
-            types: key not found
+            types: KeyNotFound
           content:
             application/json:
               schema:
@@ -966,7 +966,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error, login token signature invalid
+            types: Validation, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:

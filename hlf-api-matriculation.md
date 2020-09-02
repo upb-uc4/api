@@ -58,17 +58,3 @@ Here the possible Actions are presented, that can be invoked on the hyperledger-
      TransactionError :: Json (refer to: [DetailedError](hyperledger_matriculation_api.md#DetailedError))
       - => error is returned
         - If the given parameters could not be parsed.
-
-## [Models](hyperledger_matriculation_api.md#Models)
-
-### [MatriculationData](hyperledger_matriculation_api.md#MatriculationData)
-
-### [SubjectMatriculation](hyperledger_matriculation_api.md#SubjectMatriculation)
-
-## [Errors](hyperledger_matriculation_api.md#Errors)
-
-### [GenericError](hyperledger_matriculation_api.md#GenericError)
-
-### [DetailedError](hyperledger_matriculation_api.md#DetailedError)
-
-### [InvalidParameter](hyperledger_matriculation_api.md#InvalidParameter)

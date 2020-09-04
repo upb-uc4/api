@@ -162,9 +162,9 @@ This method adds a single entry to the list of semesters in the MatriculationDat
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the curent model. This error should only occurr if the model changes while the old ledger state remains without modification.
 
-## Models
+## <a id="Models" />Models
 
-### MatriculationData
+### <a id="MatriculationData" />MatriculationData
 ```json
 {
   "matriculationId": "string",
@@ -184,7 +184,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 }
 ```
 
-### SubjectMatriculation
+### <a id="SubjectMatriculation" />SubjectMatriculation
 ```json
 {
   "fieldOfStudy": "Computer Science",
@@ -193,7 +193,9 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 
 ```
 
-### GenericError
+## <a id="Errors" />Errors
+
+### <a id="GenericError" />GenericError
 ```json
 {
   "type": "string",
@@ -201,7 +203,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 }
 ```
 
-### DetailedError
+### <a id="DetailedError" />DetailedError
 ```json
 {
   "type": "string",
@@ -215,7 +217,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 }
 ```
 
-### InvalidParameter
+### <a id="InvalidParameter" />InvalidParameter
 ```json
 {
   "name": "string",

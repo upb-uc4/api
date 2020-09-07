@@ -60,7 +60,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: malformed refresh token
+            types: MalformedRefreshToken
           content:
             application/json:
               schema:
@@ -70,7 +70,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -78,7 +78,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -86,7 +86,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error, login token signature invalid
+            types: Validation, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -111,7 +111,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: basic authorization error
+            types: BasicAuthorization
           content:
             application/json:
               schema:
@@ -140,7 +140,7 @@ paths:
         "400":
           description: |
             Bad Request  
-            types: malformed refresh token
+            types: MalformedRefreshToken
           content:
             application/json:
               schema:
@@ -148,7 +148,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization
           content:
             application/json:
               schema:
@@ -156,7 +156,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: refresh token signature invalid
+            types: RefreshTokenSignatureInvalid
           content:
             application/json:
               schema:

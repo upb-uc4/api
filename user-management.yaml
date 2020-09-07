@@ -53,7 +53,7 @@ paths:
       - "User Management"
       summary: "Get all users"
       security:
-        - uc4_auth: [] 
+        - uc4_login_token: []
       description: "Without parameter \"usernames\", returns all users, and may only be used by administrators. With \"usernames\" set, returns all users with the given usernames, which can be invoked by all roles."
       operationId: "getUsers"
       parameters:
@@ -75,7 +75,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -83,7 +83,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -91,7 +91,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -99,7 +99,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: login token signature invalid
+            types: LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -111,7 +111,7 @@ paths:
       description: "Adds a new user to the database after verification."
       operationId: "addUser"
       security:
-        - uc4_auth: [] 
+        - uc4_login_token: [] 
       requestBody:
         description: "User object that needs to be added to the database"
         required: true
@@ -155,7 +155,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -165,7 +165,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -173,7 +173,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -181,7 +181,7 @@ paths:
         "409":
           description: |
             Conflict  
-            types: key duplicate
+            types: KeyDuplicate
           content:
             application/json:
               schema:
@@ -189,7 +189,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error, login token signature invalid
+            types: Validation, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -200,7 +200,7 @@ paths:
       tags:
       - "User Management"
       security:
-        - uc4_auth: []
+        - uc4_login_token: []
       summary: "Get user object for a specified username"
       description: "Get user object of specific user"
       operationId: "getUserByUsername"
@@ -230,7 +230,7 @@ paths:
           "400":
             description: |
               Bad Request    
-              types: malformed login token
+              types: MalformedLoginToken
             content:
               application/json:
                 schema:
@@ -238,7 +238,7 @@ paths:
           "401":
             description: |
               Unauthorized  
-              types: jwt authorization error, login token expired
+              types: JwtAuthorization, LoginTokenExpired
             content:
               application/json:
                 schema:
@@ -246,7 +246,7 @@ paths:
           "404":
             description: |
               Not Found  
-              types: key not found
+              types: KeyNotFound
             content:
               application/json:
                 schema:
@@ -254,7 +254,7 @@ paths:
           "422":
             description: |
               Unprocessable Entity   
-              types: login token signature invalid
+              types: LoginTokenSignatureInvalid
             content:
               application/json:
                 schema:
@@ -268,7 +268,7 @@ paths:
           Address, Email and profile picture
       operationId: "updateUser"
       security:
-        - uc4_auth: [] 
+        - uc4_login_token: [] 
       parameters:
       - name: "username"
         in: "path"
@@ -298,7 +298,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -309,7 +309,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -317,7 +317,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -325,7 +325,7 @@ paths:
         "404":
           description: |
             Not Found  
-            types: key not found
+            types: KeyNotFound
           content:
             application/json:
               schema:
@@ -333,7 +333,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: validation error, uneditable fields, login token signature invalid
+            types: Validation, UneditableFields, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -344,7 +344,7 @@ paths:
       summary: "Deletes a user"
       description: "Deletes a user (when invoked by an administrator)"
       security:
-        - uc4_auth: [] 
+        - uc4_login_token: [] 
       operationId: "deleteUser"
       parameters:
       - name: "username"
@@ -358,7 +358,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -366,7 +366,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -374,7 +374,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -382,7 +382,7 @@ paths:
         "404":
           description: |
             Not Found  
-            types: key not found
+            types: KeyNotFound
           content:
             application/json:
               schema:
@@ -390,7 +390,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: login token signature invalid
+            types: LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -402,7 +402,7 @@ paths:
       summary: "Returns the role of a user"
       description: "Returns the role of the user with the specified username"
       security:
-        - uc4_auth: [] 
+        - uc4_login_token: [] 
       operationId: "getRole"
       parameters:
       - name: "username"
@@ -420,7 +420,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -428,7 +428,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -436,7 +436,7 @@ paths:
         "404":
           description: |
             Not Found  
-            types: key not found
+            types: KeyNotFound
           content:
             application/json:
               schema:
@@ -444,7 +444,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: login token signature invalid
+            types: LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -456,7 +456,7 @@ paths:
       - "Student Management"
       summary: "Get all students"
       security:
-        - uc4_auth: [] 
+        - uc4_login_token: [] 
       description: "Without parameter \"usernames\", returns all students, and may only be used by administrators. With \"usernames\" set, returns all students with the given usernames, which can be invoked by all roles."
       operationId: "getStudents"
       parameters:
@@ -478,7 +478,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -486,7 +486,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -494,7 +494,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -502,7 +502,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: login token signature invalid
+            types: LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -514,7 +514,7 @@ paths:
       - "Lecturer Management"
       summary: "Get all lecturers"
       security:
-        - uc4_auth: [] 
+        - uc4_login_token: [] 
       description: "Without parameter \"usernames\", returns all lecturers, and may only be used by administrators. With \"usernames\" set, returns all lecturers with the given usernames, which can be invoked by all roles."
       operationId: "getLecturers"
       parameters:
@@ -536,7 +536,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -544,7 +544,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -552,7 +552,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -560,7 +560,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: login token signature invalid
+            types: LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -572,7 +572,7 @@ paths:
       - "Admin Management"
       summary: "Get all admins"
       security:
-        - uc4_auth: [] 
+        - uc4_login_token: [] 
       description: "Without parameter \"usernames\", returns all admins, and may only be used by administrators. With \"usernames\" set, returns all admins with the given usernames, which can be invoked by all roles."
       operationId: "getAdmins"
       parameters:
@@ -594,7 +594,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: malformed login token
+            types: MalformedLoginToken
           content:
             application/json:
               schema:
@@ -602,7 +602,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: jwt authorization error, login token expired
+            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -610,7 +610,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: not enough privileges
+            types: NotEnoughPrivileges
           content:
             application/json:
               schema:
@@ -618,7 +618,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: login token signature invalid
+            types: LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -626,9 +626,10 @@ paths:
 
 components:
   securitySchemes:
-    uc4_auth:
-      type: http
-      scheme: basic
+    uc4_token_login:
+      type: apiKey
+      in: cookie
+      name: login
       
   schemas:
     GetAllUsersResponse:

@@ -8,14 +8,14 @@ In the following, the chaincode api is described. It is identical to the hyperle
 - Lagom can receive an error of the form:
   ```json
   {
-    "type": "hl: unknown transactionId",
-    "title": "The transaction is not defined."
+    "type": "HLUnknownTransactionId",
+    "title": "The transaction is not defined"
   }
   ```
   - Description: This error is returned, if the transactionId does not exist.
   ```json
   {
-    "type": "hl: invalid transaction call",
+    "type": "HLInvalidTransactionCall",
     "title": "The transaction was invoked with the wrong amount of parameters. Expected: ${expected} Actual: ${actual}",
     "transactionId": "addMatricuationData"
   }
@@ -31,7 +31,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
       -  Description: Done
     - ```json
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -41,13 +41,12 @@ In the following, the chaincode api is described. It is identical to the hyperle
         ]
       }
       ```
-    
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.
 
   - ```json
       {
-        "type": "hl: conflict",
-        "title": "There is already a MatriculationData for the given matriculationId.",
+        "type": "HLConflict",
+        "title": "There is already a MatriculationData for the given matriculationId",
         "invalidParams": []
       }
       ```
@@ -63,15 +62,15 @@ In the following, the chaincode api is described. It is identical to the hyperle
 
     - ```json
       {
-        "type": "hl: not found",
-        "title": "There is no MatriculationData for the given matriculationId."
+        "type": "HLNotFound",
+        "title": "There is no MatriculationData for the given matriculationId"
       }
       ```
       - Description: This error is returned, if the matriculationID specified in the MatriculationData is not present on the ledger.
 
     - ```json
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -92,15 +91,15 @@ In the following, the chaincode api is described. It is identical to the hyperle
 
     - ```json
       {
-        "type": "hl: not found",
-        "title": "There is no MatriculationData for the given matriculationId."
+        "type": "HLNotFound",
+        "title": "There is no MatriculationData for the given matriculationId"
       }
       ```
       - Description: This error is returned, if the matriculationID is not present on the ledger.
     - ```json
       {
-        "type": "hl: unprocessable ledger state",
-        "title": "The state on the ledger does not conform to the specified format."
+        "type": "HLUnprocessableLedgerState",
+        "title": "The state on the ledger does not conform to the specified format"
       }
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the curent model. This error should only occurr if the model changes while the old ledger state remains without modification.
@@ -118,14 +117,14 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 
     - ```json
       {
-        "type": "hl: not found",
-        "title": "There is no student for the given matriculationId."
+        "type": "HLNotFound",
+        "title": "There is no student for the given matriculationId"
       }
       ```
       - Description: This error is returned, if the matriculationID is not present on the ledger.
     - ```json
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -138,15 +137,15 @@ This method adds a single entry to the list of semesters in the MatriculationDat
       - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.
     - ```json
       {
-        "type": "hl: unprocessable ledger state",
-        "title": "The state on the ledger does not conform to the specified format."
+        "type": "HLUnprocessableLedgerState",
+        "title": "The state on the ledger does not conform to the specified format"
       }
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the curent model. This error should only occurr if the model changes while the old ledger state remains without modification.
 
-## Models
+## <a id="Models" />Models
 
-### MatriculationData
+### <a id="MatriculationData" />MatriculationData
 ```json
 {
   "matriculationId": "string",
@@ -166,7 +165,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 }
 ```
 
-### SubjectMatriculation
+### <a id="SubjectMatriculation" />SubjectMatriculation
 ```json
 {
   "fieldOfStudy": "Computer Science",
@@ -175,7 +174,9 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 
 ```
 
-### GenericError
+## <a id="Errors" />Errors
+
+### <a id="GenericError" />GenericError
 ```json
 {
   "type": "string",
@@ -183,7 +184,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 }
 ```
 
-### DetailedError
+### <a id="DetailedError" />DetailedError
 ```json
 {
   "type": "string",
@@ -197,7 +198,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 }
 ```
 
-### InvalidParameter
+### <a id="InvalidParameter" />InvalidParameter
 ```json
 {
   "name": "string",

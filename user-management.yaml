@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.6.2"
+  version: "0.7.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -46,13 +46,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonVersionNumber'
+
   /users:
     get:
       tags:
       - "User Management"
       summary: "Get all users"
       security:
-        - uc4_token_login: [] 
+        - uc4_auth: [] 
       description: "Without parameter \"usernames\", returns all users, and may only be used by administrators. With \"usernames\" set, returns all users with the given usernames, which can be invoked by all roles."
       operationId: "getUsers"
       parameters:
@@ -74,7 +75,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: MalformedLoginToken
+            types: malformed login token
           content:
             application/json:
               schema:
@@ -82,7 +83,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -90,7 +91,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: NotEnoughPrivileges
+            types: not enough privileges
           content:
             application/json:
               schema:
@@ -98,19 +99,252 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: LoginTokenSignatureInvalid
+            types: login token signature invalid
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+    post:
+      tags:
+      - "User Management"
+      summary: "Add a new user to the database"
+      description: "Adds a new user to the database after verification."
+      operationId: "addUser"
+      security:
+        - uc4_auth: [] 
+      requestBody:
+        description: "User object that needs to be added to the database"
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/PostMessageStudent'
+                - $ref: '#/components/schemas/PostMessageLecturer'
+                - $ref: '#/components/schemas/PostMessageAdmin'
+            examples:
+              PostStudent:
+                $ref: '#/components/examples/ExamplePostMessageStudent'
+              PostLecturer:
+                $ref: '#/components/examples/ExamplePostMessageLecturer'
+              PostAdmin:
+                $ref: '#/components/examples/ExamplePostMessageAdmin'
+                  
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Student'
+                  - $ref: '#/components/schemas/Lecturer'
+                  - $ref: '#/components/schemas/Admin'
+              examples:
+                student:
+                  $ref: '#/components/examples/ExampleStudent'
+                lecturer:
+                  $ref: '#/components/examples/ExampleLecturer'
+                admin:
+                  $ref: '#/components/examples/ExampleAdmin'
+          headers:
+            Location:
+              schema:
+                type: string
+                description: "URI of the newly created Student"
+        "400":
+          description: | 
+            Bad Request  
+            types: malformed login token
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        "401":
+          description: |
+            Unauthorized  
+            types: jwt authorization error, login token expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: not enough privileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "409":
+          description: |
+            Conflict  
+            types: key duplicate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: validation error, login token signature invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
+    
   /users/{username}:
+    get:
+      tags:
+      - "User Management"
+      security:
+        - uc4_auth: []
+      summary: "Get user object for a specified username"
+      description: "Get user object of specific user"
+      operationId: "getUserByUsername"
+      parameters:
+      - in: "path"
+        name: "username"
+        required: true
+        schema: 
+          type: "string"
+      responses:
+          "200":
+            description: "OK"
+            content:
+              application/json:
+                schema:
+                  oneOf:
+                  - $ref: '#/components/schemas/Student'
+                  - $ref: '#/components/schemas/Lecturer'
+                  - $ref: '#/components/schemas/Admin'
+                examples:
+                  student:
+                    $ref: '#/components/examples/ExampleStudent'
+                  lecturer:
+                    $ref: '#/components/examples/ExampleLecturer'
+                  admin:
+                    $ref: '#/components/examples/ExampleAdmin'
+          "400":
+            description: |
+              Bad Request    
+              types: malformed login token
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "401":
+            description: |
+              Unauthorized  
+              types: jwt authorization error, login token expired
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "404":
+            description: |
+              Not Found  
+              types: key not found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "422":
+            description: |
+              Unprocessable Entity   
+              types: login token signature invalid
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+    put:
+      tags:
+      - "User Management"
+      summary: "Update an existing user"
+      description: |
+        Updates a user if invoked by an administrator or by the user itself. Can only change specific attributes if invoked by a regular user&#58;
+          Address, Email and profile picture
+      operationId: "updateUser"
+      security:
+        - uc4_auth: [] 
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        description: "User object that needs to be updated"
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/Student'
+              - $ref: '#/components/schemas/Lecturer'
+              - $ref: '#/components/schemas/Admin'
+            examples:
+              student:
+                $ref: '#/components/examples/ExampleStudent'
+              lecturer:
+                $ref: '#/components/examples/ExampleLecturer'
+              admin:
+                $ref: '#/components/examples/ExampleAdmin'
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: | 
+            Bad Request  
+            types: malformed login token
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        
+        "401":
+          description: |
+            Unauthorized  
+            types: jwt authorization error, login token expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: not enough privileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: key not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: validation error, uneditable fields, login token signature invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
     delete:
       tags:
       - "User Management"
       summary: "Deletes a user"
       description: "Deletes a user (when invoked by an administrator)"
       security:
-        - uc4_token_login: [] 
+        - uc4_auth: [] 
       operationId: "deleteUser"
       parameters:
       - name: "username"
@@ -124,7 +358,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: MalformedLoginToken
+            types: malformed login token
           content:
             application/json:
               schema:
@@ -132,7 +366,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -140,7 +374,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: NotEnoughPrivileges
+            types: not enough privileges
           content:
             application/json:
               schema:
@@ -148,7 +382,7 @@ paths:
         "404":
           description: |
             Not Found  
-            types: KeyNotFound
+            types: key not found
           content:
             application/json:
               schema:
@@ -156,19 +390,19 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: LoginTokenSignatureInvalid
+            types: login token signature invalid
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /role/{username}:  
+  /users/{username}/role:
     get:
       tags:
       - "User Management"
       summary: "Returns the role of a user"
       description: "Returns the role of the user with the specified username"
       security:
-        - uc4_token_login: [] 
+        - uc4_auth: [] 
       operationId: "getRole"
       parameters:
       - name: "username"
@@ -186,7 +420,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: MalformedLoginToken
+            types: malformed login token
           content:
             application/json:
               schema:
@@ -194,7 +428,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -202,7 +436,7 @@ paths:
         "404":
           description: |
             Not Found  
-            types: KeyNotFound
+            types: key not found
           content:
             application/json:
               schema:
@@ -210,90 +444,19 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: LoginTokenSignatureInvalid
+            types: login token signature invalid
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
   
   /students:
-    post:
-      tags:
-      - "Student Management"
-      summary: "Add a new student to the database"
-      description: "Adds a new student to the database after verification."
-      operationId: "addStudent"
-      security:
-        - uc4_token_login: [] 
-      requestBody:
-        description: "Student object that needs to be added to the database"
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostMessageStudent'
-      responses:
-        "201":
-          description: "Created"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Student'
-          headers:
-            Location:
-              schema:
-                type: string
-                description: "URI of the newly created Student"
-        "400":
-          description: | 
-            Bad Request  
-            types: MalformedLoginToken
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: NotEnoughPrivileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "409":
-          description: |
-            Conflict  
-            types: KeyDuplicate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: Validation, LoginTokenSignatureInvalid
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
     get:
       tags:
       - "Student Management"
       summary: "Get all students"
       security:
-        - uc4_token_login: [] 
+        - uc4_auth: [] 
       description: "Without parameter \"usernames\", returns all students, and may only be used by administrators. With \"usernames\" set, returns all students with the given usernames, which can be invoked by all roles."
       operationId: "getStudents"
       parameters:
@@ -315,7 +478,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: MalformedLoginToken
+            types: malformed login token
           content:
             application/json:
               schema:
@@ -323,7 +486,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -331,7 +494,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: NotEnoughPrivileges
+            types: not enough privileges
           content:
             application/json:
               schema:
@@ -339,216 +502,19 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: LoginTokenSignatureInvalid
+            types: login token signature invalid
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /students/{username}:
-    get:
-      tags:
-      - "Student Management"
-      security:
-        - uc4_token_login: []
-      summary: "Get student object of specific student"
-      description: "Get student object of specific student"
-      operationId: "getStudentByStudentName"
-      parameters:
-      - in: "path"
-        name: "username"
-        required: true
-        schema: 
-          type: "string"
-      responses:
-          "200":
-            description: "OK"
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Student'
-          "400":
-            description: |
-              Bad Request    
-              types: MalformedLoginToken
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "401":
-            description: |
-              Unauthorized  
-              types: JwtAuthorization, LoginTokenExpired
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "404":
-            description: |
-              Not Found  
-              types: KeyNotFound
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "422":
-            description: |
-              Unprocessable Entity   
-              types: LoginTokenSignatureInvalid
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-    put:
-      tags:
-      - "Student Management"
-      summary: "Update an existing student"
-      description: |
-        Updates a user if invoked by an administrator or by the user itself. Can only change specific attributes if invoked by a regular user&#58;
-          Address, Email and profile picture
-      operationId: "updateStudent"
-      security:
-        - uc4_token_login: [] 
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      requestBody:
-        description: "Student object that needs to be updated"
-        required: true
-        content:
-          application/json:
-            schema:       
-              $ref: "#/components/schemas/Student"
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          description: | 
-            Bad Request  
-            types: MalformedLoginToken
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-        
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: NotEnoughPrivileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: KeyNotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: Validation, UneditableFields, LoginTokenSignatureInvalid
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
+
   /lecturers:
-    post:
-      tags:
-      - "Lecturer Management"
-      summary: "Add a new lecturer to the database"
-      description: "Adds a new lecturer to the database after verification."
-      operationId: "addLecturer"
-      security:
-        - uc4_token_login: [] 
-      requestBody:
-        required: true
-        description: "Lecturer object that needs to be added to the database"
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostMessageLecturer'
-      responses:
-        "201":
-          description: "Created"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Lecturer'
-          headers:
-            Location:
-              schema:
-                type: string
-                description: "URI of the newly created Lecturer"
-        "400":
-          description: | 
-            Bad Request 
-            
-            detail contains deserialization error  
-            types: MalformedLoginToken
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: NotEnoughPrivileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "409":
-          description: |
-            Conflict  
-            types: KeyDuplicate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: Validation, LoginTokenSignatureInvalid
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
     get:
       tags:
       - "Lecturer Management"
       summary: "Get all lecturers"
       security:
-        - uc4_token_login: [] 
+        - uc4_auth: [] 
       description: "Without parameter \"usernames\", returns all lecturers, and may only be used by administrators. With \"usernames\" set, returns all lecturers with the given usernames, which can be invoked by all roles."
       operationId: "getLecturers"
       parameters:
@@ -570,7 +536,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: MalformedLoginToken
+            types: malformed login token
           content:
             application/json:
               schema:
@@ -578,7 +544,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -586,7 +552,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: NotEnoughPrivileges
+            types: not enough privileges
           content:
             application/json:
               schema:
@@ -594,214 +560,19 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: LoginTokenSignatureInvalid
+            types: login token signature invalid
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /lecturers/{username}:
-    get:
-      tags:
-      - "Lecturer Management"
-      security:
-        - uc4_token_login: []
-      summary: "Get lecturer object of specific username"
-      description: "Get lecturer object of specific username"
-      operationId: "getLecturerByUsername"
-      parameters:
-      - in: "path"
-        name: "username"
-        required: true
-        schema: 
-          type: "string"
-      responses:
-          "200":
-            description: "OK"
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Lecturer'
-          "400":
-            description: |
-              Bad Request    
-              types: MalformedLoginToken
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "401":
-            description: |
-              Unauthorized  
-              types: JwtAuthorization, LoginTokenExpired
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "404":
-            description: |
-              Not Found  
-              types: KeyNotFound
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "422":
-            description: |
-              Unprocessable Entity   
-              types: LoginTokenSignatureInvalid
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-    put:
-      tags:
-      - "Lecturer Management"
-      summary: "Update an existing lecturer"
-      description: |
-        Updates a user if invoked by an administrator or by the user itself. Can only change specific attributes if invoked by a regular user&#58;
-          Address, Email and profile picture, free text and research area
-      operationId: "updateLecturer"
-      security:
-        - uc4_token_login: [] 
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      requestBody:
-        description: "Lecturer object that needs to be updated"
-        required: true
-        content:
-          application/json:
-            schema:       
-              $ref: "#/components/schemas/Lecturer"
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          description: | 
-            Bad Request  
-            types: MalformedLoginToken
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: NotEnoughPrivileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: KeyNotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: Validation, UneditableFields, LoginTokenSignatureInvalid
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-
+  
   /admins:
-    post:
-      tags:
-      - "Admin Management"
-      summary: "Add a new admin to the database"
-      description: "Adds a new admin to the database after verification."
-      operationId: "addAdmin"
-      security:
-        - uc4_token_login: [] 
-      requestBody:
-        required: true
-        description: "Admin object that needs to be added to the database"
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostMessageAdmin'
-      responses:
-        "201":
-          description: "Created"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Admin'
-          headers:
-            Location:
-              schema:
-                type: string
-                description: "URI of the newly created Admin"
-        "400":
-          description: | 
-            Bad Request  
-            types: MalformedLoginToken
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: NotEnoughPrivileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "409":
-          description: |
-            Conflict  
-            types: KeyDuplicate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: Validation, LoginTokenSignatureInvalid
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
     get:
       tags:
       - "Admin Management"
       summary: "Get all admins"
       security:
-        - uc4_token_login: [] 
+        - uc4_auth: [] 
       description: "Without parameter \"usernames\", returns all admins, and may only be used by administrators. With \"usernames\" set, returns all admins with the given usernames, which can be invoked by all roles."
       operationId: "getAdmins"
       parameters:
@@ -823,7 +594,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: MalformedLoginToken
+            types: malformed login token
           content:
             application/json:
               schema:
@@ -831,7 +602,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
+            types: jwt authorization error, login token expired
           content:
             application/json:
               schema:
@@ -839,7 +610,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: NotEnoughPrivileges
+            types: not enough privileges
           content:
             application/json:
               schema:
@@ -847,138 +618,18 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
-            types: LoginTokenSignatureInvalid
+            types: login token signature invalid
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /admins/{username}:
-    get:
-      tags:
-      - "Admin Management"
-      security:
-        - uc4_token_login: []
-      summary: "Get admin object of specific username"
-      description: "Get admin object of specific username"
-      operationId: "getAdminByUsername"
-      parameters:
-      - in: "path"
-        name: "username"
-        required: true
-        schema: 
-          type: "string"
-      responses:
-          "200":
-            description: "OK"
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Admin'
-          "400":
-            description: |
-              Bad Request    
-              types: MalformedLoginToken
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "401":
-            description: |
-              Unauthorized  
-              types: JwtAuthorization, LoginTokenExpired
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "404":
-            description: |
-              Not Found  
-              types: KeyNotFound
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "422":
-            description: |
-              Unprocessable Entity   
-              types: LoginTokenSignatureInvalid
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-    put:
-      tags:
-      - "Admin Management"
-      summary: "Update an existing admin"
-      operationId: "updateAdmin"
-      security:
-        - uc4_token_login: [] 
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      requestBody:
-        description: "Admin object that needs to be updated"
-        required: true
-        content:
-          application/json:
-            schema:       
-              $ref: "#/components/schemas/Admin"
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          description: | 
-            Bad Request  
-            types: MalformedLoginToken
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: NotEnoughPrivileges
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: KeyNotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: Validation, LoginTokenSignatureInvalid
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
+
 components:
   securitySchemes:
-    uc4_token_login:
-      type: apiKey
-      in: cookie
-      name: login
+    uc4_auth:
+      type: http
+      scheme: basic
+      
   schemas:
     GetAllUsersResponse:
       type: "object"
@@ -996,29 +647,32 @@ components:
           items:
             $ref: '#/components/schemas/Admin'
     PostMessageStudent:
-      type: "object"
-      properties:
-        authUser:
-          allOf:
-            - $ref: "#/components/schemas/AuthUser"
-        student:
-          $ref: '#/components/schemas/Student'
+      allOf: 
+        - $ref: '#/components/schemas/PostMessageUser'
+        - type: object
+          properties:
+            student:
+              $ref: '#/components/schemas/Student'
     PostMessageLecturer:
-      type: "object"
-      properties:
-        authUser:
-          allOf:
-            - $ref: "#/components/schemas/AuthUser"
-        lecturer:
-          $ref: '#/components/schemas/Lecturer'
+      allOf: 
+        - $ref: '#/components/schemas/PostMessageUser'
+        - type: object
+          properties:
+            lecturer:
+              $ref: '#/components/schemas/Lecturer'
     PostMessageAdmin:
+      allOf: 
+        - $ref: '#/components/schemas/PostMessageUser'
+        - type: object
+          properties:
+            admin:
+              $ref: '#/components/schemas/Admin'
+    PostMessageUser:
       type: "object"
       properties:
         authUser:
           allOf:
             - $ref: "#/components/schemas/AuthUser"
-        admin:
-          $ref: '#/components/schemas/Admin'
     User:
       type: "object"
       properties:
@@ -1110,7 +764,133 @@ components:
       allOf:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
         - type: object
-       
+  examples:
+    ExamplePostMessageStudent:
+      summary: "Example for PostMessageStudent"
+      value:
+        authUser:
+          username: "test-student"
+          password: "password123"
+          role: "Student"
+        student:
+          username: "test-student"
+          role: "Student"
+          address:
+            street: "Sandy Street"
+            houseNumber: "5c"
+            zipCode: "42069"
+            city: "Mos Eisley"
+            country: "Germany"
+          firstName: "Luke"
+          lastName: "Skywalker"
+          picture: "string"
+          email: "luke@skywalker.com"
+          birthDate: "1950-12-24"
+          phoneNumber: "+49123456789"
+          latestImmatriculation: ""
+          matriculationId: "1234567"
+    ExampleStudent:
+      summary: "Example for Student"
+      value:
+        username: "test-student"
+        role: "Student"
+        address:
+          street: "Sandy Street"
+          houseNumber: "5c"
+          zipCode: "42069"
+          city: "Mos Eisley"
+          country: "Germany"
+        firstName: "Luke"
+        lastName: "Skywalker"
+        picture: "string"
+        email: "luke@skywalker.com"
+        birthDate: "1950-12-24"
+        phoneNumber: "+49123456789"
+        latestImmatriculation: ""
+        matriculationId: "1234567"
+    ExamplePostMessageLecturer:
+      summary: "Example for PostMessageLecturer"
+      value:
+        authUser:
+          username: "test-lec"
+          password: "password123"
+          role: "Lecturer"
+        lecturer:
+          username: "test-lec"
+          role: "Lecturer"
+          address:
+            street: "Sandy Street"
+            houseNumber: "5c"
+            zipCode: "42069"
+            city: "Mos Eisley"
+            country: "Germany"
+          firstName: "Luke"
+          lastName: "Skywalker"
+          picture: "string"
+          email: "luke@skywalker.com"
+          birthDate: "1950-12-24"
+          phoneNumber: "+49123456789"
+          freeText: "Some cool publications about jedi stuff."
+          researchArea: "The light side only, I swear!"
+    ExampleLecturer:
+      summary: "Example for Lecturer"
+      value:
+        username: "test-lec"
+        role: "Lecturer"
+        address:
+          street: "Sandy Street"
+          houseNumber: "5c"
+          zipCode: "42069"
+          city: "Mos Eisley"
+          country: "Germany"
+        firstName: "Luke"
+        lastName: "Skywalker"
+        picture: "string"
+        email: "luke@skywalker.com"
+        birthDate: "1950-12-24"
+        phoneNumber: "+49123456789"
+        freeText: "Some cool publications about jedi stuff."
+        researchArea: "The light side only, I swear!"
+    ExamplePostMessageAdmin:
+      summary: "Example for PostMessageAdmin"
+      value:
+        authUser:
+          username: "test-admin"
+          password: "password123"
+          role: "Admin"
+        admin:
+          username: "test-admin"
+          role: "Admin"
+          address:
+            street: "Sandy Street"
+            houseNumber: "5c"
+            zipCode: "42069"
+            city: "Mos Eisley"
+            country: "Germany"
+          firstName: "Luke"
+          lastName: "Skywalker"
+          picture: "string"
+          email: "luke@skywalker.com"
+          birthDate: "1950-12-24"
+          phoneNumber: "+49123456789"
+    ExampleAdmin:
+      summary: "Example for Admin"
+      value:
+        username: "test-admin"
+        role: "Admin"
+        address:
+          street: "Sandy Street"
+          houseNumber: "5c"
+          zipCode: "42069"
+          city: "Mos Eisley"
+          country: "Germany"
+        firstName: "Luke"
+        lastName: "Skywalker"
+        picture: "string"
+        email: "luke@skywalker.com"
+        birthDate: "1950-12-24"
+        phoneNumber: "+49123456789"
+        
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

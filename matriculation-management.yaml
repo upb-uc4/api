@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Matriculation API for UC4."
-  version: "0.6.2"
+  version: "0.7.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/matriculation-management
@@ -69,10 +69,8 @@ paths:
                 description: "URI of the newly created MatriculationData"
         "400":
           description: | 
-            Bad Request 
-            
-            detail contains deserialization error  
-            types: MalformedLoginToken
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, JsonValidation
           content:
             application/json:
               schema:
@@ -98,11 +96,13 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: Validation, LoginTokenSignatureInvalid
+            types: Validation, LoginTokenSignatureInvalid, HLUnprocessableEntity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
   /history/{username}:
     get:
       tags:
@@ -144,7 +144,7 @@ paths:
           "403":
             description: |
               Forbidden  
-              types: NotEnoughPrivileges
+              types: NotEnoughPrivileges, OwnerMismatch
             content:
               application/json:
                 schema:
@@ -152,7 +152,7 @@ paths:
           "404":
             description: |
               Not Found  
-              types: KeyNotFound
+              types: HLNotFound
             content:
               application/json:
                 schema:

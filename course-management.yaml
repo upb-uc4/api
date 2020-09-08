@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.6.2"
+  version: "0.7.1"
   title: "UC4"
 
 servers:
@@ -66,7 +66,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: MalformedLoginToken
+            types: MalformedLoginToken, Deserialization, JsonValidation
           content:
             application/json:
               schema:
@@ -303,7 +303,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: MalformedLoginToken
+            types: MalformedLoginToken, Deserialization, PathParameterMismatch, JsonValidation
           content:
             application/json:
               schema:
@@ -341,7 +341,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
 
 components:
   securitySchemes:

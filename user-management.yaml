@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.7.1"
+  version: "0.7.2"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -155,7 +155,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: MalformedLoginToken
+            types: MalformedLoginToken, Deserialization, JsonValidation
           content:
             application/json:
               schema:
@@ -193,7 +193,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
     
   /users/{username}:
     get:
@@ -298,14 +300,14 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: MalformedLoginToken
+            types: MalformedLoginToken, UnexpectedEntity, Deserialization, PathParameterMismatch, JsonValidation
           content:
             application/json:
               schema:
                 oneOf:
                   - $ref: '#/components/schemas/GenericError'
                   - $ref: '#/components/schemas/DetailedError'
-        
+                  - $ref: '#/components/schemas/InformativeError'
         "401":
           description: |
             Unauthorized  
@@ -317,7 +319,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: NotEnoughPrivileges
+            types: OwnerMismatch
           content:
             application/json:
               schema:
@@ -337,7 +339,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
     delete:
       tags:
       - "User Management"
@@ -764,6 +768,10 @@ components:
     DetailedError:
       allOf:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+        - type: object
+    InformativeError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/InformativeError'
         - type: object
   examples:
     ExamplePostMessageStudent:

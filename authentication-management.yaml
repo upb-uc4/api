@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Authentication API for UC4."
-  version: "0.6.2"
+  version: "0.7.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/authentication-management
@@ -60,7 +60,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: MalformedRefreshToken
+            types: MalformedLoginToken, Deserialization, JsonValidation
           content:
             application/json:
               schema:
@@ -78,19 +78,21 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: NotEnoughPrivileges
+            types: OwnerMismatch
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
         "422":
           description: |
-            Unprocessable Entity  
-            types: Validation, LoginTokenSignatureInvalid
+            Unprocessable Entity
+            types: Validation, PathParameterMismatch, UneditableFields, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
   /login:
     get:
       tags:
@@ -148,7 +150,7 @@ paths:
         "401":
           description: |
             Unauthorized  
-            types: JwtAuthorization
+            types: JwtAuthorization, RefreshTokenExpired
           content:
             application/json:
               schema:

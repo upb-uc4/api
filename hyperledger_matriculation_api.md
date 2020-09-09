@@ -32,7 +32,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
     - ```json
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
             "name": "string",
@@ -71,7 +71,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
     - ```json
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
             "name": "string",
@@ -125,7 +125,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
     - ```json
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
             "name": "string",

@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.7.1"
+  version: "0.7.2"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -53,7 +53,7 @@ paths:
       - "User Management"
       summary: "Get all users"
       security:
-        - uc4_login_token: []
+        - uc4_token_login: []
       description: "Without parameter \"usernames\", returns all users, and may only be used by administrators. With \"usernames\" set, returns all users with the given usernames, which can be invoked by all roles."
       operationId: "getUsers"
       parameters:
@@ -111,7 +111,7 @@ paths:
       description: "Adds a new user to the database after verification."
       operationId: "addUser"
       security:
-        - uc4_login_token: [] 
+        - uc4_token_login: [] 
       requestBody:
         description: "User object that needs to be added to the database"
         required: true
@@ -155,7 +155,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: MalformedLoginToken
+            types: MalformedLoginToken, Deserialization, JsonValidation
           content:
             application/json:
               schema:
@@ -193,14 +193,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
     
   /users/{username}:
     get:
       tags:
       - "User Management"
       security:
-        - uc4_login_token: []
+        - uc4_token_login: []
       summary: "Get user object for a specified username"
       description: "Get user object of specific user"
       operationId: "getUserByUsername"
@@ -268,7 +270,7 @@ paths:
           Address, Email and profile picture
       operationId: "updateUser"
       security:
-        - uc4_login_token: [] 
+        - uc4_token_login: [] 
       parameters:
       - name: "username"
         in: "path"
@@ -298,14 +300,14 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: MalformedLoginToken
+            types: MalformedLoginToken, UnexpectedEntity, Deserialization, PathParameterMismatch, JsonValidation
           content:
             application/json:
               schema:
                 oneOf:
                   - $ref: '#/components/schemas/GenericError'
                   - $ref: '#/components/schemas/DetailedError'
-        
+                  - $ref: '#/components/schemas/InformativeError'
         "401":
           description: |
             Unauthorized  
@@ -317,7 +319,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: NotEnoughPrivileges
+            types: OwnerMismatch
           content:
             application/json:
               schema:
@@ -337,14 +339,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailedError'
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
     delete:
       tags:
       - "User Management"
       summary: "Deletes a user"
       description: "Deletes a user (when invoked by an administrator)"
       security:
-        - uc4_login_token: [] 
+        - uc4_token_login: [] 
       operationId: "deleteUser"
       parameters:
       - name: "username"
@@ -402,7 +406,7 @@ paths:
       summary: "Returns the role of a user"
       description: "Returns the role of the user with the specified username"
       security:
-        - uc4_login_token: [] 
+        - uc4_token_login: [] 
       operationId: "getRole"
       parameters:
       - name: "username"
@@ -456,7 +460,7 @@ paths:
       - "Student Management"
       summary: "Get all students"
       security:
-        - uc4_login_token: [] 
+        - uc4_token_login: [] 
       description: "Without parameter \"usernames\", returns all students, and may only be used by administrators. With \"usernames\" set, returns all students with the given usernames, which can be invoked by all roles."
       operationId: "getStudents"
       parameters:
@@ -514,7 +518,7 @@ paths:
       - "Lecturer Management"
       summary: "Get all lecturers"
       security:
-        - uc4_login_token: [] 
+        - uc4_token_login: [] 
       description: "Without parameter \"usernames\", returns all lecturers, and may only be used by administrators. With \"usernames\" set, returns all lecturers with the given usernames, which can be invoked by all roles."
       operationId: "getLecturers"
       parameters:
@@ -572,7 +576,7 @@ paths:
       - "Admin Management"
       summary: "Get all admins"
       security:
-        - uc4_login_token: [] 
+        - uc4_token_login: [] 
       description: "Without parameter \"usernames\", returns all admins, and may only be used by administrators. With \"usernames\" set, returns all admins with the given usernames, which can be invoked by all roles."
       operationId: "getAdmins"
       parameters:
@@ -630,7 +634,6 @@ components:
       type: apiKey
       in: cookie
       name: login
-      
   schemas:
     GetAllUsersResponse:
       type: "object"
@@ -764,6 +767,10 @@ components:
     DetailedError:
       allOf:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+        - type: object
+    InformativeError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/InformativeError'
         - type: object
   examples:
     ExamplePostMessageStudent:

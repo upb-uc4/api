@@ -1,16 +1,16 @@
 openapi: "3.0.0"
 info:
-  description: "This is the User API for UC4."
-  version: "0.6.2"
+  description: "This is the Error Definition for the UC4 API."
+  version: "0.7.1"
   title: "UC4"
 tags:
 - name: "Errors"
-  description: "Everything about the user"
+  description: "Unused"
   externalDocs:
     description: "Find out more"
     url: "https://github.com/upb-uc4"
 paths:
-  /users:
+  /unused:
     get:
       tags:
       - "Errors"
@@ -25,6 +25,7 @@ components:
         type:
           type: string
           enum: [
+            "HLUnprocessableEntity",
             "MalformedRefreshToken",
             "MalformedLoginToken",
             "JwtAuthorization",
@@ -33,16 +34,31 @@ components:
             "LoginTokenExpired",
             "RefreshTokenSignatureInvalid",
             "LoginTokenSignatureInvalid",
-            "PathParameterMismatch", 
-            "UnexpectedEntity",
+            "PathParameterMismatch",
             "Authorization",
             "NotEnoughPrivileges",
             "OwnerMismatch",
             "KeyNotFound",
             "KeyDuplicate",
+            "Deserialization",
             "Teapot"
           ]
         title:
+          type: string
+      required:
+        - code
+        - message
+    InformativeError:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [
+            "UnexpectedEntity"
+          ]
+        title:
+          type: string
+        information:
           type: string
       required:
         - code
@@ -54,6 +70,7 @@ components:
           type: string
           enum: [
             "Validation", 
+            "JsonValidation",
             "UneditableFields"
           ]
         title:

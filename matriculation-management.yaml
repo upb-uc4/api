@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Matriculation API for UC4."
-  version: "0.7.1"
+  version: "0.7.2"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/matriculation-management
@@ -46,7 +46,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PutMessageMatriculationData'
+              $ref: '#/components/schemas/PutMessageMatriculation'
+            examples:
+              PutMessageMatriculation:
+                $ref: '#/components/examples/ExamplePutMessageMatriculation'
       parameters:
       - in: "path"
         name: "username"
@@ -62,6 +65,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MatriculationData'
+              examples:
+                MatriculationData:
+                  $ref: '#/components/examples/ExampleMatriculationData'
           headers:
             Location:
               schema:
@@ -125,6 +131,9 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/MatriculationData'
+                examples:
+                  MatriculationData:
+                    $ref: '#/components/examples/ExampleMatriculationData'
           "400":
             description: |
               Bad Request    
@@ -172,14 +181,13 @@ components:
       in: cookie
       name: login
   schemas:
-    PutMessageMatriculationData:
+    PutMessageMatriculation:
       type: "object"
       properties:
-        fieldOfStudy:
-          type: string
-          enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
-        semester:
-          type: string
+        matriculation:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubjectMatriculation'
     MatriculationData:
       type: "object"
       properties:
@@ -219,6 +227,32 @@ components:
       properties:
         versionNumber:
           type: string
+  examples:
+    ExamplePutMessageMatriculation:
+      summary: "Example for PutMessageMatriculation"
+      value:
+        matriculation:
+          - fieldOfStudy: "Computer Science"
+            semesters:
+              - "SS2020"
+          - fieldOfStudy: "Philosophy"
+            semesters: 
+              - "SS2020"
+    ExampleMatriculationData:
+      summary: "Example for MatriculationData"
+      value:
+        matriculationId: "1234567"
+        firstName: "Luke"
+        lastName: "Skywalker"
+        birthDate: "1950-12-24"
+        matriculationStatus:
+          - fieldOfStudy: "Computer Science"
+            semesters:
+              - "WS2019/20"
+              - "SS2020"
+          - fieldOfStudy: "Philosophy"
+            semesters: 
+              - "SS2020"
        
 externalDocs:
   description: "Find out more about Swagger"

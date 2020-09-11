@@ -251,7 +251,7 @@ components:
               - "WS2019/20"
               - "SS2020"
           - fieldOfStudy: "Philosophy"
-            semester: 
+            semesters: 
               - "SS2020"
        
 externalDocs:

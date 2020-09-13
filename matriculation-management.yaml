@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Matriculation API for UC4."
-  version: "0.7.2"
+  version: "0.8.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/matriculation-management
@@ -40,6 +40,7 @@ paths:
       operationId: "updateMatriculationData"
       security:
         - uc4_token_login: [] 
+        - uc4_token_login_header: []
       requestBody:
         description: "PutMessageMatriculationData, containing the semester the student will be enrolled in, and the corresponding fieldOfStudy."
         required: true
@@ -114,7 +115,8 @@ paths:
       tags:
       - "Matriculation Management"
       security:
-        - uc4_token_login: []
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
       summary: "Get MatriculationData for the specified student"
       description: "Get MatriculationData of specified student."
       operationId: "getMatriculationData"
@@ -180,6 +182,9 @@ components:
       type: apiKey
       in: cookie
       name: login
+    uc4_token_login_header:
+      type: http
+      scheme: bearer
   schemas:
     PutMessageMatriculation:
       type: "object"

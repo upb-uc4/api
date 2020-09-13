@@ -151,7 +151,7 @@ paths:
       - "Authentication Management"
       summary: "Retrieve new login token"
       security:
-        - uc4_token_refresh: []
+        - uc4_token_refresh_header: []
       description: "Provides the user with a new valid login token. The long lived refresh token is used to request a new short lived login token."
       operationId: "refresh"
       responses:
@@ -258,6 +258,12 @@ components:
       type: apiKey
       in: cookie
       name: refresh
+    uc4_token_login_header:
+      type: http
+      scheme: bearer
+    uc4_token_refresh_header:
+      type: http
+      scheme: bearer
   schemas:
     AuthUser:
       type: "object"

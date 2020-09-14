@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Authentication API for UC4."
-  version: "0.7.1"
+  version: "0.8.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/authentication-management
@@ -60,7 +60,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: MalformedLoginToken, Deserialization, JsonValidation
+            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
           content:
             application/json:
               schema:
@@ -118,13 +118,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+  /login/machine:
+    get:
+      tags:
+      - "Authentication Management"
+      summary: "Retrieve login and refresh token in body for machine user authentication"
+      security:
+        - uc4_basic: [] 
+      description: "This endpoint should only be used for machine user authentication, not for a enduser frontend. Please use cookies if possible. Provides the user with login credientals, thereby the user retrieves a login and refresh token in response body. All further calls to API use the login token to authenticate the user. The refresh token can be used to request a new login token."
+      operationId: "loginMachineUser"
+      responses:
+        "200":
+          description: "OK"
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Tokens'
+              examples: 
+                ExampleTokens:
+                  $ref: '#/components/examples/ExampleTokens'
+        "401":
+          description: |
+            Unauthorized  
+            types: BasicAuthorization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
   /refresh:
     get:
       tags:
       - "Authentication Management"
       summary: "Retrieve new login token"
       security:
-        - uc4_token_refresh: []
+        - uc4_token_refresh_header: []
       description: "Provides the user with a new valid login token. The long lived refresh token is used to request a new short lived login token."
       operationId: "refresh"
       responses:
@@ -142,7 +169,50 @@ paths:
         "400":
           description: |
             Bad Request  
-            types: MalformedRefreshToken
+            types: MalformedRefreshToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, RefreshTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: RefreshTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /refresh/machine:
+    get:
+      tags:
+      - "Authentication Management"
+      summary: "Retrieve new login token in body for machine user authentication"
+      security:
+        - uc4_token_refresh: []
+      description: "This endpoint should only be used for machine user authentication, not for a enduser frontend. Please use cookies if possible. Provides the user with a new valid login token. The long lived refresh token is used to request a new short lived login token."
+      operationId: "refreshMachineUser"
+      responses:
+        "200":
+          description: "OK"
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/RefreshToken'
+              examples: 
+                ExampleTokens:
+                  $ref: '#/components/examples/RefreshToken'
+        "400":
+          description: |
+            Bad Request  
+            types: MalformedRefreshToken, MultipleAuthorizationError
           content:
             application/json:
               schema:
@@ -188,6 +258,12 @@ components:
       type: apiKey
       in: cookie
       name: refresh
+    uc4_token_login_header:
+      type: http
+      scheme: bearer
+    uc4_token_refresh_header:
+      type: http
+      scheme: bearer
   schemas:
     AuthUser:
       type: "object"
@@ -217,7 +293,31 @@ components:
       properties:
         versionNumber:
           type: string
-
+    Tokens:
+      type: object
+      properties:
+        login:
+          type: "string"
+        refresh:
+          type: "string"
+    RefreshToken:
+      type: object
+      properties:
+        login: 
+          type: "string"
+        username: 
+          type: "string"
+  examples:
+    ExampleTokens: 
+      summary: "Example Tokens"
+      value: 
+        login: "login=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb2dpbiIsImV4cCI6MTU5ODYxMzM2NSwidXNlcm5hbWUiOiJhZG1pbiIsImF1dGhlbnRpY2F0aW9uUm9sZSI6IkFkbWluIn0.hb1F2_wql4CwTcLXOPCqE7yRjYH3XL4jomexigKt6OI"
+        refresh: "refresh=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWZyZXNoIiwiZXhwIjoxNjAwMzQwNzY1LCJ1c2VybmFtZSI6ImFkbWluIiwiYXV0aGVudGljYXRpb25Sb2xlIjoiQWRtaW4ifQ.YGs4XDg95vvN_wkwHGBttoHxkUDxCGkWqqQugOEh0sE0.hb1F2_wql4CwTcLXOPCqE7yRjYH3XL4jomexigKt6OI"
+    RefreshToken:
+      summary: "Login Token"
+      value:
+        login: "login=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb2dpbiIsImV4cCI6MTU5ODYxMzM2NSwidXNlcm5hbWUiOiJhZG1pbiIsImF1dGhlbnRpY2F0aW9uUm9sZSI6IkFkbWluIn0.hb1F2_wql4CwTcLXOPCqE7yRjYH3XL4jomexigKt6OI"
+        username: "Luke Skywalker"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

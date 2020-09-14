@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.7.1"
+  version: "0.8.1"
   title: "UC4"
 
 servers:
@@ -44,6 +44,7 @@ paths:
       operationId: "addCourse"
       security:
         - uc4_token_login: []
+        - uc4_token_login_header: []
       requestBody:
         description: "Course object that needs to be added to the database"
         required: true
@@ -66,7 +67,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: MalformedLoginToken, Deserialization, JsonValidation
+            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
           content:
             application/json:
               schema:
@@ -114,6 +115,7 @@ paths:
       summary: "Get all courses"
       security:
         - uc4_token_login: [] 
+        - uc4_token_login_header: []
       description: "Returns all courses"
       operationId: "getAllCourses"
       parameters:
@@ -141,7 +143,7 @@ paths:
         "400":
           description: |
             Bad Request    
-            types: MalformedLoginToken
+            types: MalformedLoginToken, MultipleAuthorizationError
           content:
             application/json:
               schema:
@@ -168,6 +170,7 @@ paths:
       - "Course Management"
       security:
         - uc4_token_login: []
+        - uc4_token_login_header: []
       summary: "Find course by course id"
       description: "Find course by course id"
       operationId: "findCourseByCourseId"
@@ -188,7 +191,7 @@ paths:
           "400":
             description: |
               Bad Request    
-              types: MalformedLoginToken
+              types: MalformedLoginToken, MultipleAuthorizationError
             content:
               application/json:
                 schema:
@@ -224,6 +227,7 @@ paths:
       description: ""
       security:
         - uc4_token_login: [] 
+        - uc4_token_login_header: []
       operationId: "deleteCourse"
       parameters:
       - name: "id"
@@ -238,7 +242,7 @@ paths:
         "400":
             description: |
               Bad Request    
-              types: MalformedLoginToken
+              types: MalformedLoginToken, MultipleAuthorizationError
             content:
               application/json:
                 schema:
@@ -283,6 +287,7 @@ paths:
       operationId: "updateCourse"
       security:
         - uc4_token_login: [] 
+        - uc4_token_login_header: []
       parameters:
       - name: "id"
         in: "path"
@@ -303,7 +308,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: MalformedLoginToken, Deserialization, PathParameterMismatch, JsonValidation
+            types: MalformedLoginToken, Deserialization, PathParameterMismatch, JsonValidation, MultipleAuthorizationError
           content:
             application/json:
               schema:
@@ -351,6 +356,9 @@ components:
       type: apiKey
       in: cookie
       name: login
+    uc4_token_login_header:
+      type: http
+      scheme: bearer
   schemas:
     Course:
       type: "object"

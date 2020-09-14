@@ -118,7 +118,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /login2:
+  /login/machine:
     get:
       tags:
       - "Authentication Management"

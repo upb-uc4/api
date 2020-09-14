@@ -190,7 +190,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /refresh2:
+  /refresh/machine:
     get:
       tags:
       - "Authentication Management"

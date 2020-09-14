@@ -60,7 +60,7 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: MalformedLoginToken, Deserialization, JsonValidation
+            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
           content:
             application/json:
               schema:
@@ -169,7 +169,7 @@ paths:
         "400":
           description: |
             Bad Request  
-            types: MalformedRefreshToken
+            types: MalformedRefreshToken, MultipleAuthorizationError
           content:
             application/json:
               schema:
@@ -212,7 +212,7 @@ paths:
         "400":
           description: |
             Bad Request  
-            types: MalformedRefreshToken
+            types: MalformedRefreshToken, MultipleAuthorizationError
           content:
             application/json:
               schema:

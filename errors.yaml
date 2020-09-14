@@ -41,7 +41,8 @@ components:
             "KeyNotFound",
             "KeyDuplicate",
             "Deserialization",
-            "Teapot"
+            "Teapot",
+            "MultipleAuthorizationError"
           ]
         title:
           type: string

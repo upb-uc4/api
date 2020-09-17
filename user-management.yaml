@@ -584,6 +584,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+        "413":
+          description: |
+            Payload Too Large
+            types: EntityTooLarge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
         "415":
           description: |
             Unsupported Media Type 

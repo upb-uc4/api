@@ -43,7 +43,8 @@ components:
             "Deserialization",
             "Teapot",
             "MultipleAuthorizationError",
-            "UnsupportedMediaType"
+            "UnsupportedMediaType",
+            "EntityTooLarge"
           ]
         title:
           type: string

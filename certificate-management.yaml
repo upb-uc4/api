@@ -1,0 +1,223 @@
+openapi: "3.0.0"
+info:
+  description: "This is the Certificate API for UC4."
+  version: "0.8.1"
+  title: "UC4"
+
+servers:
+  - url: https://uc4.cs.upb.de/api/production/certificate-management
+
+tags:
+- name: "Version Management"
+  description: "Everything about the Version"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+- name: "Certificate Management"
+  description: "Everything about certificates"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+
+paths:
+  /version:
+    get:
+      tags:
+      - "Version Management"
+      summary: "Get version"
+      description: "Returns the version of the current service"
+      operationId: "getVersion"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonVersionNumber'
+                
+  /certificates/enrollmentSecret:
+    get:
+      tags:
+      - "Certificate Management"
+      summary: "Get your own enrollment secret"
+      description: "Fetch your enrollment secret, specified by the username set in the authorization"
+      operationId: "getEnrollmentSecret"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollmentSecret'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "410":
+            description: |
+              Gone  
+              types: EnrollmentSecretGone
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/GenericError'
+                
+  /certificates/request:
+    post:
+      tags:
+      - "Certificate Management"
+      summary: "Send info to start the certificate creation process"
+      description: "Send the CSR, and optionally the encrypted private key, to start the certificate creation process"
+      operationId: "createCertificate"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
+      requestBody:
+        description: "CSR object that is the base for Certificate Creation"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostMessageCSR'
+      responses:
+        "200":
+          description: "OK"
+          headers:
+            Location:
+              schema:
+                type: string
+                description: "URI of the newly created Certificate"
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: OwnerMismatch
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: Validation, LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+                  
+  /certificates/{username}:
+    get:
+      tags:
+      - "Certificate Management"
+      summary: "Get a specified certificate"
+      description: "Fetch the certificate of the with the specified username, no security required"
+      operationId: "getCertificate"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "Username name to filter by (fuzzy)"
+        required: true
+        schema:
+          type: 'string'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+        "404":
+            description: |
+              Not Found  
+              types: KeyNotFound
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+  
+components:
+  securitySchemes:
+    uc4_token_login:
+      type: apiKey
+      in: cookie
+      name: login
+    uc4_token_login_header:
+      type: http
+      scheme: bearer
+  schemas:
+    PostMessageCSR:
+      type: "object"
+      properties:
+        certificateSigningRequest:
+          type: string
+        encryptedPrivateKey:
+          type: string
+    Certificate:
+      type: "object"
+      properties:
+        publicKey:
+          type: string
+        TODO:
+          type: string
+    EnrollmentSecret:
+      type: "object"
+      properties:
+        secret:
+          type: string
+    JsonVersionNumber:
+      type: object
+      properties:
+        versionNumber:
+          type: string
+    GenericError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
+        - type: object
+    DetailedError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+        - type: object
+        
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io" 

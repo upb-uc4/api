@@ -42,8 +42,7 @@ components:
             "KeyDuplicate",
             "Deserialization",
             "Teapot",
-            "MultipleAuthorizationError",
-            "EnrollmentSecretGone"
+            "MultipleAuthorizationError"
           ]
         title:
           type: string

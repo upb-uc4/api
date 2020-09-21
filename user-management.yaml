@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.8.1"
+  version: "0.8.2"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -180,14 +180,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-        "409":
-          description: |
-            Conflict  
-            types: KeyDuplicate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
         "422":
           description: |
             Unprocessable Entity  
@@ -324,14 +316,6 @@ paths:
           description: |
             Forbidden  
             types: OwnerMismatch
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: KeyNotFound
           content:
             application/json:
               schema:

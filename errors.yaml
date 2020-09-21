@@ -42,7 +42,9 @@ components:
             "KeyDuplicate",
             "Deserialization",
             "Teapot",
-            "MultipleAuthorizationError"
+            "MultipleAuthorizationError",
+            "UnsupportedMediaType",
+            "EntityTooLarge"
           ]
         title:
           type: string
@@ -72,7 +74,8 @@ components:
           enum: [
             "Validation", 
             "JsonValidation",
-            "UneditableFields"
+            "UneditableFields",
+            "MissingHeader"
           ]
         title:
           type: string

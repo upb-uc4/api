@@ -30,6 +30,7 @@ components:
             "MalformedLoginToken",
             "JwtAuthorization",
             "BasicAuthorization",
+            "RefreshTokenMissing",
             "RefreshTokenExpired",
             "LoginTokenExpired",
             "RefreshTokenSignatureInvalid",

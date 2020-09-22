@@ -180,14 +180,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-        "409":
-          description: |
-            Conflict  
-            types: KeyDuplicate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
         "422":
           description: |
             Unprocessable Entity  
@@ -324,14 +316,6 @@ paths:
           description: |
             Forbidden  
             types: OwnerMismatch
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: KeyNotFound
           content:
             application/json:
               schema:

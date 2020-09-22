@@ -67,7 +67,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CertificateJson'
+                $ref: '#/components/schemas/JsonCertificate'
           headers:
             Location:
               schema:
@@ -136,7 +136,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CertificateJson'
+                $ref: '#/components/schemas/JsonCertificate'
         "404":
             description: |
               Not Found  
@@ -169,7 +169,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EnrollmentIdJson'
+                $ref: '#/components/schemas/JsonEnrollmentId'
         "400":
           description: | 
             Bad Request  
@@ -276,13 +276,13 @@ components:
         encryptedPrivateKey:
           allOf:
             - $ref: "#/components/schemas/EncryptedPrivateKey"
-    CertificateJson:
+    JsonCertificate:
       type: "object"
       properties:
-        cert:
+        certificate:
           type: string
           description: "In PEM format, x509 certificate, as specified in PKCS#10."
-    EnrollmentIdJson:
+    JsonEnrollmentId:
       type: "object"
       properties:
         id:
@@ -322,7 +322,10 @@ components:
           zOUy2PvH59mXlOg78NnoDWWU2Rt1UaVlbOAxOiCuC84j2wIgLEErVS4eYXwHOT+c
           de5esScxXO7Eikl9DwUe3lkqfA1FCjls
           -----END CERTIFICATE REQUEST-----  
-        encryptedPrivateKey: "thisIsAnEncryptedPrivateKey"
+        encryptedPrivateKey:
+          key: "thisIsAnEncryptedPrivateKey"
+          iv: "this is an iv"
+          salt: "this is a salt"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io" 

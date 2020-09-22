@@ -218,7 +218,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/KeyJson'
+                $ref: '#/components/schemas/EncryptedPrivateKey'
         "400":
           description: | 
             Bad Request  
@@ -254,6 +254,19 @@ components:
       type: http
       scheme: bearer
   schemas:
+    EncryptedPrivateKey:
+      type: "object"
+      properties:
+        key:
+          type: string
+          description: "The encrypted private key."
+        iv:
+          type: string
+          description: "The IV for key encryption/decryption."
+        salt:
+          type: string
+          description: "The salt used to derive the key from the password."
+        
     PostMessageCSR:
       type: "object"
       properties:
@@ -261,19 +274,14 @@ components:
           type: string
           description: "In PEM format, x509 certificate signing request, as specified in PKCS#10. Common-name must be the enrollmentId."
         encryptedPrivateKey:
-          type: string
+          allOf:
+            - $ref: "#/components/schemas/EncryptedPrivateKey"
     CertificateJson:
       type: "object"
       properties:
         cert:
           type: string
           description: "In PEM format, x509 certificate, as specified in PKCS#10."
-    KeyJson:
-      type: "object"
-      properties:
-        key:
-          type: string
-          description: "The encrypted private key."
     EnrollmentIdJson:
       type: "object"
       properties:

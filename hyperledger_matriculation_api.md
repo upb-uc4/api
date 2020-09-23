@@ -50,7 +50,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
         "invalidParams": []
       }
       ```
-    - Description: This error is returned, if a matriculation data with the given enrollment.id is already present on the ledger.
+    - Description: This error is returned, if a matriculation data with the given enrollmentId is already present on the ledger.
 
 ### Update Matriculation Data
 - ID = updateMatriculationData

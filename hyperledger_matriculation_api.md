@@ -56,11 +56,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
 ### Update Matriculation Data
 - ID = updateMatriculationData
 - Send
-<<<<<<< HEAD
-    - updatedMatriculationData :: MatriculationData
-=======
-    - newMatriculationData :: [MatriculationData](#MatriculationData)
->>>>>>> update API to return MatriculationData state on ledger after transaction
+    - updatedMatriculationData :: [MatriculationData](#MatriculationData)
 - Receive
     - [MatriculationData](#MatriculationData)
       -  Description: Done, returns the submitted data.
@@ -114,13 +110,8 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 
 - ID = addEntriesToMatriculationData
 - Send
-<<<<<<< HEAD
     - enrollmentId :: String
-    - matriculation :: List\<SubjectMatriculation\>
-=======
-    - enrollment.id :: String
     - matriculation :: List\<[SubjectMatriculation](#SubjectMatriculation)\>
->>>>>>> update API to return MatriculationData state on ledger after transaction
 - Receive
     - [MatriculationData](#MatriculationData)
       -  Description: Done, returns the submitted data.

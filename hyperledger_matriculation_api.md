@@ -46,7 +46,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
   - ```json
       {
         "type": "HLConflict",
-        "title": "There is already a MatriculationData for the given enrollment.id",
+        "title": "There is already a MatriculationData for the given enrollmentId",
         "invalidParams": []
       }
       ```

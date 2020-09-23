@@ -24,7 +24,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
 
 ### Add Matriculation Data
 - ID = addMatriculationData
-- Send (*transient*)
+- Send
     - newMatriculationData :: MatriculationData
 - Receive
     - ""
@@ -46,16 +46,16 @@ In the following, the chaincode api is described. It is identical to the hyperle
   - ```json
       {
         "type": "HLConflict",
-        "title": "There is already a MatriculationData for the given matriculationId",
+        "title": "There is already a MatriculationData for the given enrollment.id",
         "invalidParams": []
       }
       ```
-    - Description: This error is returned, if a matriculation data with the given matriculationId is already present on the ledger.
+    - Description: This error is returned, if a matriculation data with the given enrollment.id is already present on the ledger.
 
 ### Update Matriculation Data
 - ID = updateMatriculationData
-- Send (*transient*)
-    - updatedMatriculationData :: MatriculationData
+- Send
+    - newMatriculationData :: MatriculationData
 - Receive
     - ""
       - Description: Done.
@@ -63,10 +63,10 @@ In the following, the chaincode api is described. It is identical to the hyperle
     - ```json
       {
         "type": "HLNotFound",
-        "title": "There is no MatriculationData for the given matriculationId"
+        "title": "There is no MatriculationData for the given enrollment.id"
       }
       ```
-      - Description: This error is returned, if the matriculationID specified in the MatriculationData is not present on the ledger.
+      - Description: This error is returned, if the enrollment.id specified in the MatriculationData is not present on the ledger.
 
     - ```json
       {
@@ -85,17 +85,17 @@ In the following, the chaincode api is described. It is identical to the hyperle
 ### Get Matriculation Data
 - ID = getMatriculationData
 - Send
-    - matriculationId :: String
+    - enrollment.id :: String
 - Receive
     - MatriculationData
 
     - ```json
       {
         "type": "HLNotFound",
-        "title": "There is no MatriculationData for the given matriculationId"
+        "title": "There is no MatriculationData for the given enrollment.id"
       }
       ```
-      - Description: This error is returned, if the matriculationID is not present on the ledger.
+      - Description: This error is returned, if the enrollment.id is not present on the ledger.
     - ```json
       {
         "type": "HLUnprocessableLedgerState",
@@ -109,7 +109,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 
 - ID = addEntriesToMatriculationData
 - Send
-    - matriculationId :: String
+    - enrollment.id :: String
     - matriculation :: List\<SubjectMatriculation\>
 - Receive
     - ""
@@ -118,10 +118,10 @@ This method adds a single entry to the list of semesters in the MatriculationDat
     - ```json
       {
         "type": "HLNotFound",
-        "title": "There is no student for the given matriculationId"
+        "title": "There is no student for the given enrollment.id"
       }
       ```
-      - Description: This error is returned, if the matriculationID is not present on the ledger.
+      - Description: This error is returned, if the enrollment.id is not present on the ledger.
     - ```json
       {
         "type": "HLUnprocessableEntity",
@@ -148,10 +148,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 ### <a id="MatriculationData" />MatriculationData
 ```json
 {
-  "matriculationId": "string",
-  "firstName": "string",
-  "lastName": "string",
-  "birthDate": "2020-07-21",
+  "enrollment.id": "string",
   "matriculationStatus": [
     {
       "fieldOfStudy": "Computer Science",

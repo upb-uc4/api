@@ -55,7 +55,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
 ### Update Matriculation Data
 - ID = updateMatriculationData
 - Send
-    - newMatriculationData :: MatriculationData
+    - updatedMatriculationData :: MatriculationData
 - Receive
     - ""
       - Description: Done.

@@ -95,7 +95,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
         "title": "There is no MatriculationData for the given enrollment.id"
       }
       ```
-      - Description: This error is returned, if the enrollment.id is not present on the ledger.
+      - Description: This error is returned, if the enrollmentId is not present on the ledger.
     - ```json
       {
         "type": "HLUnprocessableLedgerState",

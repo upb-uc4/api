@@ -85,7 +85,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
 ### Get Matriculation Data
 - ID = getMatriculationData
 - Send
-    - enrollment.id :: String
+    - enrollmentId :: String
 - Receive
     - MatriculationData
 

@@ -148,7 +148,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 ### <a id="MatriculationData" />MatriculationData
 ```json
 {
-  "enrollment.id": "string",
+  "enrollmentId": "string",
   "matriculationStatus": [
     {
       "fieldOfStudy": "Computer Science",

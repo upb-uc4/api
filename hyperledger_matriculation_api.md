@@ -109,7 +109,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 
 - ID = addEntriesToMatriculationData
 - Send
-    - enrollment.id :: String
+    - enrollmentId :: String
     - matriculation :: List\<SubjectMatriculation\>
 - Receive
     - ""

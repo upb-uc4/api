@@ -92,7 +92,7 @@ In the following, the chaincode api is described. It is identical to the hyperle
     - ```json
       {
         "type": "HLNotFound",
-        "title": "There is no MatriculationData for the given enrollment.id"
+        "title": "There is no MatriculationData for the given enrollmentId"
       }
       ```
       - Description: This error is returned, if the enrollmentId is not present on the ledger.

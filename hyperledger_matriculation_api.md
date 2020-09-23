@@ -24,11 +24,12 @@ In the following, the chaincode api is described. It is identical to the hyperle
 
 ### Add Matriculation Data
 - ID = addMatriculationData
-- Send (*transient*)
-    - newMatriculationData :: MatriculationData
+- Send
+    - newMatriculationData :: [MatriculationData](#MatriculationData)
 - Receive
-    - ""
-      -  Description: Done
+    - [MatriculationData](#MatriculationData)
+      -  Description: Done, returns the submitted data.
+
     - ```json
       {
         "type": "HLUnprocessableEntity",
@@ -46,27 +47,27 @@ In the following, the chaincode api is described. It is identical to the hyperle
   - ```json
       {
         "type": "HLConflict",
-        "title": "There is already a MatriculationData for the given matriculationId",
+        "title": "There is already a MatriculationData for the given enrollmentId",
         "invalidParams": []
       }
       ```
-    - Description: This error is returned, if a matriculation data with the given matriculationId is already present on the ledger.
+    - Description: This error is returned, if a matriculation data with the given enrollmentId is already present on the ledger.
 
 ### Update Matriculation Data
 - ID = updateMatriculationData
-- Send (*transient*)
-    - updatedMatriculationData :: MatriculationData
+- Send
+    - updatedMatriculationData :: [MatriculationData](#MatriculationData)
 - Receive
-    - ""
-      - Description: Done.
+    - [MatriculationData](#MatriculationData)
+      -  Description: Done, returns the submitted data.
 
     - ```json
       {
         "type": "HLNotFound",
-        "title": "There is no MatriculationData for the given matriculationId"
+        "title": "There is no MatriculationData for the given enrollmentId"
       }
       ```
-      - Description: This error is returned, if the matriculationID specified in the MatriculationData is not present on the ledger.
+      - Description: This error is returned, if the enrollmentId specified in the MatriculationData is not present on the ledger.
 
     - ```json
       {
@@ -85,17 +86,17 @@ In the following, the chaincode api is described. It is identical to the hyperle
 ### Get Matriculation Data
 - ID = getMatriculationData
 - Send
-    - matriculationId :: String
+    - enrollmentId :: String
 - Receive
-    - MatriculationData
+    - [MatriculationData](#MatriculationData)
 
     - ```json
       {
         "type": "HLNotFound",
-        "title": "There is no MatriculationData for the given matriculationId"
+        "title": "There is no MatriculationData for the given enrollmentId"
       }
       ```
-      - Description: This error is returned, if the matriculationID is not present on the ledger.
+      - Description: This error is returned, if the enrollmentId is not present on the ledger.
     - ```json
       {
         "type": "HLUnprocessableLedgerState",
@@ -109,19 +110,19 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 
 - ID = addEntriesToMatriculationData
 - Send
-    - matriculationId :: String
-    - matriculation :: List\<SubjectMatriculation\>
+    - enrollmentId :: String
+    - matriculation :: List\<[SubjectMatriculation](#SubjectMatriculation)\>
 - Receive
-    - ""
-      - Description: Done
+    - [MatriculationData](#MatriculationData)
+      -  Description: Done, returns the submitted data.
 
     - ```json
       {
         "type": "HLNotFound",
-        "title": "There is no student for the given matriculationId"
+        "title": "There is no student for the given enrollmentId"
       }
       ```
-      - Description: This error is returned, if the matriculationID is not present on the ledger.
+      - Description: This error is returned, if the enrollmentId is not present on the ledger.
     - ```json
       {
         "type": "HLUnprocessableEntity",
@@ -148,10 +149,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
 ### <a id="MatriculationData" />MatriculationData
 ```json
 {
-  "matriculationId": "string",
-  "firstName": "string",
-  "lastName": "string",
-  "birthDate": "2020-07-21",
+  "enrollmentId": "string",
   "matriculationStatus": [
     {
       "fieldOfStudy": "Computer Science",

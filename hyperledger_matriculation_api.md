@@ -121,7 +121,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
         "title": "There is no student for the given enrollmentId"
       }
       ```
-      - Description: This error is returned, if the enrollment.id is not present on the ledger.
+      - Description: This error is returned, if the enrollmentId is not present on the ledger.
     - ```json
       {
         "type": "HLUnprocessableEntity",

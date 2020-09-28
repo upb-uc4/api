@@ -619,13 +619,11 @@ paths:
         "400":
           description: | 
             Bad Request  
-            types: MalformedLoginToken, MultipleAuthorizationError, Deserialization, MissingHeader
+            types: MalformedLoginToken, MultipleAuthorizationError
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
+                $ref: '#/components/schemas/GenericError'
         "401":
           description: |
             Unauthorized  

@@ -10,7 +10,7 @@ The Errors returned are defined [here](hlf_chaincode_api_errors.md#Errors).
 - ID = addMatriculationData
 - Send
     - matriculationData :: [MatriculationData](#MatriculationData)
-  - Receive
+- Receive
     - [MatriculationData](#MatriculationData)
       -  Description: Done, returns the submitted data.
 

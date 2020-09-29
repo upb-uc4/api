@@ -103,7 +103,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: Validation, LoginTokenSignatureInvalid, HLUnprocessableEntity
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid, HLUnprocessableEntity
           content:
             application/json:
               schema:

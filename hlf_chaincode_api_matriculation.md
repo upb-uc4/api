@@ -9,7 +9,7 @@ The Errors returned are defined [here](hlf_chaincode_api_errors.md#Errors).
 ### Add Matriculation Data
 - ID = addMatriculationData
 - Send
-    - newMatriculationData :: [MatriculationData](#MatriculationData)
+    - matriculationData :: [MatriculationData](#MatriculationData)
 - Receive
     - [MatriculationData](#MatriculationData)
       -  Description: Done, returns the submitted data.
@@ -42,7 +42,7 @@ The Errors returned are defined [here](hlf_chaincode_api_errors.md#Errors).
 ### Update Matriculation Data
 - ID = updateMatriculationData
 - Send
-    - updatedMatriculationData :: [MatriculationData](#MatriculationData)
+    - matriculationData :: [MatriculationData](#MatriculationData)
 - Receive
     - [MatriculationData](#MatriculationData)
       -  Description: Done, returns the submitted data.

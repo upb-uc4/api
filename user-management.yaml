@@ -183,7 +183,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: Validation, LoginTokenSignatureInvalid
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -323,7 +323,7 @@ paths:
         "422":
           description: |
             Unprocessable Entity  
-            types: Validation, UneditableFields, LoginTokenSignatureInvalid
+            types: Validation, ValidationTimeout, UneditableFields, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:

@@ -45,7 +45,8 @@ components:
             "Teapot",
             "MultipleAuthorizationError",
             "UnsupportedMediaType",
-            "EntityTooLarge"
+            "EntityTooLarge",
+            "ValidationTimeout"
           ]
         title:
           type: string

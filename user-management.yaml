@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.9.1"
+  version: "0.9.2"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -388,16 +388,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /users/{username}/role:
+  /users/{username}/enrollmentId:
     get:
       tags:
       - "User Management"
-      summary: "Returns the role of a user"
-      description: "Returns the role of the user with the specified username"
+      summary: "Returns the enrollmentId of a user"
+      description: "Returns the enrollmentId of the user with the specified username"
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
-      operationId: "getRole"
+      operationId: "getEnrollmentId"
       parameters:
       - name: "username"
         in: "path"
@@ -410,7 +410,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Role'
+                $ref: '#/components/schemas/JsonEnrollmentId'
+              examples:
+                PostStudent:
+                  $ref: '#/components/examples/ExampleJsonEnrollmentId'
         "400":
           description: |
             Bad Request    
@@ -427,14 +430,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: KeyNotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
         "422":
           description: |
             Unprocessable Entity   
@@ -443,7 +438,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-                
   /users/{username}/image:
     get:
       tags:
@@ -656,7 +650,61 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-  
+  /users/{username}/role:
+    get:
+      tags:
+      - "User Management"
+      summary: "Returns the role of a user"
+      description: "Returns the role of the user with the specified username"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "getRole"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        "400":
+          description: |
+            Bad Request    
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: KeyNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
   /students:
     get:
       tags:
@@ -911,6 +959,8 @@ components:
           type: string
           format: phonenumber
           example: "+49123456789"
+        governmentId:
+          type: string
     Admin:
       allOf:
         - $ref: '#/components/schemas/User'
@@ -962,6 +1012,11 @@ components:
         role:
           type: "string"
           enum: ["Admin", "Student", "Lecturer"]
+    JsonEnrollmentId:
+      type: object
+      properties:
+        enrollmentId:
+          type: string
     JsonVersionNumber:
       type: object
       properties:
@@ -1001,6 +1056,7 @@ components:
           email: "luke@skywalker.com"
           birthDate: "1950-12-24"
           phoneNumber: "+49123456789"
+          governmentId: "T22000129"
           latestImmatriculation: ""
           matriculationId: "1234567"
     ExampleStudent:
@@ -1019,6 +1075,7 @@ components:
         email: "luke@skywalker.com"
         birthDate: "1950-12-24"
         phoneNumber: "+49123456789"
+        governmentId: "T22000129"
         latestImmatriculation: ""
         matriculationId: "1234567"
     ExamplePostMessageLecturer:
@@ -1042,6 +1099,7 @@ components:
           email: "luke@skywalker.com"
           birthDate: "1950-12-24"
           phoneNumber: "+49123456789"
+          governmentId: "T22000129"
           freeText: "Some cool publications about jedi stuff."
           researchArea: "The light side only, I swear!"
     ExampleLecturer:
@@ -1060,6 +1118,7 @@ components:
         email: "luke@skywalker.com"
         birthDate: "1950-12-24"
         phoneNumber: "+49123456789"
+        governmentId: "T22000129"
         freeText: "Some cool publications about jedi stuff."
         researchArea: "The light side only, I swear!"
     ExamplePostMessageAdmin:
@@ -1083,6 +1142,7 @@ components:
           email: "luke@skywalker.com"
           birthDate: "1950-12-24"
           phoneNumber: "+49123456789"
+          governmentId: "T22000129"
     ExampleAdmin:
       summary: "Example for Admin"
       value:
@@ -1099,7 +1159,11 @@ components:
         email: "luke@skywalker.com"
         birthDate: "1950-12-24"
         phoneNumber: "+49123456789"
-        
+        governmentId: "T22000129"
+    ExampleJsonEnrollmentId:
+      summary: "Example for JsonEnrollmentId"
+      value:
+        enrollmentId: "c0bb0851a838990e6bfd55755dd8bcbfe15f8e2ea65ee0e8af6328a7018c532d"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

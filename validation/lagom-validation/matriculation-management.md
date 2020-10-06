@@ -1,5 +1,4 @@
 # MatriculationData Validation
-Every invalid equivalence class returns an error. Every valid class returns an empty sequence.
 
 ## SubjectMatriculation
 

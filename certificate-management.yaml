@@ -324,7 +324,7 @@ components:
           -----END CERTIFICATE REQUEST-----  
         encryptedPrivateKey:
           key: "thisIsAnEncryptedPrivateKey"
-          iv: "this is an iv"
+          iv: "hbhRVb7R99xsHh3J"
           salt: "this is a salt"
 externalDocs:
   description: "Find out more about Swagger"

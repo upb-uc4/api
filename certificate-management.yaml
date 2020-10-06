@@ -186,6 +186,14 @@ paths:
             application/json:  
               schema:
                 $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: OwnerMismatch
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
         "422":
           description: |
             Unprocessable Entity  
@@ -243,7 +251,14 @@ paths:
             application/json:  
               schema:
                 $ref: '#/components/schemas/GenericError'
-  
+        "404":
+          description: |
+            NotFound  
+            types: NotEnrolled
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
 components:
   securitySchemes:
     uc4_token_login:

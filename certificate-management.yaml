@@ -39,7 +39,7 @@ paths:
       tags:
       - "Certificate Management"
       summary: "Send info to start the certificate creation process"
-      description: "Send the CSR, and optionally the encrypted private key, to start the certificate creation process. One can only invoked this process for themselves."
+      description: "Send the CSR, and optionally the encrypted private key, to start the certificate creation process. One can only invoke this process for themselves."
       operationId: "createCertificate"
       security:
         - uc4_token_login: []

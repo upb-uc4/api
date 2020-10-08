@@ -121,8 +121,11 @@ paths:
       tags:
       - "Certificate Management"
       summary: "Get a specified certificate"
-      description: "Fetch the certificate of the user with the specified username, no authorization required"
+      description: "Fetch the certificate of the user with the specified username"
       operationId: "getCertificate"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
       parameters:
       - name: "username"
         in: "path"
@@ -137,6 +140,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonCertificate'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
         "404":
             description: |
               Not Found  
@@ -145,13 +164,20 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/GenericError'
-                  
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/GenericError'
   /certificates/{username}/enrollmentId:
     get:
       tags:
       - "Certificate Management"
-      summary: "Get your own enrollment ID"
-      description: "Fetch your enrollment ID, specified by the username set in the authorization and in path."
+      summary: "Get a specified enrollment ID"
+      description: "Fetch the enrollment ID of the user with the specified username"
       operationId: "getEnrollmentID"
       security:
         - uc4_token_login: []
@@ -186,14 +212,14 @@ paths:
             application/json:  
               schema:
                 $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: OwnerMismatch
-          content:
-            application/json:  
-              schema:
-                $ref: '#/components/schemas/GenericError'
+        "404":
+            description: |
+              Not Found  
+              types: KeyNotFound
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
         "422":
           description: |
             Unprocessable Entity  

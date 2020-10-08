@@ -318,7 +318,7 @@ components:
         
   examples:
     PostMessageCsrExample:
-      summary : "descr"
+      summary : "PostMessageCsr Example"
       value:
         certificateSigningRequest: | 
           -----BEGIN CERTIFICATE REQUEST-----

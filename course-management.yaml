@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.8.1"
+  version: "0.8.2"
   title: "UC4"
 
 servers:
@@ -90,18 +90,10 @@ paths:
             application/json:  
               schema:
                 $ref: '#/components/schemas/GenericError'
-        "409":
-          description: |
-            Conflict  
-            types: KeyDuplicate
-          content:
-            application/json: 
-              schema:
-                $ref: '#/components/schemas/GenericError'
         "422":
           description: |
             Unprocessable Entity  
-            types: Validation, LoginTokenSignatureInvalid
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid
           content:
             application/json: 
               schema:
@@ -331,18 +323,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: KeyNotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
         "422":
           description: |
             Unprocessable Entity  
-            types: Validation, LoginTokenSignatureInvalid
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:

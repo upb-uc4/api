@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.8.1"
+  version: "0.9.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -153,7 +153,7 @@ paths:
             Location:
               schema:
                 type: string
-                description: "URI of the newly created Student"
+              description: "URI of the newly created User"
         "400":
           description: | 
             Bad Request  
@@ -180,18 +180,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-        "409":
-          description: |
-            Conflict  
-            types: KeyDuplicate
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
         "422":
           description: |
             Unprocessable Entity  
-            types: Validation, LoginTokenSignatureInvalid
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -270,7 +262,7 @@ paths:
       summary: "Update an existing user"
       description: |
         Updates a user if invoked by an administrator or by the user itself. Can only change specific attributes if invoked by a regular user&#58;
-          Address, Email and profile picture
+          Address, Email
       operationId: "updateUser"
       security:
         - uc4_token_login: [] 
@@ -328,18 +320,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-        "404":
-          description: |
-            Not Found  
-            types: KeyNotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
         "422":
           description: |
             Unprocessable Entity  
-            types: Validation, UneditableFields, LoginTokenSignatureInvalid
+            types: Validation, ValidationTimeout, UneditableFields, LoginTokenSignatureInvalid
           content:
             application/json:
               schema:
@@ -454,6 +438,219 @@ paths:
         "422":
           description: |
             Unprocessable Entity   
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+                
+  /users/{username}/image:
+    get:
+      tags:
+      - "User Management"
+      summary: "Returns the profile picture of a user"
+      description: "Returns the profile picture of a user with the specified username"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "getImage"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: "content type and encoding"
+                
+        "400":
+          description: |
+            Bad Request    
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: KeyNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+    put:
+      tags:
+      - "User Management"
+      summary: "Set a new profile picture"
+      description: |
+        Updates a user with the provided profile picture
+      operationId: "putImage"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        description: "Byte string of the new profile picture"
+        required: true
+        content:
+          image/*:
+            schema:
+              type: "string"
+              format: binary
+            
+      responses:
+        "200":
+          description: "OK"
+          headers:
+            Location:
+              schema:
+                type: string
+              description: "URI of the new profile pricture"
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, MultipleAuthorizationError, Deserialization, MissingHeader
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: OwnerMismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: KeyNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "413":
+          description: |
+            Payload Too Large
+            types: EntityTooLarge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "415":
+          description: |
+            Unsupported Media Type 
+            types: UnsupportedMediaType
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+    delete:
+      tags:
+      - "User Management"
+      summary: "Delete a profile picture"
+      description: |
+        Resets a user's profile picture back to the default.
+      operationId: "deleteImage"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: OwnerMismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: KeyNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
             types: LoginTokenSignatureInvalid
           content:
             application/json:
@@ -707,8 +904,6 @@ components:
         birthDate:
           type: string
           format: date
-        picture:
-          type: string
         email:
           type: string
           format: email
@@ -803,7 +998,6 @@ components:
             country: "Germany"
           firstName: "Luke"
           lastName: "Skywalker"
-          picture: "string"
           email: "luke@skywalker.com"
           birthDate: "1950-12-24"
           phoneNumber: "+49123456789"
@@ -822,7 +1016,6 @@ components:
           country: "Germany"
         firstName: "Luke"
         lastName: "Skywalker"
-        picture: "string"
         email: "luke@skywalker.com"
         birthDate: "1950-12-24"
         phoneNumber: "+49123456789"
@@ -846,7 +1039,6 @@ components:
             country: "Germany"
           firstName: "Luke"
           lastName: "Skywalker"
-          picture: "string"
           email: "luke@skywalker.com"
           birthDate: "1950-12-24"
           phoneNumber: "+49123456789"
@@ -865,7 +1057,6 @@ components:
           country: "Germany"
         firstName: "Luke"
         lastName: "Skywalker"
-        picture: "string"
         email: "luke@skywalker.com"
         birthDate: "1950-12-24"
         phoneNumber: "+49123456789"
@@ -889,7 +1080,6 @@ components:
             country: "Germany"
           firstName: "Luke"
           lastName: "Skywalker"
-          picture: "string"
           email: "luke@skywalker.com"
           birthDate: "1950-12-24"
           phoneNumber: "+49123456789"
@@ -906,7 +1096,6 @@ components:
           country: "Germany"
         firstName: "Luke"
         lastName: "Skywalker"
-        picture: "string"
         email: "luke@skywalker.com"
         birthDate: "1950-12-24"
         phoneNumber: "+49123456789"

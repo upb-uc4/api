@@ -30,6 +30,7 @@ components:
             "MalformedLoginToken",
             "JwtAuthorization",
             "BasicAuthorization",
+            "RefreshTokenMissing",
             "RefreshTokenExpired",
             "LoginTokenExpired",
             "RefreshTokenSignatureInvalid",
@@ -43,7 +44,10 @@ components:
             "Deserialization",
             "Teapot",
             "MultipleAuthorizationError",
-            "NotEnrolled"
+            "NotEnrolled",
+            "UnsupportedMediaType",
+            "EntityTooLarge",
+            "ValidationTimeout"
           ]
         title:
           type: string
@@ -73,7 +77,8 @@ components:
           enum: [
             "Validation", 
             "JsonValidation",
-            "UneditableFields"
+            "UneditableFields",
+            "MissingHeader"
           ]
         title:
           type: string

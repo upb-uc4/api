@@ -931,6 +931,8 @@ components:
     PostMessageUser:
       type: "object"
       properties:
+        governmentId:
+          type: string
         authUser:
           allOf:
             - $ref: "#/components/schemas/AuthUser"
@@ -1038,6 +1040,7 @@ components:
     ExamplePostMessageStudent:
       summary: "Example for PostMessageStudent"
       value:
+        governmentId: "T22000129"
         authUser:
           username: "test-student"
           password: "password123"
@@ -1056,7 +1059,6 @@ components:
           email: "luke@skywalker.com"
           birthDate: "1950-12-24"
           phoneNumber: "+49123456789"
-          governmentId: "T22000129"
           latestImmatriculation: ""
           matriculationId: "1234567"
     ExampleStudent:
@@ -1075,12 +1077,12 @@ components:
         email: "luke@skywalker.com"
         birthDate: "1950-12-24"
         phoneNumber: "+49123456789"
-        governmentId: "T22000129"
         latestImmatriculation: ""
         matriculationId: "1234567"
     ExamplePostMessageLecturer:
       summary: "Example for PostMessageLecturer"
       value:
+        governmentId: "T22000129"
         authUser:
           username: "test-lec"
           password: "password123"
@@ -1099,7 +1101,6 @@ components:
           email: "luke@skywalker.com"
           birthDate: "1950-12-24"
           phoneNumber: "+49123456789"
-          governmentId: "T22000129"
           freeText: "Some cool publications about jedi stuff."
           researchArea: "The light side only, I swear!"
     ExampleLecturer:
@@ -1118,12 +1119,12 @@ components:
         email: "luke@skywalker.com"
         birthDate: "1950-12-24"
         phoneNumber: "+49123456789"
-        governmentId: "T22000129"
         freeText: "Some cool publications about jedi stuff."
         researchArea: "The light side only, I swear!"
     ExamplePostMessageAdmin:
       summary: "Example for PostMessageAdmin"
       value:
+        governmentId: "T22000129"
         authUser:
           username: "test-admin"
           password: "password123"
@@ -1142,7 +1143,6 @@ components:
           email: "luke@skywalker.com"
           birthDate: "1950-12-24"
           phoneNumber: "+49123456789"
-          governmentId: "T22000129"
     ExampleAdmin:
       summary: "Example for Admin"
       value:
@@ -1159,7 +1159,6 @@ components:
         email: "luke@skywalker.com"
         birthDate: "1950-12-24"
         phoneNumber: "+49123456789"
-        governmentId: "T22000129"
     ExampleJsonEnrollmentId:
       summary: "Example for JsonEnrollmentId"
       value:

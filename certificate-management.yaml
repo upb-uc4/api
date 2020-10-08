@@ -216,7 +216,7 @@ paths:
       parameters:
       - name: "username"
         in: "path"
-        description: "Username of the user whose private is fetched"
+        description: "Username of the user whose private key is fetched"
         required: true
         schema:
           type: 'string'

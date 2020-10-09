@@ -97,6 +97,14 @@ paths:
             application/json:  
               schema:
                 $ref: '#/components/schemas/GenericError'
+        "409":
+          description: |
+            Conflict  
+            types: AlreadyEnrolled
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
         "413":
           description: |
             Payload Too Large  

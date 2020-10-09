@@ -44,6 +44,8 @@ components:
             "Deserialization",
             "Teapot",
             "MultipleAuthorizationError",
+            "NotEnrolled",
+            "AlreadyEnrolled",
             "UnsupportedMediaType",
             "EntityTooLarge",
             "ValidationTimeout"

@@ -7,3 +7,5 @@ urls:
       url: https://raw.githubusercontent.com/upb-uc4/api/develop/authentication-management.yaml
     - name: Matriculation-Management
       url: https://raw.githubusercontent.com/upb-uc4/api/develop/matriculation-management.yaml
+    - name: Certificate-Management
+      url: https://raw.githubusercontent.com/upb-uc4/api/develop/certificate-management.yaml

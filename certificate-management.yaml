@@ -1,0 +1,380 @@
+openapi: "3.0.0"
+info:
+  description: "This is the Certificate API for UC4."
+  version: "0.8.1"
+  title: "UC4"
+
+servers:
+  - url: https://uc4.cs.upb.de/api/production/certificate-management
+
+tags:
+- name: "Version Management"
+  description: "Everything about the Version"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+- name: "Certificate Management"
+  description: "Everything about certificates"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+
+paths:
+  /version:
+    get:
+      tags:
+      - "Version Management"
+      summary: "Get version"
+      description: "Returns the version of the current service"
+      operationId: "getVersion"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonVersionNumber'
+  /certificates/{username}:
+    post:
+      tags:
+      - "Certificate Management"
+      summary: "Send info to start the certificate creation process"
+      description: "Send the CSR, and optionally the encrypted private key, to start the certificate creation process. One can only invoke this process for themselves."
+      operationId: "createCertificate"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "Username of the user for which to create a certificate"
+        required: true
+        schema:
+          type: 'string'
+      requestBody:
+        description: "CSR object that is the base for Certificate Creation"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostMessageCSR'
+            examples:
+              PostMessageCsrExample:
+                $ref: '#/components/examples/PostMessageCsrExample'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonCertificate'
+          headers:
+            Location:
+              schema:
+                type: string
+                description: "URI of the newly created Certificate"
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, MultipleAuthorizationError, JsonValidation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: OwnerMismatch
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "409":
+          description: |
+            Conflict  
+            types: AlreadyEnrolled
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "413":
+          description: |
+            Payload Too Large  
+            types: EntityTooLarge
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: Validation, LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+                  
+  /certificates/{username}/certificate:
+    get:
+      tags:
+      - "Certificate Management"
+      summary: "Get a specified certificate"
+      description: "Fetch the certificate of the user with the specified username"
+      operationId: "getCertificate"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "Username of the user whose certificate is fetched"
+        required: true
+        schema:
+          type: 'string'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonCertificate'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+            description: |
+              Not Found  
+              types: KeyNotFound
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /certificates/{username}/enrollmentId:
+    get:
+      tags:
+      - "Certificate Management"
+      summary: "Get a specified enrollment ID"
+      description: "Fetch the enrollment ID of the user with the specified username"
+      operationId: "getEnrollmentID"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "Username of the user, of which the enrollmentId is fetched"
+        required: true
+        schema:
+          type: 'string'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonEnrollmentId'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+            description: |
+              Not Found  
+              types: KeyNotFound
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/GenericError'
+                
+  /certificates/{username}/privateKey:
+    get:
+      tags:
+      - "Certificate Management"
+      summary: "Fetch the encrypted private key"
+      description: "Fetch the encrypted private key of the user with the username specified in path and authorization. One can only fetch their own encrypted private key."
+      operationId: "getPrivateKey"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "Username of the user whose private key is fetched"
+        required: true
+        schema:
+          type: 'string'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncryptedPrivateKey'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: OwnerMismatch
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            NotFound  
+            types: NotEnrolled
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+components:
+  securitySchemes:
+    uc4_token_login:
+      type: apiKey
+      in: cookie
+      name: login
+    uc4_token_login_header:
+      type: http
+      scheme: bearer
+  schemas:
+    EncryptedPrivateKey:
+      type: "object"
+      properties:
+        key:
+          type: string
+          description: "The encrypted private key."
+        iv:
+          type: string
+          description: "The IV for key encryption/decryption."
+        salt:
+          type: string
+          description: "The salt used to derive the key from the password."
+        
+    PostMessageCSR:
+      type: "object"
+      properties:
+        certificateSigningRequest:
+          type: string
+          description: "In PEM format, x509 certificate signing request, as specified in PKCS#10. Common-name must be the enrollmentId."
+        encryptedPrivateKey:
+          allOf:
+            - $ref: "#/components/schemas/EncryptedPrivateKey"
+    JsonCertificate:
+      type: "object"
+      properties:
+        certificate:
+          type: string
+          description: "In PEM format, x509 certificate, as specified in PKCS#10."
+    JsonEnrollmentId:
+      type: "object"
+      properties:
+        id:
+          type: string
+    JsonVersionNumber:
+      type: object
+      properties:
+        versionNumber:
+          type: string
+    GenericError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
+        - type: object
+    DetailedError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+        - type: object
+        
+  examples:
+    PostMessageCsrExample:
+      summary : "PostMessageCsr Example"
+      value:
+        certificateSigningRequest: | 
+          -----BEGIN CERTIFICATE REQUEST-----
+          MIIChDCCAW4CAQAwETEPMA0GA1UEAxMGdGVzdGlkMIIBIjANBgkqhkiG9w0BAQEF
+          AAOCAQ8AMIIBCgKCAQEAsipACqx6inXxSTeiC1sl8PdJXDGQh2MHs7X519XXhMcp
+          Aa3XV/9qqt+lYXglGmGb3uHbZ+IGeAkE9Lid6J//Au9ulBnKhKd1Uyy5EqFNLcLm
+          6Q4s7kEYWC23xu9GD6EHWJLNn29ywJg801Pl4tLS2LJ45fbfd4QwwTZdrWj1ufNd
+          3FVm6XyItw8MI0bfkglsYGqJ3bO7zX41E/23r8iE668smXRGpBfwhtpl1P2AWyBZ
+          yXXiKo9aYgDAe2LIz6fO8PZSzWOJLatHDZ1BHlF7k0ZPlABmGekELYyeaola2xS7
+          UgO41M8BWJpNmWG9fIiJchFRQCk9gpFFf+zr9I0TzwIDAQABoDAwLgYJKoZIhvcN
+          AQkOMSEwHzAdBgNVHQ4EFgQUDq+poSooyuAmOc51K6wd4xUtBtYwCwYJKoZIhvcN
+          AQELA4IBAQCPrQ6iF7kbqjT+XijpsK4kMHtCN+2GUsO+/X/GCGN/K74440ZLPEH0
+          qQO20o3fc1GDI6ShZ5G//8+m2CItg7WxeFDXc/b6W2c5HqAh6rUvPMIym+9JHaZJ
+          aHHNt4N6wWYnZVhvR6Sy+DeDwdog0hQh+FFoDO9bPJF46leN+MdsgTZ8Mwe8liJp
+          CTovF8w/FIt197UYT5S/qJ5/zfg5b+KXulQ0zf5LeWng7LvQeywgWdrvsVVmKLM0
+          zOUy2PvH59mXlOg78NnoDWWU2Rt1UaVlbOAxOiCuC84j2wIgLEErVS4eYXwHOT+c
+          de5esScxXO7Eikl9DwUe3lkqfA1FCjls
+          -----END CERTIFICATE REQUEST-----  
+        encryptedPrivateKey:
+          key: "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"
+          iv: "hbhRVb7R99xsHh3J"
+          salt: "tF/A9PnUBkctJNWam7rQj3hu17hg1TGpQdVVOPC1YN8="
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io" 

@@ -1,0 +1,259 @@
+openapi: "3.0.0"
+info:
+  description: "This is the Configuration API for UC4."
+  version: "0.10.1"
+  title: "UC4"
+
+servers:
+  - url: https://uc4.cs.upb.de/api/production/configuration-management
+
+tags:
+- name: "Version Management"
+  description: "Everything about the Version"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+- name: "Configuration Management"
+  description: "Everything about the configuration"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+
+paths:
+  /version:
+    get:
+      tags:
+      - "Version Management"
+      summary: "Get version"
+      description: "Returns the version of the current service"
+      operationId: "getVersion"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonVersionNumber'
+  /configuration:
+    get:
+      tags:
+      - "Configuration Management"
+      summary: "Get the current Configuration"
+      description: "Fetch the current Configuration of the system"
+      operationId: "getConfiguration"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Configuration'
+              examples:
+                ConfigurationExample:
+                  $ref: '#/components/examples/ConfigurationExample'
+    put:
+      tags:
+      - "Configuration Management"
+      summary: "Send the new Configuration to apply to the system"
+      description: "Send the new Configuration that will serve as the new system configuration"
+      operationId: "updateConfiguration"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
+      requestBody:
+        description: "Configuration object that will serve as the new system configuration"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Configuration'
+            examples:
+              ConfigurationExample:
+                $ref: '#/components/examples/ConfigurationExample'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Configuration'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, MultipleAuthorizationError, JsonValidation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /validation:
+    get:
+      tags:
+      - "Configuration Management"
+      summary: "Get the regular expressions used for validation"
+      description: "Fetch the regular expressions used in the validaiton of various objects"
+      operationId: "getValidation"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationConfiguration'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/GenericError'
+components:
+  securitySchemes:
+    uc4_token_login:
+      type: apiKey
+      in: cookie
+      name: login
+    uc4_token_login_header:
+      type: http
+      scheme: bearer
+  schemas:
+    Configuration:
+      type: "object"
+      properties:
+        fieldsOfStudy:
+          type: array
+          items:
+            type: string
+        countries:
+          type: array
+          items:
+            type: string
+        language:
+          type: array
+          items:
+            type: string
+        courseTypes:
+          type: array
+          items:
+            type: string
+    ValidationConfiguration:
+      type: "object"
+      properties:
+        authenticationUser:
+          type: object
+          properties:
+            username:
+              type: string
+        course:
+          type: "object"
+          properties:
+            courseName:
+              type: string
+            startDate:
+              type: string
+            endDate:
+              type: string
+            courseDescription:
+              type: string
+        putMessageMatriculation:
+          type: "object"
+          properties:
+            courseName:
+              type: string
+        user:
+          type: "object"
+          properties:
+            username:
+              type: string
+            firstName:
+              type: string
+            lastName:
+              type: string
+            email:
+              type: string
+            phoneNumber:
+              type: string
+            birthDate:
+              type: string
+        lecturer:
+          type: "object"
+          properties:
+            freeText:
+              type: string
+            researchArea:
+              type: string
+    JsonSemester:
+      type: object
+      properties:
+        semester:
+          type: string
+    JsonVersionNumber:
+      type: object
+      properties:
+        versionNumber:
+          type: string
+    GenericError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
+        - type: object
+    DetailedError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+        - type: object
+  examples:
+    ConfigurationExample:
+      summary: "An example for the configuration"
+      value:
+        fieldsOfStudy: [Etwas, nochwas]
+        countries:
+        language:
+        courseTypes:
+        
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io" 

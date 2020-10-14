@@ -34,6 +34,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonVersionNumber'
+  /semester:
+    get:
+      tags:
+      - "Configuration Management"
+      summary: "Get the semester of the given date"
+      description: "Get which semester corresponds to the given date"
+      operationId: "getSemester"
+      parameters:
+      - name: "date"
+        in: "query"
+        description: "Date for which the semester needs to be fetched"
+        required: false
+        schema:
+          type: 'string'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonSemester'
+              examples:
+                ConfigurationExample:
+                  $ref: '#/components/examples/JsonSemester'
+        "400":
+          description: | 
+            Bad Request  
+            types: QueryParameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
   /configuration:
     get:
       tags:
@@ -55,7 +87,7 @@ paths:
       tags:
       - "Configuration Management"
       summary: "Send the new Configuration to apply to the system"
-      description: "Send the new Configuration that will serve as the new system configuration"
+      description: "Send the new Configuration that will serve as the new system configuration. Can only be invoked by admins."
       operationId: "updateConfiguration"
       security:
         - uc4_token_login: []
@@ -118,9 +150,6 @@ paths:
       summary: "Get the regular expressions used for validation"
       description: "Fetch the regular expressions used in the validaiton of various objects"
       operationId: "getValidation"
-      security:
-        - uc4_token_login: []
-        - uc4_token_login_header: []
       responses:
         "200":
           description: "OK"
@@ -128,30 +157,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidationConfiguration'
-        "400":
-          description: | 
-            Bad Request  
-            types: MalformedLoginToken, MultipleAuthorizationError
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:  
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: LoginTokenSignatureInvalid
-          content:
-            application/json: 
-              schema:
-                $ref: '#/components/schemas/GenericError'
 components:
   securitySchemes:
     uc4_token_login:
@@ -173,7 +178,7 @@ components:
           type: array
           items:
             type: string
-        language:
+        languages:
           type: array
           items:
             type: string
@@ -199,11 +204,6 @@ components:
             endDate:
               type: string
             courseDescription:
-              type: string
-        putMessageMatriculation:
-          type: "object"
-          properties:
-            courseName:
               type: string
         user:
           type: "object"
@@ -251,8 +251,12 @@ components:
       value:
         fieldsOfStudy: [Etwas, nochwas]
         countries:
-        language:
+        languages:
         courseTypes:
+    JsonSemester:
+      summary: "An example for the JsonSemester"
+      value:
+        semester: "SS2020"
         
 externalDocs:
   description: "Find out more about Swagger"

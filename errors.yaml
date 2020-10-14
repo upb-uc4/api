@@ -79,7 +79,8 @@ components:
             "Validation", 
             "JsonValidation",
             "UneditableFields",
-            "MissingHeader"
+            "MissingHeader",
+            "QueryParameter"
           ]
         title:
           type: string

@@ -227,6 +227,13 @@ components:
               type: string
             researchArea:
               type: string
+        address:
+          type: "object"
+          properties:
+            street:
+              type: string
+            city:
+              type: string
     JsonSemester:
       type: object
       properties:

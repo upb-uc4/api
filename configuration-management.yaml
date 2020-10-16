@@ -34,38 +34,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonVersionNumber'
-  /semester:
+  /version/hyperledger:
     get:
       tags:
-      - "Configuration Management"
-      summary: "Get the semester of the given date"
-      description: "Get which semester corresponds to the given date"
-      operationId: "getSemester"
-      parameters:
-      - name: "date"
-        in: "query"
-        description: "Date for which the semester needs to be fetched"
-        required: false
-        schema:
-          type: 'string'
+      - "Version Management"
+      summary: "Get versions of the hyperledger api, chaincode and network"
+      description: "Get versions of the hyperledger api, chaincode and network of the underlying hyperledger fabric network"
+      operationId: "getVersionHyperledger"
       responses:
         "200":
           description: "OK"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JsonSemester'
+                $ref: '#/components/schemas/HyperledgerVersions'
               examples:
-                ConfigurationExample:
-                  $ref: '#/components/examples/JsonSemester'
-        "400":
-          description: | 
-            Bad Request  
-            types: QueryParameter
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DetailedError'
+                HyperledgerVersionsExample:
+                  $ref: '#/components/examples/HyperledgerVersions'
   /configuration:
     get:
       tags:
@@ -143,6 +128,38 @@ paths:
             application/json: 
               schema:
                 $ref: '#/components/schemas/GenericError'
+  /semester:
+    get:
+      tags:
+      - "Configuration Management"
+      summary: "Get the semester of the given date"
+      description: "Get which semester corresponds to the given date"
+      operationId: "getSemester"
+      parameters:
+      - name: "date"
+        in: "query"
+        description: "Date for which the semester needs to be fetched"
+        required: false
+        schema:
+          type: 'string'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonSemester'
+              examples:
+                ConfigurationExample:
+                  $ref: '#/components/examples/JsonSemester'
+        "400":
+          description: | 
+            Bad Request  
+            types: QueryParameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedError'
   /validation:
     get:
       tags:
@@ -234,6 +251,15 @@ components:
               type: string
             city:
               type: string
+    HyperledgerVersions:
+      type: "object"
+      properties:
+        apiVersion:
+          type: string
+        chaincodeVersion:
+          type: string
+        networkVersion:
+          type: string
     JsonSemester:
       type: object
       properties:
@@ -253,6 +279,12 @@ components:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
         - type: object
   examples:
+    HyperledgerVersions:
+      summary: "An example for the HyperledgerVersions object"
+      value:
+        apiVersion: "v0.10.0"
+        chaincodeVersion: "v0.10.0"
+        networkVersion: "v0.10.0"
     ConfigurationExample:
       summary: "An example for the configuration"
       value:

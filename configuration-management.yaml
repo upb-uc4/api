@@ -288,10 +288,10 @@ components:
     ConfigurationExample:
       summary: "An example for the configuration"
       value:
-        fieldsOfStudy: [Etwas, nochwas]
-        countries:
-        languages:
-        courseTypes:
+        fieldsOfStudy: ["Computer Science", "Philosophy", "Media Sciences", "Economics", "Mathematics", "Physics", "Chemistry", "Education", "Sports Science", "Japanology", "Spanish Culture", "Pedagogy", "Business Informatics", "Linguistics"]
+        countries: ["Germany", "United States", "Italy", "France", "United Kingdom", "Belgium", "Netherlands", "Spain", "Austria", "Switzerland", "Poland"]
+        languages: ["German", "English"]
+        courseTypes: ["Lecture", "Seminar", "Project Group"]
     JsonSemester:
       summary: "An example for the JsonSemester"
       value:

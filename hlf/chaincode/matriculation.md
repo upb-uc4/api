@@ -2,7 +2,7 @@
 
 In the following, the chaincode api for the "Matriculation"-Chaincode is described.
 This contains all Transactions and Models provided for this domain.
-The Errors returned are defined [here](hlf_chaincode_api_errors.md#Errors).
+The Errors returned are defined [here](errors.md#Errors).
 
 ## Transactions
 
@@ -14,7 +14,7 @@ The Errors returned are defined [here](hlf_chaincode_api_errors.md#Errors).
     - [MatriculationData](#MatriculationData)
       -  Description: Done, returns the submitted data.
 
-    - [DetailedError](hlf_chaincode_api_errors.md#DetailedError) 
+    - [DetailedError](errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -30,7 +30,7 @@ The Errors returned are defined [here](hlf_chaincode_api_errors.md#Errors).
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.
 
 
-    - [GenericError](hlf_chaincode_api_errors.md#GenericError) 
+    - [GenericError](errors.md#GenericError) 
       ```json
       {
         "type": "HLConflict",
@@ -47,7 +47,7 @@ The Errors returned are defined [here](hlf_chaincode_api_errors.md#Errors).
     - [MatriculationData](#MatriculationData)
       -  Description: Done, returns the submitted data.
 
-    - [GenericError](hlf_chaincode_api_errors.md#GenericError) 
+    - [GenericError](errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -56,7 +56,7 @@ The Errors returned are defined [here](hlf_chaincode_api_errors.md#Errors).
       ```
       - Description: This error is returned, if the enrollmentId specified in the MatriculationData is not present on the ledger.
 
-    - [DetailedError](hlf_chaincode_api_errors.md#DetailedError) 
+    - [DetailedError](errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -78,7 +78,7 @@ The Errors returned are defined [here](hlf_chaincode_api_errors.md#Errors).
 - Receive
     - [MatriculationData](#MatriculationData)
 
-    - [GenericError](hlf_chaincode_api_errors.md#GenericError) 
+    - [GenericError](errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -87,7 +87,7 @@ The Errors returned are defined [here](hlf_chaincode_api_errors.md#Errors).
       ```
       - Description: This error is returned, if the enrollmentId is not present on the ledger.
 
-    - [GenericError](hlf_chaincode_api_errors.md#GenericError) 
+    - [GenericError](errors.md#GenericError) 
       ```json
       {
         "type": "HLUnprocessableLedgerState",
@@ -107,7 +107,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
     - [MatriculationData](#MatriculationData)
       -  Description: Done, returns the submitted data.
 
-    - [GenericError](hlf_chaincode_api_errors.md#GenericError) 
+    - [GenericError](errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -116,7 +116,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
       ```
       - Description: This error is returned, if the enrollmentId is not present on the ledger.
       
-    - [DetailedError](hlf_chaincode_api_errors.md#DetailedError) 
+    - [DetailedError](errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -131,7 +131,7 @@ This method adds a single entry to the list of semesters in the MatriculationDat
       ```
       - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.
     
-    - [GenericError](hlf_chaincode_api_errors.md#GenericError) 
+    - [GenericError](errors.md#GenericError) 
       ```json
       {
         "type": "HLUnprocessableLedgerState",

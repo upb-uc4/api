@@ -3,7 +3,7 @@
 In the following, the hlf-api for the "certificate" handling will be explained.
 For insight in the General hlf-api, please refer to it's .Readme - File.
 > [!NOTE]
-Any Method can throw these [Exceptions](hlf_scala_api_errors.md#Exceptions).
+Any Method can throw these [Exceptions](errors.md#Exceptions).
 
 For "Certificate" handling we offer the following interface.
 
@@ -11,10 +11,10 @@ For "Certificate" handling we offer the following interface.
 - Returns
     - certificate :: String
         - => Success
-    - TransactionError :: Json (refer to: [DetailedError](hlf_chaincode_api_errors.md#DetailedError))
+    - TransactionError :: Json (refer to: [DetailedError](../chaincode/errors.md#DetailedError))
         - => error is returned
           - If the given parameters could not be parsed.
-    - TransactionError :: Json (refer to: [GenericError](hlf_chaincode_api_errors.md#GenericError))
+    - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
         - => error is returned
           - If a certificate for the given enrollmentId is already present on the ledger.
 
@@ -22,10 +22,10 @@ For "Certificate" handling we offer the following interface.
 - Returns
     - certificate :: String
         - => Success
-    - TransactionError :: Json (refer to: [GenericError](hlf_chaincode_api_errors.md#GenericError))
+    - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
         - => error is returned, 
           - If the enrollmentId is not present on the ledger.
-    - TransactionError :: Json (refer to: [DetailedError](hlf_chaincode_api_errors.md#DetailedError))
+    - TransactionError :: Json (refer to: [DetailedError](../chaincode/errors.md#DetailedError))
         - => error is returned
           - If the given parameters could not be parsed.
 
@@ -33,7 +33,7 @@ For "Certificate" handling we offer the following interface.
 - Returns
     - Certificate :: String
         - => Success
-    - TransactionError :: Json (refer to: [GenericError](hlf_chaincode_api_errors.md#GenericError))
+    - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
         - => error is returned,
           - If the enrollmentId is not present on the ledger.
           - If the state of data on the ledger is not consistent with the curent model.

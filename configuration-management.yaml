@@ -84,6 +84,8 @@ paths:
         required: false
         schema:
           type: 'string'
+          example: 
+            date: "2019-09-02"
       responses:
         "200":
           description: "OK"

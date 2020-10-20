@@ -49,8 +49,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/HyperledgerVersions'
               examples:
-                HyperledgerVersionsExample:
-                  $ref: '#/components/examples/HyperledgerVersions'
+                ExampleHyperledgerVersions:
+                  $ref: '#/components/examples/ExampleHyperledgerVersions'
+                ExampleHyperledgerVersionsUnavailabe:
+                  $ref: '#/components/examples/ExampleHyperledgerVersionsUnavailable'
   /configuration:
     get:
       tags:
@@ -67,7 +69,7 @@ paths:
                 $ref: '#/components/schemas/Configuration'
               examples:
                 ConfigurationExample:
-                  $ref: '#/components/examples/ConfigurationExample'
+                  $ref: '#/components/examples/ExampleConfiguration'
   /semester:
     get:
       tags:
@@ -219,13 +221,19 @@ components:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
         - type: object
   examples:
-    HyperledgerVersions:
+    ExampleHyperledgerVersions:
       summary: "An example for the HyperledgerVersions object"
       value:
         apiVersion: "v0.10.0"
         chaincodeVersion: "v0.10.0"
         networkVersion: "v0.10.0"
-    ConfigurationExample:
+    ExampleHyperledgerVersionsUnavailable:
+      summary: "An example for the HyperledgerVersions object, with an unavailabe version"
+      value:
+        apiVersion: "v0.10.0"
+        chaincodeVersion: "v0.10.0"
+        networkVersion: null
+    ExampleConfiguration:
       summary: "An example for the configuration"
       value:
         fieldsOfStudy: ["Computer Science", "Philosophy", "Media Sciences", "Economics", "Mathematics", "Physics", "Chemistry", "Education", "Sports Science", "Japanology", "Spanish Culture", "Pedagogy", "Business Informatics", "Linguistics"]

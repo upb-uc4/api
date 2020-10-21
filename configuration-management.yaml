@@ -155,6 +155,11 @@ components:
           properties:
             username:
               type: string
+        postMessageCSR:
+          type: object
+          properties:
+            certificateSigningRequest:
+              type: string
         course:
           type: "object"
           properties:
@@ -163,6 +168,12 @@ components:
             startDate:
               type: string
             endDate:
+              type: string
+            ects:
+              type: string
+            lecturerId:
+              type: string
+            maxParticipants:
               type: string
             courseDescription:
               type: string
@@ -192,6 +203,8 @@ components:
           type: "object"
           properties:
             street:
+              type: string
+            houseNumber:
               type: string
             city:
               type: string

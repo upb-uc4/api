@@ -11,7 +11,8 @@ protected val chaincode: String = "mycc" // name of the chaincode a connection i
 
 Depending on the type of network accessed, additional information is needed for authentication
 ```scala
-protected val tlsCert: Path = "/hyperledger_assets/ca_cert.pem" // CA-certificate to have your client validate that the Server you are talking to is actually the CA.
+protected val tlsCert: Path = "/hyperledger_assets/ca_cert.pem" // CA-certificate to have your client validate that the server you are talking to is actually the CA.
+
 protected val caURL: String = "172.17.0.3:30906" // address of the CA-server.
 
 protected val username: String = "TestUser123" // this should in most cases be the name of the .id file in your wallet directory.

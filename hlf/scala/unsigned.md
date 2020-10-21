@@ -39,7 +39,8 @@ certificateConnection.addCertificate(enrollmentId, certificate)
 ```
 
 ## THIRD-PARTY-Signed Communication
-All chaincode-transactions are furthermore provided a an "unsigned" proposal as well.
+All chaincode-transactions are furthermore provided as an "unsigned" proposal as well.
+
 - Here some sort of ADMIN has to provide their credentials [..] when initiating a connection.
 ```scala
 val certificateConnection: ConnectionCertificateTrait = 

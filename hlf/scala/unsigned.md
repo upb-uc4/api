@@ -59,4 +59,4 @@ val proposal: Array[Byte] = certificateConnection.getProposalAddCertificate(enro
 certificateConnection.submitSignedProposal(proposalBytes, signature)
 ```
 
-For additional insight in the General hlf-api, please refer to it's .Readme - File.
+For additional insight in the General hlf-api, please refer to its .Readme - File.

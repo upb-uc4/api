@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.9.2"
+  version: "0.10.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -376,56 +376,6 @@ paths:
           description: |
             Not Found  
             types: KeyNotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity   
-            types: LoginTokenSignatureInvalid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-  /users/{username}/enrollmentId:
-    get:
-      tags:
-      - "User Management"
-      summary: "Returns the enrollmentId of a user"
-      description: "Returns the enrollmentId of the user with the specified username"
-      security:
-        - uc4_token_login: [] 
-        - uc4_token_login_header: []
-      operationId: "getEnrollmentId"
-      parameters:
-      - name: "username"
-        in: "path"
-        required: true
-        schema:
-          type: "string"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/JsonEnrollmentId'
-              examples:
-                PostStudent:
-                  $ref: '#/components/examples/ExampleJsonEnrollmentId'
-        "400":
-          description: |
-            Bad Request    
-            types: MalformedLoginToken, MultipleAuthorizationError
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
           content:
             application/json:
               schema:
@@ -1014,11 +964,6 @@ components:
         role:
           type: "string"
           enum: ["Admin", "Student", "Lecturer"]
-    JsonEnrollmentId:
-      type: object
-      properties:
-        enrollmentId:
-          type: string
     JsonVersionNumber:
       type: object
       properties:
@@ -1159,10 +1104,6 @@ components:
         email: "luke@skywalker.com"
         birthDate: "1950-12-24"
         phoneNumber: "+49123456789"
-    ExampleJsonEnrollmentId:
-      summary: "Example for JsonEnrollmentId"
-      value:
-        enrollmentId: "c0bb0851a838990e6bfd55755dd8bcbfe15f8e2ea65ee0e8af6328a7018c532d"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

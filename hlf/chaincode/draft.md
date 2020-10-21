@@ -30,7 +30,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.
 
-### Get Signatures
+### GetSignatures
 - ID = getSignatures
 - Send
     - hash(transactioName, params) :: String

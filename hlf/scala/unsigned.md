@@ -19,7 +19,8 @@ protected val username: String = "TestUser123" // this should in most cases be t
 protected val password: String = "Test123" // a password used to register a user and receive/set a certificate for said user when enrolling.
 protected val organizationId: String = "org1MSP" // the id of the organization the user belongs to.
 
-protected val organisationName: String = "org1" // the name of the organisation the user belongs to.
+protected val organizationName: String = "org1" // the name of the organization the user belongs to.
+
 ```
 
 ## Regular Communication

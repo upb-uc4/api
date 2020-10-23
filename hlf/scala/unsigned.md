@@ -53,7 +53,8 @@ val proposal: Array[Byte] = certificateConnection.getProposalAddCertificate(enro
 ```
 - pass it on to the USER that wants to sign it
 - have the USER create his signature for the "unsigned" proposal
-- receive the signature from the USER (together with the original proposal?)
+- receive the signature from the USER (together with the original proposal)
+
 - submit the signed proposal ("unsigned" proposal, signature)
 ```scala
 certificateConnection.submitSignedProposal(proposalBytes, signature)

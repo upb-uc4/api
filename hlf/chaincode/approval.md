@@ -1,19 +1,18 @@
-# Hyperledger Draft Api
+# Hyperledger Approval Api
 
-In the following, the chaincode api for the "Draft"-Chaincode is described.
+In the following, the chaincode api for the "Approval"-Chaincode is described.
 This contains all Transactions and Models provided for this domain.
 The Errors returned are defined [here](errors.md#Errors).
 
 ## Transactions
 
-### AddOrExtendSignature
-- ID = addOrExtendSignature
+### ApproveTransaction
+- ID = approveTransaction
 - Send
-    - hash(transactionName, params) :: String
-    - signature :: String (base64)
+    - contractName, transactionName, param1, ..., paramN :: String
 - Receive
-    - signatureData :: [SignatureData](#SignatureData)
-      -  Description: Success, returns the submitted certificate.
+    - approvals :: List\<String\>
+      -  Description: Success, returns the list of approvals.
 
     - [DetailedError](errors.md#DetailedError) 
       ```json
@@ -30,18 +29,18 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.
 
-### GetSignatures
-- ID = getSignatures
+### GetApprovals
+- ID = getApprovals
 - Send
-    - hash(transactioName, params) :: String
+    - contractName, transactionName, param1, ..., paramN :: String
 - Receive
-    - signatures :: List\<String\>
+    - approvals :: List\<String\>
 
     - [GenericError](errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
-        "title": "There are not signatures for the given transaction"
+        "title": "There are no approvals for the given transaction"
       }
       ```
       - Description: This error is returned, if the transaction is not present on the ledger.
@@ -57,13 +56,4 @@ The Errors returned are defined [here](errors.md#Errors).
 
 ## <a id="Models" />Models
 
-### <a id="SignatureData" />SignatureData
-```json
-{
-  "transactionHash": "string",
-  "signatures": [
-    "string",
-    "string"
-  ]
-}
-```
+- None

@@ -453,7 +453,7 @@ paths:
     put:
       tags:
       - "User Management"
-      summary: "Set a new profile picture"
+      summary: "Set a new profile picture and thumbnail"
       description: |
         Updates a user with the provided profile picture
       operationId: "putImage"
@@ -546,7 +546,7 @@ paths:
       - "User Management"
       summary: "Delete a profile picture"
       description: |
-        Resets a user's profile picture back to the default.
+        Resets a user's profile picture and the thumbnail back to the default.
       operationId: "deleteImage"
       security:
         - uc4_token_login: [] 
@@ -623,6 +623,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Role'
+        "400":
+          description: |
+            Bad Request    
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: KeyNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /users/{username}/thumbnail:
+    get:
+      tags:
+      - "User Management"
+      summary: "Returns the thumbnail of a user"
+      description: "Returns the thumbnail of a user with the specified username"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "getThumbnail"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: "content type and encoding"
+                
         "400":
           description: |
             Bad Request    

@@ -1,6 +1,6 @@
 # Hyperledger ExaminationRegulation Api
 
-In the following, the chaincode api for the "Approval"-Chaincode is described.
+In the following, the chaincode api for the "ExaminationRegulation"-Chaincode is described.
 This contains all Transactions and Models provided for this domain.
 The Errors returned are defined [here](errors.md#Errors).
 

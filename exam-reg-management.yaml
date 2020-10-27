@@ -1,0 +1,176 @@
+openapi: "3.0.0"
+info:
+  description: "This is the Exam-Reg API for UC4."
+  version: "0.11.1"
+  title: "UC4"
+
+servers:
+  - url: https://uc4.cs.upb.de/api/production/exam-reg-management
+
+tags:
+- name: "Version Management"
+  description: "Everything about the Version"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+- name: "Examination Regulation Management"
+  description: "Everything about the configuration"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+
+paths:
+  /version:
+    get:
+      tags:
+      - "Version Management"
+      summary: "Get version"
+      description: "Returns the version of the current service"
+      operationId: "getVersion"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonVersionNumber'
+  /examination-regulation:
+    get:
+      tags:
+      - "Examination Regulation Management"
+      summary: "Get examination regulations"
+      description: "Get all examination regulations, or the ones specified by the query parameter"
+      operationId: "getExaminationRegulation"
+      parameters:
+      - name: "regulations"
+        in: "query"
+        description: "A comma seperated list of examination regulations to filter by"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonExaminationRegulations'
+              examples:
+                ConfigurationExample:
+                  $ref: '#/components/examples/ExampleJsonExaminationRegulations'
+  /examination-regulation/names:
+    get:
+      tags:
+      - "Examination Regulation Management"
+      summary: "Get all examination regulations"
+      description: "Get all examination regulations which were previously used, or are currently used in the system"
+      operationId: "getAllExaminationRegulation"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonExamRegNameList'
+              examples:
+                ConfigurationExample:
+                  $ref: '#/components/examples/ExampleJsonExamRegNameList'
+components:
+  securitySchemes:
+    uc4_token_login:
+      type: apiKey
+      in: cookie
+      name: login
+    uc4_token_login_header:
+      type: http
+      scheme: bearer
+  schemas:
+    JsonExamRegNameList:
+      type: "object"
+      properties:
+        examinationRegulations:
+          type: array
+          items:
+            type: string
+    ExaminationRegulation:
+      type: "object"
+      properties:
+        name:
+          type: string
+        modules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Module'
+    Module:
+      type: "object"
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    JsonExaminationRegulations:
+      type: "object"
+      properties:
+        examinationRegulations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExaminationRegulation'
+    JsonVersionNumber:
+      type: object
+      properties:
+        versionNumber:
+          type: string
+    GenericError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
+        - type: object
+    DetailedError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+        - type: object
+  examples:
+    ExampleJsonExamRegNameList:
+      summary: "An example for the JsonExamRegNameList object"
+      value:
+        examinationRegulations: ["Computer Science v3", "Computer Science v4", "Philosophy"]
+    ExampleJsonExaminationRegulations:
+      summary: "An example for the ExaminationRegulation object"
+      value:
+        examinationRegulations: 
+          - name: "Computer Science v3"
+            modules:
+              - id: "M.1275.01158"
+                name: "Math 1"
+              - id: "M.1275.56002"
+                name: "Math 2"
+              - id: "M.1358.91583"
+                name: "Complexity Theory"
+          - name: "Computer Science v4"
+            modules:
+              - id: "M.1568.98158"
+                name: "Math"
+              - id: "M.4186.23588"
+                name: "Secure Software Engineering"
+        
+    ExampleExaminationRegulation:
+      summary: "An example for the ExaminationRegulation object"
+      value:
+        name: "Computer Science v3"
+        modules:
+          name: "Computer Science v3"
+          modules:
+            - id: "M.1275.01158"
+              name: "Math 1"
+            - id: "M.1275.56002"
+              name: "Math 2"
+            - id: "M.1358.91583"
+              name: "Complexity Theory"
+      
+    JsonSemester:
+      summary: "An example for the JsonSemester"
+      value:
+        semester: "SS2020"
+        
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io" 

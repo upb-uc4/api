@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.10.1"
+  version: "0.11.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -953,6 +953,8 @@ components:
       properties:
         username:
           type: string
+        enrollmentIdSecret:
+          type: string
         role:
           type: string
           enum: ["Admin", "Student", "Lecturer"]
@@ -1054,6 +1056,7 @@ components:
           role: "Student"
         student:
           username: "test-student"
+          enrollmentIdSecret: ""
           role: "Student"
           address:
             street: "Sandy Street"
@@ -1072,6 +1075,7 @@ components:
       summary: "Example for Student"
       value:
         username: "test-student"
+        enrollmentIdSecret: "secret113794857246"
         role: "Student"
         address:
           street: "Sandy Street"
@@ -1096,6 +1100,7 @@ components:
           role: "Lecturer"
         lecturer:
           username: "test-lec"
+          enrollmentIdSecret: ""
           role: "Lecturer"
           address:
             street: "Sandy Street"
@@ -1114,6 +1119,7 @@ components:
       summary: "Example for Lecturer"
       value:
         username: "test-lec"
+        enrollmentIdSecret: "secret113794857246"
         role: "Lecturer"
         address:
           street: "Sandy Street"
@@ -1138,6 +1144,7 @@ components:
           role: "Admin"
         admin:
           username: "test-admin"
+          enrollmentIdSecret: ""
           role: "Admin"
           address:
             street: "Sandy Street"
@@ -1154,6 +1161,7 @@ components:
       summary: "Example for Admin"
       value:
         username: "test-admin"
+        enrollmentIdSecret: "secret113794857246"
         role: "Admin"
         address:
           street: "Sandy Street"

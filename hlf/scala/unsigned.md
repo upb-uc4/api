@@ -57,7 +57,7 @@ val proposal: Array[Byte] = certificateConnection.getProposalAddCertificate(enro
 
 - submit the signed proposal ("unsigned" proposal, signature)
 ```scala
-certificateConnection.submitSignedProposal(proposalBytes, signature)
+val result = certificateConnection.submitSignedProposal(proposalBytes, signature)
 ```
 
 For additional insight in the General hlf-api, please refer to its .Readme - File.

@@ -119,9 +119,9 @@ paths:
         required: false
         schema:
           type: 'string'
-      - name: "modules"
+      - name: "moduleIds"
         in: "query"
-        description: "Module Ids to filter by"
+        description: "Comma seperated list of module Ids to filter by"
         required: false
         schema:
           type: 'string'
@@ -300,10 +300,10 @@ components:
       properties:
         courseId:
           type: string
-        modules:
+        moduleIds:
           type: array
           items:
-            $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/exam-reg-management.yaml#/components/schemas/Module'
+            type: string
         courseName:
           type: string
         courseType:

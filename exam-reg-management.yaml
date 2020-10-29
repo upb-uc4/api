@@ -60,6 +60,32 @@ paths:
               examples:
                 ConfigurationExample:
                   $ref: '#/components/examples/ExampleExaminationRegulations'
+  /examination-regulations/modules:
+    get:
+      tags:
+      - "Examination Regulation Management"
+      summary: "Get all examination regulations"
+      description: "Get all examination regulations which were previously used, or are currently used in the system"
+      operationId: "getModules"
+      parameters:
+      - name: "moduleIds"
+        in: "query"
+        description: "A comma seperated list of moduleIds to filter by"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: string
+              examples:
+                ModuleIds:
+                  $ref: '#/components/examples/ExampleModuleList'
   /examination-regulations/names:
     get:
       tags:
@@ -77,7 +103,7 @@ paths:
                 items:
                   type: string
               examples:
-                ConfigurationExample:
+                ExamRegNameList:
                   $ref: '#/components/examples/ExampleExamRegNameList'
 components:
   securitySchemes:
@@ -122,9 +148,18 @@ components:
         - type: object
   examples:
     ExampleExamRegNameList:
-      summary: "An example for the JsonExamRegNameList object"
+      summary: "An example for a list of examination regulation names"
       value:
         ["Computer Science v3", "Computer Science v4", "Philosophy"]
+    ExampleModuleList:
+      summary: "An example for a list of modules"
+      value:
+        - id: "M.1275.01158"
+          name: "Math 1"
+        - id: "M.1275.56002"
+          name: "Math 2"
+        - id: "M.1358.91583"
+          name: "Complexity Theory"
     ExampleExaminationRegulations:
       summary: "An example for the ExaminationRegulation object"
       value:

@@ -9,7 +9,9 @@ The Errors returned are defined [here](errors.md#Errors).
 ### AddExaminationRegulation
 - ID = addExaminationRegulation
 - Send
-    - name :: String ,examinationRegulation :: List\<String\>
+    - name :: String 
+    - examinationRegulation :: List\<String\>
+
 - Receive
     - examinationRegulation :: List\<String\>
       -  Description: Success, returns the examination regulation (list of modules).

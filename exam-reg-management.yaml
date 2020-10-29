@@ -97,6 +97,8 @@ components:
       properties:
         name:
           type: string
+        active:
+          type: boolean
         modules:
           type: array
           items:
@@ -138,6 +140,7 @@ components:
       value:
         examinationRegulations: 
           - name: "Computer Science v3"
+            active: true
             modules:
               - id: "M.1275.01158"
                 name: "Math 1"
@@ -146,6 +149,7 @@ components:
               - id: "M.1358.91583"
                 name: "Complexity Theory"
           - name: "Computer Science v4"
+            active: false
             modules:
               - id: "M.1568.98158"
                 name: "Math"

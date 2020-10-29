@@ -1,11 +1,11 @@
 openapi: "3.0.0"
 info:
-  description: "This is the Exam-Reg API for UC4."
+  description: "This is the Examination Regulation API for UC4."
   version: "0.11.1"
   title: "UC4"
 
 servers:
-  - url: https://uc4.cs.upb.de/api/production/exam-reg-management
+  - url: https://uc4.cs.upb.de/api/production/examreg-management
 
 tags:
 - name: "Version Management"
@@ -34,7 +34,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonVersionNumber'
-  /examination-regulation:
+  /examination-regulations:
     get:
       tags:
       - "Examination Regulation Management"
@@ -54,11 +54,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JsonExaminationRegulations'
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/ExaminationRegulation'
               examples:
                 ConfigurationExample:
-                  $ref: '#/components/examples/ExampleJsonExaminationRegulations'
-  /examination-regulation/names:
+                  $ref: '#/components/examples/ExampleExaminationRegulations'
+  /examination-regulations/names:
     get:
       tags:
       - "Examination Regulation Management"
@@ -71,10 +73,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JsonExamRegNameList'
+                type: "array"
+                items:
+                  type: string
               examples:
                 ConfigurationExample:
-                  $ref: '#/components/examples/ExampleJsonExamRegNameList'
+                  $ref: '#/components/examples/ExampleExamRegNameList'
 components:
   securitySchemes:
     uc4_token_login:
@@ -85,13 +89,6 @@ components:
       type: http
       scheme: bearer
   schemas:
-    JsonExamRegNameList:
-      type: "object"
-      properties:
-        examinationRegulations:
-          type: array
-          items:
-            type: string
     ExaminationRegulation:
       type: "object"
       properties:
@@ -110,13 +107,6 @@ components:
           type: string
         name:
           type: string
-    JsonExaminationRegulations:
-      type: "object"
-      properties:
-        examinationRegulations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExaminationRegulation'
     JsonVersionNumber:
       type: object
       properties:
@@ -131,31 +121,29 @@ components:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
         - type: object
   examples:
-    ExampleJsonExamRegNameList:
+    ExampleExamRegNameList:
       summary: "An example for the JsonExamRegNameList object"
       value:
-        examinationRegulations: ["Computer Science v3", "Computer Science v4", "Philosophy"]
-    ExampleJsonExaminationRegulations:
+        ["Computer Science v3", "Computer Science v4", "Philosophy"]
+    ExampleExaminationRegulations:
       summary: "An example for the ExaminationRegulation object"
       value:
-        examinationRegulations: 
-          - name: "Computer Science v3"
-            active: true
-            modules:
-              - id: "M.1275.01158"
-                name: "Math 1"
-              - id: "M.1275.56002"
-                name: "Math 2"
-              - id: "M.1358.91583"
-                name: "Complexity Theory"
-          - name: "Computer Science v4"
-            active: false
-            modules:
-              - id: "M.1568.98158"
-                name: "Math"
-              - id: "M.4186.23588"
-                name: "Secure Software Engineering"
-        
+        - name: "Computer Science v3"
+          active: true
+          modules:
+            - id: "M.1275.01158"
+              name: "Math 1"
+            - id: "M.1275.56002"
+              name: "Math 2"
+            - id: "M.1358.91583"
+              name: "Complexity Theory"
+        - name: "Computer Science v4"
+          active: false
+          modules:
+            - id: "M.1568.98158"
+              name: "Math"
+            - id: "M.4186.23588"
+              name: "Secure Software Engineering"
     ExampleExaminationRegulation:
       summary: "An example for the ExaminationRegulation object"
       value:
@@ -174,7 +162,6 @@ components:
       summary: "An example for the JsonSemester"
       value:
         semester: "SS2020"
-        
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io" 

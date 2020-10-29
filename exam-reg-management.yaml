@@ -48,6 +48,12 @@ paths:
         required: false
         schema:
           type: "string"
+      - name: "active"
+        in: "query"
+        description: "A flag determining, if only active or inactive examination regulations should be fetched"
+        required: false
+        schema:
+          type: "string"
       responses:
         "200":
           description: "OK"
@@ -74,6 +80,12 @@ paths:
         required: false
         schema:
           type: "string"
+      - name: "active"
+        in: "query"
+        description: "A flag determining, if only modules from active or inactive examination regulations should be fetched"
+        required: false
+        schema:
+          type: "string"
       responses:
         "200":
           description: "OK"
@@ -93,6 +105,13 @@ paths:
       summary: "Get all examination regulations"
       description: "Get all examination regulations which were previously used, or are currently used in the system"
       operationId: "getAllExaminationRegulation"
+      parameters:
+      - name: "active"
+        in: "query"
+        description: "A flag determining, if names of active or inactive examination regulations should be fetched"
+        required: false
+        schema:
+          type: "string"
       responses:
         "200":
           description: "OK"

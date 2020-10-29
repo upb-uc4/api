@@ -138,9 +138,6 @@ paths:
     get:
       tags:
       - "Course Management"
-      security:
-        - uc4_token_login: []
-        - uc4_token_login_header: []
       summary: "Find course by course id"
       description: "Find course by course id"
       operationId: "findCourseByCourseId"
@@ -158,34 +155,10 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/Course'
-          "400":
-            description: |
-              Bad Request    
-              types: MalformedLoginToken, MultipleAuthorizationError
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "401":
-            description: |
-              Unauthorized  
-              types: JwtAuthorization, LoginTokenExpired
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
           "404":
             description: |
               Not Found  
               types: KeyNotFound
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "422":
-            description: |
-              Unprocessable Entity   
-              types: LoginTokenSignatureInvalid
             content:
               application/json:
                 schema:

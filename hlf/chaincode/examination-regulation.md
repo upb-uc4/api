@@ -9,12 +9,11 @@ The Errors returned are defined [here](errors.md#Errors).
 ### AddExaminationRegulation
 - ID = addExaminationRegulation
 - Send
-    - name :: String 
-    - examinationRegulation :: List\<String\>
+    - examinationRegulation :: [ExaminationRegulation](#ExaminationRegulation)
 
 - Receive
-    - examinationRegulation :: List\<String\>
-      -  Description: Success, returns the examination regulation (list of modules).
+    - examinationRegulation :: [ExaminationRegulation](#ExaminationRegulation)
+      -  Description: Success, returns the examination regulation.
 
     - [DetailedError](errors.md#DetailedError) 
       ```json
@@ -46,7 +45,7 @@ The Errors returned are defined [here](errors.md#Errors).
 - Send
     - name :: String
 - Receive
-    - examinationRegulation :: List\<String\>
+    - examinationRegulation :: [ExaminationRegulation](#ExaminationRegulation)
 
     - [GenericError](errors.md#GenericError) 
       ```json
@@ -70,8 +69,8 @@ The Errors returned are defined [here](errors.md#Errors).
 - Send
     - name :: String
 - Receive
-    - isOpen :: Boolean
-      - Description: new "isOpen"-state
+    - active :: Boolean
+      - Description: updated "active"-state
       
     - [GenericError](errors.md#GenericError) 
       ```json
@@ -92,4 +91,24 @@ The Errors returned are defined [here](errors.md#Errors).
 
 ## <a id="Models" />Models
 
-- None
+### <a id="ExaminationRegulation">ExaminationRegulation
+```json
+{
+  "name": "Computer Science v3",
+  "active": true,
+  "modules": [
+    {
+      "id": "M.1275.01158",
+      "name": "Math 1"
+    }
+  ]
+}
+```
+
+### <a id="Module">Module
+```json
+{
+  "id": "M.1275.01158",
+  "name": "Math 1"
+}
+```

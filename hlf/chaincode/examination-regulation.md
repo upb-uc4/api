@@ -65,6 +65,30 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the current model. This error should only occur if the model changes while the old ledger state remains without modification.
 
+### CloseExaminationRegulation
+- ID = closeExaminationRegulation
+- Send
+    - name :: String
+- Receive
+    - isOpen :: Boolean
+      - Description: new "isOpen"-state
+      
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLNotFound",
+        "title": "There is no examination regulation for the given name"
+      }
+      ```
+      - Description: This error is returned, if the examination regulation for the name is not present on the ledger.
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLUnprocessableLedgerState",
+        "title": "The state on the ledger does not conform to the specified format"
+      }
+      ```
+      - Description: This error is returned, if the state of data on the ledger is not consistent with the current model. This error should only occur if the model changes while the old ledger state remains without modification.
 
 ## <a id="Models" />Models
 

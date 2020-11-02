@@ -74,7 +74,8 @@ The Errors returned are defined [here](errors.md#Errors).
       }
       ```
       - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.  
-      For detailed informations see [matriculationData checks](#matriculationDataCecks).
+      For detailed informations see [matriculationData checks](#matriculationDataChecks).
+
 
 ### Get Matriculation Data
 - ID = getMatriculationData

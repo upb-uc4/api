@@ -135,7 +135,8 @@ This method adds a single entry to the list of semesters in the MatriculationDat
       }
       ```
       - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.
-      For detailed informations see [subjectMatriculation checks](#subjectMatriculationCecks).
+      For detailed informations see [subjectMatriculation checks](#subjectMatriculationChecks).
+
     
     - [GenericError](errors.md#GenericError) 
       ```json

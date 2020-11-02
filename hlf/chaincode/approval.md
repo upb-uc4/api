@@ -27,7 +27,9 @@ The Errors returned are defined [here](errors.md#Errors).
         ]
       }
       ```
-       - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.
+       - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.  
+       For detailed informations see [Input Checks](#Checks).
+
 
 ### GetApprovals
 - ID = getApprovals
@@ -53,7 +55,31 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the current model. This error should only occur if the model changes while the old ledger state remains without modification.
 
+    - [DetailedError](errors.md#DetailedError) 
+      ```json
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "string",
+            "reason": "string"
+          }
+        ]
+      }
+      ```
+       - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.  
+       For detailed informations see [Input Checks](#Checks).
+
 
 ## <a id="Models" />Models
 
 - None
+
+## <a id="Checks" />Input Checks
+
+
+- **contractName**
+  - Check, if not null or an empty String.
+- **transactionName**
+  - Check, if not null or an empty String.

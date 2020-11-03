@@ -51,13 +51,14 @@ The ADMIN can then
 ```scala
 val proposal: Array[Byte] = certificateConnection.getProposalAddCertificate(enrollmentId, certificate)
 ```
+> **_INFO:_** When asking for a proposal, the credentials used for setting up the initial connection are used to approve the transaction as well (in this case as the ADMIN)
 - pass it on to the USER that wants to sign it
 - have the USER create his signature for the "unsigned" proposal
 - receive the signature from the USER (together with the original proposal)
 
 - submit the signed proposal ("unsigned" proposal, signature)
 ```scala
-val result = certificateConnection.submitSignedProposal(proposalBytes, signature)
+val result = certificateConnection.submitSignedProposal(proposalBytes: Array[Byte], signature: Array[Byte])
 ```
 
 For additional insight in the General hlf-api, please refer to its .Readme - File.

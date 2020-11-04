@@ -29,13 +29,13 @@ The Errors returned are defined [here](errors.md#Errors).
       }
       ```
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.
-       - modules with the same id must always have the same name
+       For detailed informations see [examinationRegulation checks](#examinationRegulationChecks).
        
     - [GenericError](errors.md#GenericError) 
       ```json
       {
         "type": "HLConflict",
-        "title": "There is already an ExaminationRegulation for the given name",
+        "title": "There is already an ExaminationRegulation for the given name"
       }
       ```
     - Description: This error is returned, if an examination regulation with the given name is already present on the ledger.
@@ -106,3 +106,21 @@ The Errors returned are defined [here](errors.md#Errors).
   "name": "Math 1"
 }
 ```
+
+## <a id="Checks" />Input Checks
+### <a id="examinationRegaultaionChecks" />examinationRegulation
+- Checks, if parseable Json.
+- **name**
+  - Check, if not null or an empty String.
+- **modules**
+  - see [modules](#moduleChecks)
+
+
+### <a id="modulesChecks" />modules
+- Check, if not null or an empty list.
+- **id**
+  - Check, if not null or an empty String.
+  - Check for duplicate entries.
+  - Check inconsistent entries (i.e. id was used before with different name)
+- **name**
+  - Check, if not null or an empty string.

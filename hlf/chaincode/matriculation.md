@@ -191,5 +191,5 @@ This method adds a single entry to the list of semesters in the MatriculationDat
   - Check for duplicate entries.
 - **semesters**
   - Check, if not null or an empty list.
-  - Check, if containing strings are in the format (WS\d{4}/\d{2}|SS\d{4})
+  - Check, if containing strings are in the format (WS\d{4}/\d{2}|SS\d{4}), e.g. WS2020/21 or SS2020. Also, in case of winter semester, check, if the two included years are two consecutive years with the full displayed year being the chronologically earlier one.
   - Check for duplicate entries.

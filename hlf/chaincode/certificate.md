@@ -28,7 +28,8 @@ The Errors returned are defined [here](errors.md#Errors).
         ]
       }
       ```
-       - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.
+       - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.  
+       For detailed informations see [Input Checks](#Checks).
 
     - [GenericError](errors.md#GenericError) 
       ```json
@@ -37,7 +38,8 @@ The Errors returned are defined [here](errors.md#Errors).
         "title": "There is already a certificate for the given enrollmentId",
       }
       ```
-    - Description: This error is returned, if a certificate for the given enrollmentId is already present on the ledger.
+      - Description: This error is returned, if a certificate for the given enrollmentId is already present on the ledger.
+
 
 ### Update Certificate
 - ID = updateCertificate
@@ -70,7 +72,8 @@ The Errors returned are defined [here](errors.md#Errors).
         ]
       }
       ```
-      - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.
+      - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.  
+      For detailed informations see [Input Checks](#Checks).
 
 ### Get Certificate
 - ID = getCertificate
@@ -95,7 +98,30 @@ The Errors returned are defined [here](errors.md#Errors).
       }
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the curent model. This error should only occurr if the model changes while the old ledger state remains without modification.
-    - 
+    
+    - [DetailedError](errors.md#DetailedError) 
+      ```json
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "string",
+            "reason": "string"
+          }
+        ]
+      }
+      ```
+      - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.  
+      For detailed informations see [Input Checks](#Checks).
+
+
 ## <a id="Models" />Models
 
 - None
+
+## <a id="Checks" />Input Checks
+  - **enrollmentId**
+    - Check, if not null or an empty String.
+  - **certificate**
+    - Check, if not null or an empty String.

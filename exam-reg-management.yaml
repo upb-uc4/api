@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Examination Regulation API for UC4."
-  version: "0.11.1"
+  version: "0.12.1"
   title: "UC4"
 
 servers:

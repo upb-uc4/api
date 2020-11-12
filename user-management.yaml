@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.9.1"
+  version: "0.12.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -64,6 +64,12 @@ paths:
         required: false
         schema:
           type: "string"
+      - name: "only_active"
+        in: "query"
+        description: "A boolean that determines if only active user or only inactive users should be fetched"
+        required: false
+        schema:
+          type: boolean
       responses:
         "200":
           description: "OK"
@@ -334,7 +340,7 @@ paths:
       tags:
       - "User Management"
       summary: "Deletes a user"
-      description: "Deletes a user (when invoked by an administrator)"
+      description: "Soft-deletes a user (when invoked by an administrator). Removes all info except username for non-lecturers, and all except username, firstName, lastName and enrollmentId for lecturers. Sets the \"isActive\" flag to \"false\"."
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
@@ -738,6 +744,12 @@ paths:
         required: false
         schema:
           type: "string"
+      - name: "only_active"
+        in: "query"
+        description: "A boolean that determines if only active user or only inactive users should be fetched"
+        required: false
+        schema:
+          type: boolean
       responses:
         "200":
           description: "OK"
@@ -797,6 +809,12 @@ paths:
         required: false
         schema:
           type: "string"
+      - name: "only_active"
+        in: "query"
+        description: "A boolean that determines if only active user or only inactive users should be fetched"
+        required: false
+        schema:
+          type: boolean
       responses:
         "200":
           description: "OK"
@@ -856,6 +874,12 @@ paths:
         required: false
         schema:
           type: "string"
+      - name: "only_active"
+        in: "query"
+        description: "A boolean that determines if only active user or only inactive users should be fetched"
+        required: false
+        schema:
+          type: boolean
       responses:
         "200":
           description: "OK"
@@ -955,6 +979,8 @@ components:
       properties:
         username:
           type: string
+        isActive:
+          type: boolean
         role:
           type: string
           enum: ["Admin", "Student", "Lecturer"]

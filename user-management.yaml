@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.9.1"
+  version: "0.12.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -120,10 +120,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/PostMessageStudent'
-                - $ref: '#/components/schemas/PostMessageLecturer'
-                - $ref: '#/components/schemas/PostMessageAdmin'
+              $ref: '#/components/schemas/PostMessageUser'
             examples:
               PostStudent:
                 $ref: '#/components/examples/ExamplePostMessageStudent'
@@ -923,33 +920,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Admin'
-    PostMessageStudent:
-      allOf: 
-        - $ref: '#/components/schemas/PostMessageUser'
-        - type: object
-          properties:
-            student:
-              $ref: '#/components/schemas/Student'
-    PostMessageLecturer:
-      allOf: 
-        - $ref: '#/components/schemas/PostMessageUser'
-        - type: object
-          properties:
-            lecturer:
-              $ref: '#/components/schemas/Lecturer'
-    PostMessageAdmin:
-      allOf: 
-        - $ref: '#/components/schemas/PostMessageUser'
-        - type: object
-          properties:
-            admin:
-              $ref: '#/components/schemas/Admin'
     PostMessageUser:
       type: "object"
       properties:
         authUser:
           allOf:
             - $ref: "#/components/schemas/AuthUser"
+        user:
+          $ref: "#/components/schemas/User"
     User:
       type: "object"
       properties:
@@ -1045,13 +1023,13 @@ components:
         - type: object
   examples:
     ExamplePostMessageStudent:
-      summary: "Example for PostMessageStudent"
+      summary: "Example for PostMessageUser, containing a student"
       value:
         authUser:
           username: "test-student"
           password: "password123"
           role: "Student"
-        student:
+        user:
           username: "test-student"
           role: "Student"
           address:
@@ -1086,13 +1064,13 @@ components:
         latestImmatriculation: ""
         matriculationId: "1234567"
     ExamplePostMessageLecturer:
-      summary: "Example for PostMessageLecturer"
+      summary: "Example for PostMessageUser, containing a lecturer"
       value:
         authUser:
           username: "test-lec"
           password: "password123"
           role: "Lecturer"
-        lecturer:
+        user:
           username: "test-lec"
           role: "Lecturer"
           address:
@@ -1127,13 +1105,13 @@ components:
         freeText: "Some cool publications about jedi stuff."
         researchArea: "The light side only, I swear!"
     ExamplePostMessageAdmin:
-      summary: "Example for PostMessageAdmin"
+      summary: "Example for PostMessageUser, containing a admin"
       value:
         authUser:
           username: "test-admin"
           password: "password123"
           role: "Admin"
-        admin:
+        user:
           username: "test-admin"
           role: "Admin"
           address:

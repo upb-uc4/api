@@ -70,8 +70,8 @@ paths:
     get:
       tags:
       - "Examination Regulation Management"
-      summary: "Get all examination regulations"
-      description: "Get all examination regulations which were previously used, or are currently used in the system"
+      summary: "Get all modules of examination regulations"
+      description: "Get all modules which exist in any examination regulations which were previously used, or are currently used in the system. Can be further specified by query parameters."
       operationId: "getModules"
       parameters:
       - name: "moduleIds"
@@ -102,8 +102,8 @@ paths:
     get:
       tags:
       - "Examination Regulation Management"
-      summary: "Get all examination regulations"
-      description: "Get all examination regulations which were previously used, or are currently used in the system"
+      summary: "Get all examination regulations' names"
+      description: "Get all names of any examination regulations which were previously used, or are currently used in the system. Can be further specified by query parameters."
       operationId: "getAllExaminationRegulation"
       parameters:
       - name: "active"

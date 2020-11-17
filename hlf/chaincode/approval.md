@@ -9,7 +9,9 @@ The Errors returned are defined [here](errors.md#Errors).
 ### ApproveTransaction
 - ID = approveTransaction
 - Send
-    - contractName, transactionName, param1, ..., paramN :: String
+    - userId :: String
+    - signature :: String
+    - proposalData :: [ProposalData](#ProposalData)
 - Receive
     - approvals :: List\<String\>
       -  Description: Success, returns the list of approvals.
@@ -74,7 +76,17 @@ The Errors returned are defined [here](errors.md#Errors).
 
 ## <a id="Models" />Models
 
-- None
+### <a id="ProposalData" />ProposalData
+```json
+{
+  "contractName": "UC4.Certificate",
+  "transactionName": "addCertificate",
+  "params": [
+    "007",
+    "legit certificate"
+  ]
+}
+```
 
 ## <a id="Checks" />Input Checks
 

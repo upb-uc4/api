@@ -394,6 +394,66 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+         
+  /users/{username}/force:            
+    delete:
+      tags:
+      - "User Management"
+      summary: "Force deletes a user"
+      description: "Force-deletes a user (when invoked by an administrator). Removes the user completely. This might lead to errors if invoked on lecturers with existing courses."
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "forceDeleteUser"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: |
+            Bad Request    
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: KeyNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
   
   /users/{username}/image:
     get:

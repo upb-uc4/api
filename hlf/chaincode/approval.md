@@ -36,7 +36,7 @@ The Errors returned are defined [here](errors.md#Errors).
 ### GetApprovals
 - ID = getApprovals
 - Send
-    - contractName, transactionName, param1, ..., paramN :: String
+    - proposalData :: [ProposalData](#ProposalData)
 - Receive
     - approvals :: List\<String\>
 

@@ -18,15 +18,15 @@ For "examtination regulation data" handling we offer the following interface. Ad
           - If the given parameters could not be parsed.
     - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
         - => error is returned
-          - If the given ExaminationRegulation data could not be parsed as json.
+          - This error is returned, if an examination regulation with the given name is already present on the ledger.
 
 ## GetExaminationRegulations(nameList :: String)
 - Returns
     - List<Json(ExaminationRegulation)> :: Json (refer to: [ExaminationRegulation](../chaincode/examination-regulation.md#ExaminationRegulation))
         - => Success
+            - If no name is given (i.e. empty list etc.) return all examination regulations
     - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
         - => error is returned
-          - If the ???  is not present on the ledger.
           - If the state of data on the ledger is not consistent with the curent model.
             - This error should only occurr if the model changes while the old ledger state remains without modification.
 
@@ -37,3 +37,5 @@ For "examtination regulation data" handling we offer the following interface. Ad
     - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
         - => error is returned,
           - If the examination regulation with the given name is not present on the ledger.
+          - If the state of data on the ledger is not consistent with the current model. 
+            - This error should only occur if the model changes while the old ledger state remains without modification.

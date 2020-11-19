@@ -14,10 +14,10 @@ For "matriculation data" handling we offer the following interface. Additionally
     - TransactionError :: Json (refer to: [DetailedError](../chaincode/errors.md#DetailedError))
         - => error is returned
           - If the given parameters could not be parsed.
-          - If a matriculation data with the given enrollmentId is already present on the ledger.
+         
     - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
         - => error is returned
-          - If the given matriculation data could not be parsed as json.
+           - If a matriculation data with the given enrollmentId is already present on the ledger.
 
 ## UpdateMatriculationData(MatriculationData :: Json([MatriculationData](../chaincode/matriculation.md#MatriculationData)))
 - Returns
@@ -26,12 +26,11 @@ For "matriculation data" handling we offer the following interface. Additionally
     - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
         - => error is returned, 
           - If the enrollmentId specified in the MatriculationData is not present on the ledger.
-          - If the given matriculation data could not be parsed as json.
     - TransactionError :: Json (refer to: [DetailedError](../chaincode/errors.md#DetailedError))
         - => error is returned
           - If the given parameters could not be parsed.
 
-## GetMatriculationData(matriculationID :: String)
+## GetMatriculationData(enrollmentId :: String)
 - Returns
     - MatriculationData :: Json (refer to: [MatriculationData](../chaincode/matriculation.md#MatriculationData))
         - => Success
@@ -41,16 +40,17 @@ For "matriculation data" handling we offer the following interface. Additionally
           - If the state of data on the ledger is not consistent with the curent model.
             - This error should only occurr if the model changes while the old ledger state remains without modification.
 
-## AddEntriesToMatriculationData(matriculationID :: String, entries :: List<Json([SubjectMatriculation](../chaincode/matriculation.md#SubjectMatriculation))>)
+## AddEntriesToMatriculationData(enrollmentId :: String, entries :: List<Json([SubjectMatriculation](../chaincode/matriculation.md#SubjectMatriculation))>)
 - Returns
     - MatriculationData :: Json (refer to: [MatriculationData](../chaincode/matriculation.md#MatriculationData))
         - => Success
     - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
       - => error is returned,
-        - If the given matriculation data could not be parsed as json.
+       
         - If the enrollmentId is not present on the ledger.
         - If the state of data on the ledger is not consistent with the curent model.
           - This error should only occurr if the model changes while the old ledger state remains without modification.
-     TransactionError :: Json (refer to: [DetailedError](../chaincode/errors.md#DetailedError))
+    - TransactionError :: Json (refer to: [DetailedError](../chaincode/errors.md#DetailedError))
       - => error is returned
         - If the given parameters could not be parsed.
+ 

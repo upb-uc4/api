@@ -66,6 +66,120 @@ paths:
               examples:
                 ConfigurationExample:
                   $ref: '#/components/examples/ExampleExaminationRegulations'
+    post:
+      tags:
+      - "Examination Regulation Management"
+      summary: "Add examination regulations"
+      description: "Add an examination regulation, which will then be stored on the chain."
+      operationId: "addExaminationRegulation"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExaminationRegulation'
+              examples:
+                ConfigurationExample:
+                  $ref: '#/components/examples/ExampleExaminationRegulation'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+  /examination-regulations/{examinationRegulation}:
+    delete:
+      tags:
+      - "Examination Regulation Management"
+      summary: "Flag an examination regulations as non-active"
+      description: "Flag an examination regulation as non-active, a change which will be persisted on chain."
+      operationId: "deleteExaminationRegulation"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      parameters:
+      - in: "path"
+        name: "examinationRegulation"
+        required: true
+        schema: 
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: |
+            Bad Request    
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: KeyNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
   /examination-regulations/modules:
     get:
       tags:
@@ -180,38 +294,47 @@ components:
         - id: "M.1358.91583"
           name: "Complexity Theory"
     ExampleExaminationRegulations:
-      summary: "An example for the ExaminationRegulation object"
+      summary: "An example for an Array of ExaminationRegulation objects"
       value:
-        - name: "Computer Science v3"
+        - name: "Bachelor Computer Science v3"
           active: true
           modules:
             - id: "M.1275.01158"
               name: "Math 1"
-            - id: "M.1275.56002"
+            - id: "M.1275.01159"
               name: "Math 2"
-            - id: "M.1358.91583"
+            - id: "M.1275.78235"
               name: "Complexity Theory"
-        - name: "Computer Science v4"
-          active: false
+        - name: "Bachelor Computer Science v4"
+          active: true
           modules:
-            - id: "M.1568.98158"
+            - id: "M.1278.15686"
               name: "Math"
-            - id: "M.4186.23588"
-              name: "Secure Software Engineering"
+            - id: "M.1275.78235"
+              name: "Complexity Theory"
+            - id: "M.1278.79512"
+              name: "IT-Security"
+        - name: "Bachelor Philosophy v1"
+          active: true
+          modules:
+            - id: "M.1358.15686"
+              name: "Introduction to Philosophy"
+            - id: "M.1358.15653"
+              name: "Theoretical Philosophy"
+            - id: "M.1358.15418"
+              name: "Applied Ethics"
     ExampleExaminationRegulation:
       summary: "An example for the ExaminationRegulation object"
       value:
-        name: "Computer Science v3"
+        name: "Bachelor Computer Science v3"
+        active: true
         modules:
-          name: "Computer Science v3"
-          modules:
-            - id: "M.1275.01158"
-              name: "Math 1"
-            - id: "M.1275.56002"
-              name: "Math 2"
-            - id: "M.1358.91583"
-              name: "Complexity Theory"
-      
+          - id: "M.1275.01158"
+            name: "Math 1"
+          - id: "M.1275.01159"
+            name: "Math 2"
+          - id: "M.1275.78235"
+            name: "Complexity Theory"
     JsonSemester:
       summary: "An example for the JsonSemester"
       value:

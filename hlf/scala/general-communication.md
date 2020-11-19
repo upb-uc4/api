@@ -7,6 +7,12 @@ Following API calls can be made on all connections
 - Returns 
     - ChaincodeVersion :: String 
 
+### SubmitSignedProposal(proposalBytes: Array[Byte], signature: Array[Byte], userId: String)
+Submits the given Proposal to the existing Connection
+- Returns
+    -  ChaincodeAnswer :: String 
+        - Description: Whatever the connection would usually return upon being directly invoked with the transaction
+
 ## General Communication
 For all connection purposes some basic information on the network to access has to be provided.
 ```scala

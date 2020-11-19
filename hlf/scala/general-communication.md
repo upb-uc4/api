@@ -1,5 +1,12 @@
 # <a id="General Communication" /> Hyperledger Scala API - General Communication
 
+## API
+Following API calls can be made on all connections
+
+### GetChaincodeVersion()
+- Returns 
+    - ChaincodeVersion :: String 
+
 ## General Communication
 For all connection purposes some basic information on the network to access has to be provided.
 ```scala
@@ -8,11 +15,6 @@ protected val networkDescriptionPath: Path = "/hyperledger_assets/connection_pro
 protected val channel: String = "myc" // name of the shared channel a connection is requested for.
 protected val chaincode: String = "mycc" // name of the chaincode a connection is requested for.
 ```
-Additionally following API calls can be made
-
-## GetChaincodeVersion
-- Returns 
-    - ChaincodeVersion :: String 
 
 Depending on the type of network accessed, further information is needed for authentication
 ```scala

@@ -134,6 +134,7 @@ paths:
       parameters:
       - in: "path"
         name: "examinationRegulation"
+        description: "The name of the examination regulation which should be flagged as inactive."
         required: true
         schema: 
           type: "string"

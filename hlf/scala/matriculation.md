@@ -5,7 +5,8 @@ For insight in the General hlf-api, please refer to it's .Readme - File.
 > [!NOTE]
 Any Method can throw these [Exceptions](errors.md#Exceptions).
 
-For "matriculation data" handling we offer the following interface. Additionally as described in [General Communication](general-communication.md) different proposal calls can be made.
+For "matriculation data" handling we offer the following interface. Additionally, as described in [General Communication](general-communication.md), different proposal calls can be made.
+
 
 ## AddMatriculationData(MatriculationData :: Json([MatriculationData](../chaincode/matriculation.md#MatriculationData)))
 - Returns

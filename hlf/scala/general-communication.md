@@ -64,7 +64,7 @@ The ADMIN can then
 ```scala
 val proposal: String = certificateConnection.getProposalAddCertificate(enrollmentId, certificate)
 ```
-The proposal is a simple jSon-object ([ProposalData](../chaincode/approval.md#ProposalData))
+The proposal is a simple Json-object ([ProposalData](../chaincode/approval.md#ProposalData))
 > **_INFO:_** When asking for a proposal, the credentials used for setting up the initial connection are used to approve the transaction as well (in this case as the ADMIN)
 - pass it on to the USER that wants to sign it
 - have the USER create his signature for the "unsigned" proposal

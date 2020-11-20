@@ -5,7 +5,8 @@ For insight in the General hlf-api, please refer to it's .Readme - File.
 > [!NOTE]
 Any Method can throw these [Exceptions](errors.md#Exceptions).
 
-For "Certificate" handling we offer the following interface. Additionally as described in [General Communication](general-communication.md) different proposal calls can be made.
+For "Certificate" handling we offer the following interface. Additionally, as described in [General Communication](general-communication.md), different proposal calls can be made.
+
 
 ## AddCertificate(enrollmentID :: String, certificate :: String)
 - Returns

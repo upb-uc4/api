@@ -1,6 +1,6 @@
 # Hyperledger Scala API Examination Regulation
 
-In the following, the hlf-api for the "examtination regulation data" handling will be explained.
+In the following, the hlf-api for handling the "examination regulation data" will be explained.
 For insight in the General hlf-api, please refer to it's .Readme - File.
 > [!NOTE]
 Any Method can throw these [Exceptions](errors.md#Exceptions).

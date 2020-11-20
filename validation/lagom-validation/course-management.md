@@ -8,7 +8,7 @@ Not validated, as it is a generated UUID.
 ### courseName (String)
 - vCourseName1: courseName.length ∈ [1, 100]
 - iCourseName1: courseName is the empty String
-- iCourseName2: courseName.length ∉ 100
+- iCourseName2: courseName.length > 100
 
 ### courseType (String)
 *validCourseTypes* := {"Lecture", "Seminar", "Project Group"}

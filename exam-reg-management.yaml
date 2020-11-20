@@ -125,8 +125,8 @@ paths:
     delete:
       tags:
       - "Examination Regulation Management"
-      summary: "Flag an examination regulations as non-active"
-      description: "Flag an examination regulation as non-active, a change which will be persisted on chain."
+      summary: "Flag an examination regulations as inactive"
+      description: "Flag an examination regulation as inactive, a change which will be persisted on chain."
       operationId: "deleteExaminationRegulation"
       security:
         - uc4_token_login: [] 

@@ -27,7 +27,7 @@ For "examtination regulation data" handling we offer the following interface. Ad
             - If no name is given (i.e. empty list etc.) return all examination regulations
     - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
         - => error is returned
-          - If the state of data on the ledger is not consistent with the curent model.
+          - If the state of data on the ledger is not consistent with the current model.
             - This error should only occurr if the model changes while the old ledger state remains without modification.
 
 ## CloseExaminationRegulation(name :: String)

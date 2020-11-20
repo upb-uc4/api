@@ -25,4 +25,4 @@
 ### modules (Array[Modules])
 - vModule1: At least one Module exists and all Modules are valid as defined in [Module](#Module)
 - iModule1: The Array is empty
-- iModule2: At one Module exists that is invalid as in the definition in [Module](#Module)
+- iModule2: At least one Module exists that is invalid as in the definition in [Module](#Module)

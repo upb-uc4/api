@@ -1,0 +1,335 @@
+openapi: "3.0.0"
+info:
+  description: "This is the Admission API for UC4."
+  version: "0.13.1"
+  title: "UC4"
+
+servers:
+  - url: https://uc4.cs.upb.de/api/admission-management
+
+tags:
+- name: "Version Management"
+  description: "Everything about the Version"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+- name: "Course Admission Management"
+  description: "Everything about the Course Admissions"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+
+paths:
+  /version:
+    get:
+      tags:
+      - "Version Management"
+      summary: "Get version"
+      description: "Returns the version of the current service"
+      operationId: "getVersion"
+
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonVersionNumber'
+  /admissions/courses:
+    get:
+      tags:
+      - "Course Admission Management"
+      summary: "Get Course Admissions"
+      description: "When invoked by an Admin and without query parameters, returns all Course Admissions. When invoked with query parameters, returns Course Admissions filtered by the parameters."
+      operationId: "getAllCourseAdmissions"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "Username for which to fetch the course admissions"
+        required: true
+        schema:
+          type: "string"
+      - name: "courseId"
+        in: "query"
+        description: "CourseId for which to fetch the course admissions"
+        required: true
+        schema:
+          type: "string"
+      - name: "moduleId"
+        in: "query"
+        description: "ModuleId for which to fetch the course admissions"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/CourseAdmission'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges, OwnerMismatch
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /admissions/courses/proposals/add:
+    post:
+      tags:
+      - "Course Admission Management"
+      summary: "Fetch a proposal for admitting a student to a course"
+      description: "Fetch a proposal for admitting the student with the enrollmentID to the course with the given courseId. AdmissionId will be set in the returned proposal."
+      operationId: "addAdmission"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
+      requestBody:
+        description: "Admission object from which the proposal is constructed"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseAdmission'
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnsignedProposal'
+          headers:
+            Location:
+              schema:
+                type: string
+                description: "URI of the newly created Admission"
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges, OwnerMismatch
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+    
+  /admissions/courses/proposals/drop:
+    post:
+      tags:
+      - "Course Admission Management"
+      summary: "Fetch a proposal for dropping an Admission"
+      description: "Fetch a proposal for dropping an Admission, using the parameters in the body."
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "getProposalDropAdmission"
+      requestBody:
+        description: "DropAdmission object, containing the AdmissionId of the admission to drop."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DropAdmission'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnsignedProposal'
+        "400":
+            description: |
+              Bad Request    
+              types: MalformedLoginToken, MultipleAuthorizationError
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges, OwnerMismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: KeyNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+            description: |
+              Unprocessable Entity   
+              types: LoginTokenSignatureInvalid
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+  /admissions/proposals/submit:
+    post:
+      tags:
+      - "Course Admission Management"
+      summary: "Submit a signed proposal"
+      description: "Submit a signed proposal."
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "submitProposal"
+      requestBody:
+        description: "Signed Proposal to be committed to chain."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignedProposal'
+      responses:
+        "202":
+          description: "Accepted"
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid, HLUnprocessableEntity
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+components:
+  securitySchemes:
+    uc4_token_login:
+      type: apiKey
+      in: cookie
+      name: login
+    uc4_token_login_header:
+      type: http
+      scheme: bearer
+  schemas:
+    CourseAdmission:
+      type: "object"
+      properties:
+        enrollmentId:
+          type: string
+        courseId:
+          type: string
+        moduleId:
+          type: string
+        admissionId:
+          type: string
+        timestamp:
+          type: string
+          format: date
+    DropAdmission:
+      type: "object"
+      properties:
+        admissionId:
+          type: string
+    UnsignedProposal:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-proposals.yaml#/components/schemas/UnsignedProposal'
+        - type: object
+    SignedProposal:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-proposals.yaml#/components/schemas/SignedProposal'
+        - type: object
+    JsonVersionNumber:
+      type: object
+      properties:
+        versionNumber:
+          type: string
+    GenericError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
+        - type: object
+    DetailedError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+        - type: object
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io" 

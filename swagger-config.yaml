@@ -13,3 +13,5 @@ urls:
       url: https://raw.githubusercontent.com/upb-uc4/api/develop/configuration-management.yaml
     - name: Examreg-Management
       url: https://raw.githubusercontent.com/upb-uc4/api/develop/exam-reg-management.yaml
+    - name: Admission-Management
+      url: https://raw.githubusercontent.com/upb-uc4/api/develop/admission-management.yaml

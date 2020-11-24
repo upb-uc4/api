@@ -336,10 +336,6 @@ components:
             name: "Math 2"
           - id: "M.1275.78235"
             name: "Complexity Theory"
-    JsonSemester:
-      summary: "An example for the JsonSemester"
-      value:
-        semester: "SS2020"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io" 

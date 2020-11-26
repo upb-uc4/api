@@ -42,15 +42,15 @@ paths:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
       requestBody:
-        description: "PostMessageMatriculationData, containing the semester the student want to be enrolled in, and the corresponding fieldOfStudy."
+        description: "PutMessageMatriculation, containing the semester the student want to be enrolled in, and the corresponding fieldOfStudy."
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PostMessageMatriculation'
+              $ref: '#/components/schemas/PutMessageMatriculation'
             examples:
               PostMessageMatriculation:
-                $ref: '#/components/examples/ExamplePostMessageMatriculation'
+                $ref: '#/components/examples/ExamplePutMessageMatriculation'
       parameters:
       - in: "path"
         name: "username"
@@ -323,13 +323,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubjectMatriculation'
-    PostMessageMatriculation:
-      type: "object"
-      properties:
-        matriculation:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubjectMatriculation'
     UnsignedProposalAddEntry:
       type: "object"
       properties:
@@ -358,7 +351,6 @@ components:
       properties:
         fieldOfStudy:
           type: string
-          enum: ["Computer Science", "Philosophy","Media Sciences","Economics","Mathematics","Physics","Chemistry","Education","Sports Science","Japanology","Spanish Culture","Pedagogy","Business Informatics","Linguistics"]
         semesters:
           type: array
           items:
@@ -381,20 +373,10 @@ components:
       summary: "Example for PutMessageMatriculation"
       value:
         matriculation:
-          - fieldOfStudy: "Computer Science"
+          - fieldOfStudy: "Bachelor Computer Science v4"
             semesters:
               - "SS2020"
-          - fieldOfStudy: "Philosophy"
-            semesters: 
-              - "SS2020"
-    ExamplePostMessageMatriculation:
-      summary: "Example for PostMessageMatriculation"
-      value:
-        matriculation:
-          - fieldOfStudy: "Computer Science"
-            semesters:
-              - "SS2020"
-          - fieldOfStudy: "Philosophy"
+          - fieldOfStudy: "Bachelor Philosophy v1"
             semesters: 
               - "SS2020"
     ExampleUnsignedProposalAddEntry:

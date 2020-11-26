@@ -806,7 +806,7 @@ paths:
           type: "string"
       - name: "only_active"
         in: "query"
-        description: "A boolean that determines if only active user or only inactive users should be fetched"
+        description: "A boolean that determines if only active users or only inactive users should be fetched"
         required: false
         schema:
           type: boolean

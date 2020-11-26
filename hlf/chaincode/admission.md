@@ -206,7 +206,8 @@ The Errors returned are defined [here](errors.md#Errors).
   "enrollmentId": "0123456",
   "courseId": "ExampleCourse",
   "moduleId": "M.1",
-  "timestamp": "2020-09-27_24:59"
+  "timestamp": "2020-09-27_23:59"
+
 }
 ```
 

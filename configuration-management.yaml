@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Configuration API for UC4."
-  version: "0.12.1"
+  version: "0.13.1"
   title: "UC4"
 
 servers:
@@ -131,10 +131,6 @@ components:
     Configuration:
       type: "object"
       properties:
-        fieldsOfStudy:
-          type: array
-          items:
-            type: string
         countries:
           type: array
           items:
@@ -252,7 +248,7 @@ components:
         chaincodeVersion: "v0.10.0"
         networkVersion: "v0.10.0"
     ExampleHyperledgerVersionsUnavailable:
-      summary: "An example for the HyperledgerVersions object, with an unavailabe version"
+      summary: "An example for the HyperledgerVersions object, with an unavailable version"
       value:
         apiVersion: "v0.10.0"
         chaincodeVersion: "v0.10.0"
@@ -260,7 +256,6 @@ components:
     ExampleConfiguration:
       summary: "An example for the configuration"
       value:
-        fieldsOfStudy: ["Computer Science", "Philosophy", "Media Sciences", "Economics", "Mathematics", "Physics", "Chemistry", "Education", "Sports Science", "Japanology", "Spanish Culture", "Pedagogy", "Business Informatics", "Linguistics"]
         countries: ["Germany", "United States", "Italy", "France", "United Kingdom", "Belgium", "Netherlands", "Spain", "Austria", "Switzerland", "Poland"]
         languages: ["German", "English"]
         courseTypes: ["Lecture", "Seminar", "Project Group"]

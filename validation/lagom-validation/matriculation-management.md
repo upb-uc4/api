@@ -3,7 +3,7 @@
 ## SubjectMatriculation
 
 ### fieldOfStudy (String)
-*validFieldsOfStudies* := {"Computer Science", "Philosophy", "Media Sciences", "Economics", "Mathematics", "Physics","Chemistry", "Education", "Sports Science", "Japanology", "Spanish Culture", "Pedagogy", "Business Informatics", "Linguistics"}
+*validFieldsOfStudies* are names of active examination regulations
 - vFieldOfStudy1: fieldOfStudy ∈ *validFieldsOfStudies*
 - vFieldOfStudy1: fieldOfStudy ∉ *validFieldsOfStudies*
 

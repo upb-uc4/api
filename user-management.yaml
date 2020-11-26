@@ -400,7 +400,7 @@ paths:
       tags:
       - "User Management"
       summary: "Force deletes a user"
-      description: "Force-deletes a user (when invoked by an administrator). Removes the user completely. This might lead to errors if invoked on lecturers with existing courses."
+      description: "Force-deletes a user (when invoked by an administrator). Removes the user completely. This might lead to errors, e.g. if invoked on lecturers with existing courses."
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []

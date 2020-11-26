@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.8.2"
+  version: "0.12.1"
   title: "UC4"
 
 servers:
@@ -100,15 +100,11 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/GenericError'
                   - $ref: '#/components/schemas/DetailedError'
-
     get:
       tags:
       - "Course Management"
       summary: "Get all courses"
-      security:
-        - uc4_token_login: [] 
-        - uc4_token_login_header: []
-      description: "Returns all courses"
+      description: "Returns all courses, optionally filtered by query parameters"
       operationId: "getAllCourses"
       parameters:
       - name: "courseName"
@@ -123,6 +119,12 @@ paths:
         required: false
         schema:
           type: 'string'
+      - name: "moduleIds"
+        in: "query"
+        description: "Comma seperated list of module Ids to filter by"
+        required: false
+        schema:
+          type: 'string'
       responses:
         "200":
           description: "OK"
@@ -132,37 +134,10 @@ paths:
                 type: "array"
                 items:
                   $ref: '#/components/schemas/Course'
-        "400":
-          description: |
-            Bad Request    
-            types: MalformedLoginToken, MultipleAuthorizationError
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "401":
-          description: |
-            Unauthorized  
-            types:  JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity   
-            types: LoginTokenSignatureInvalid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
   /courses/{id}:
     get:
       tags:
       - "Course Management"
-      security:
-        - uc4_token_login: []
-        - uc4_token_login_header: []
       summary: "Find course by course id"
       description: "Find course by course id"
       operationId: "findCourseByCourseId"
@@ -180,34 +155,10 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/Course'
-          "400":
-            description: |
-              Bad Request    
-              types: MalformedLoginToken, MultipleAuthorizationError
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "401":
-            description: |
-              Unauthorized  
-              types: JwtAuthorization, LoginTokenExpired
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
           "404":
             description: |
               Not Found  
               types: KeyNotFound
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "422":
-            description: |
-              Unprocessable Entity   
-              types: LoginTokenSignatureInvalid
             content:
               application/json:
                 schema:
@@ -349,6 +300,10 @@ components:
       properties:
         courseId:
           type: string
+        moduleIds:
+          type: array
+          items:
+            type: string
         courseName:
           type: string
         courseType:

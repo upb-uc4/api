@@ -1,0 +1,341 @@
+openapi: "3.0.0"
+info:
+  description: "This is the Examination Regulation API for UC4."
+  version: "0.12.1"
+  title: "UC4"
+
+servers:
+  - url: https://uc4.cs.upb.de/api/production/examreg-management
+
+tags:
+- name: "Version Management"
+  description: "Everything about the Version"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+- name: "Examination Regulation Management"
+  description: "Everything about the configuration"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+
+paths:
+  /version:
+    get:
+      tags:
+      - "Version Management"
+      summary: "Get version"
+      description: "Returns the version of the current service"
+      operationId: "getVersion"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonVersionNumber'
+  /examination-regulations:
+    get:
+      tags:
+      - "Examination Regulation Management"
+      summary: "Get examination regulations"
+      description: "Get all examination regulations, or the ones specified by the query parameter"
+      operationId: "getExaminationRegulation"
+      parameters:
+      - name: "regulations"
+        in: "query"
+        description: "A comma seperated list of examination regulations to filter by"
+        required: false
+        schema:
+          type: "string"
+      - name: "active"
+        in: "query"
+        description: "A flag determining, if only active or inactive examination regulations should be fetched"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/ExaminationRegulation'
+              examples:
+                ConfigurationExample:
+                  $ref: '#/components/examples/ExampleExaminationRegulations'
+    post:
+      tags:
+      - "Examination Regulation Management"
+      summary: "Add examination regulations"
+      description: "Add an examination regulation, which will then be stored on the chain."
+      operationId: "addExaminationRegulation"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExaminationRegulation'
+              examples:
+                ConfigurationExample:
+                  $ref: '#/components/examples/ExampleExaminationRegulation'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+  /examination-regulations/{examinationRegulation}:
+    delete:
+      tags:
+      - "Examination Regulation Management"
+      summary: "Flag an examination regulations as inactive"
+      description: "Flag an examination regulation as inactive, a change which will be persisted on chain."
+      operationId: "deleteExaminationRegulation"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      parameters:
+      - in: "path"
+        name: "examinationRegulation"
+        description: "The name of the examination regulation which should be flagged as inactive."
+        required: true
+        schema: 
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: |
+            Bad Request    
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: KeyNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /examination-regulations/modules:
+    get:
+      tags:
+      - "Examination Regulation Management"
+      summary: "Get all modules of examination regulations"
+      description: "Get all modules which exist in any examination regulations which were previously used, or are currently used in the system. Can be further specified by query parameters."
+      operationId: "getModules"
+      parameters:
+      - name: "moduleIds"
+        in: "query"
+        description: "A comma seperated list of moduleIds to filter by"
+        required: false
+        schema:
+          type: "string"
+      - name: "active"
+        in: "query"
+        description: "A flag determining, if only modules from active or inactive examination regulations should be fetched"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: string
+              examples:
+                ModuleIds:
+                  $ref: '#/components/examples/ExampleModuleList'
+  /examination-regulations/names:
+    get:
+      tags:
+      - "Examination Regulation Management"
+      summary: "Get all examination regulations' names"
+      description: "Get all names of any examination regulations which were previously used, or are currently used in the system. Can be further specified by query parameters."
+      operationId: "getAllExaminationRegulation"
+      parameters:
+      - name: "active"
+        in: "query"
+        description: "A flag determining, if names of active or inactive examination regulations should be fetched"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: string
+              examples:
+                ExamRegNameList:
+                  $ref: '#/components/examples/ExampleExamRegNameList'
+components:
+  securitySchemes:
+    uc4_token_login:
+      type: apiKey
+      in: cookie
+      name: login
+    uc4_token_login_header:
+      type: http
+      scheme: bearer
+  schemas:
+    ExaminationRegulation:
+      type: "object"
+      properties:
+        name:
+          type: string
+        active:
+          type: boolean
+        modules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Module'
+    Module:
+      type: "object"
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    JsonVersionNumber:
+      type: object
+      properties:
+        versionNumber:
+          type: string
+    GenericError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
+        - type: object
+    DetailedError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+        - type: object
+  examples:
+    ExampleExamRegNameList:
+      summary: "An example for a list of examination regulation names"
+      value:
+        ["Computer Science v3", "Computer Science v4", "Philosophy"]
+    ExampleModuleList:
+      summary: "An example for a list of modules"
+      value:
+        - id: "M.1275.01158"
+          name: "Math 1"
+        - id: "M.1275.56002"
+          name: "Math 2"
+        - id: "M.1358.91583"
+          name: "Complexity Theory"
+    ExampleExaminationRegulations:
+      summary: "An example for an Array of ExaminationRegulation objects"
+      value:
+        - name: "Bachelor Computer Science v3"
+          active: true
+          modules:
+            - id: "M.1275.01158"
+              name: "Math 1"
+            - id: "M.1275.01159"
+              name: "Math 2"
+            - id: "M.1275.78235"
+              name: "Complexity Theory"
+        - name: "Bachelor Computer Science v4"
+          active: true
+          modules:
+            - id: "M.1278.15686"
+              name: "Math"
+            - id: "M.1275.78235"
+              name: "Complexity Theory"
+            - id: "M.1278.79512"
+              name: "IT-Security"
+        - name: "Bachelor Philosophy v1"
+          active: true
+          modules:
+            - id: "M.1358.15686"
+              name: "Introduction to Philosophy"
+            - id: "M.1358.15653"
+              name: "Theoretical Philosophy"
+            - id: "M.1358.15418"
+              name: "Applied Ethics"
+    ExampleExaminationRegulation:
+      summary: "An example for the ExaminationRegulation object"
+      value:
+        name: "Bachelor Computer Science v3"
+        active: true
+        modules:
+          - id: "M.1275.01158"
+            name: "Math 1"
+          - id: "M.1275.01159"
+            name: "Math 2"
+          - id: "M.1275.78235"
+            name: "Complexity Theory"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io" 

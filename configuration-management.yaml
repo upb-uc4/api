@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Configuration API for UC4."
-  version: "0.10.1"
+  version: "0.12.1"
   title: "UC4"
 
 servers:
@@ -109,7 +109,7 @@ paths:
       tags:
       - "Configuration Management"
       summary: "Get the regular expressions used for validation"
-      description: "Fetch the regular expressions used in the validaiton of various objects"
+      description: "Fetch the regular expressions and the corresponding error message used in the validaiton of various objects"
       operationId: "getValidation"
       responses:
         "200":
@@ -154,60 +154,69 @@ components:
           type: object
           properties:
             username:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
+            password:
+              $ref: '#/components/schemas/ValidationPair'
         postMessageCSR:
           type: object
           properties:
             certificateSigningRequest:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
         course:
           type: "object"
           properties:
             courseName:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             startDate:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             endDate:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             ects:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             lecturerId:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             maxParticipants:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             courseDescription:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
         user:
           type: "object"
           properties:
             username:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             firstName:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             lastName:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             email:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             phoneNumber:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             birthDate:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
         lecturer:
           type: "object"
           properties:
             freeText:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             researchArea:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
         address:
           type: "object"
           properties:
             street:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             houseNumber:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
             city:
-              type: string
+              $ref: '#/components/schemas/ValidationPair'
+    ValidationPair:
+      type: "object"
+      properties:
+        regex:
+          type: string
+        message:
+          type: string
     HyperledgerVersions:
       type: "object"
       properties:

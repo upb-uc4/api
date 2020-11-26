@@ -64,7 +64,7 @@ paths:
         required: false
         schema:
           type: "string"
-      - name: "only_active"
+      - name: "is_active"
         in: "query"
         description: "A boolean that determines if only active users or only inactive users should be fetched"
         required: false
@@ -804,7 +804,7 @@ paths:
         required: false
         schema:
           type: "string"
-      - name: "only_active"
+      - name: "is_active"
         in: "query"
         description: "A boolean that determines if only active users or only inactive users should be fetched"
         required: false
@@ -869,7 +869,7 @@ paths:
         required: false
         schema:
           type: "string"
-      - name: "only_active"
+      - name: "is_active"
         in: "query"
         description: "A boolean that determines if only active users or only inactive users should be fetched"
         required: false
@@ -934,7 +934,7 @@ paths:
         required: false
         schema:
           type: "string"
-      - name: "only_active"
+      - name: "is_active"
         in: "query"
         description: "A boolean that determines if only active users or only inactive users should be fetched"
         required: false

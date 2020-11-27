@@ -4,6 +4,8 @@ In the following, the chaincode api for the "Admission"-Chaincode is described.
 This contains all Transactions and Models provided for this domain.
 The Errors returned are defined [here](errors.md#Errors).
 
+## ContractName "UC4.Admission"
+
 ## Transactions
 
 ### Add Admission
@@ -12,7 +14,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - enrollmentId :: String
     - courseId :: String
     - moduleId :: String
-    - timestamp :: String \<DATE YYYY-MM-DD_hh:mm\>
+    - timestamp :: String \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
 - Receive
     - [Admission](#Admission)
       -  Description: Done, returns the submitted data, decorated with an admissionId.
@@ -33,21 +35,21 @@ The Errors returned are defined [here](errors.md#Errors).
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.  
        For detailed informations see [parameter checks](#parameterChecks).
 
-    - [SemanticError](errors.md#SemanticError)
+    - [DetailedError](errors.md#DetailedError) 
       ```json
       {
-        "type": "HLInvalid",
-        "title": "Semantic errors were found. The following Validation Rules were violated:",
-        "validationRules": [
+        "type": "HLInvalidEntity",
+        "title": "The following parameters produced some semantic error",
+        "invalidParams": [
           {
-            "name": "ModuleAccess",
-            "reason": "Student is not matriculated in an examinationRegulation containing the refernced module."
+            "name": "string",
+            "reason": "string"
           }
         ]
       }
       ```
-       - Description: This error is returned, if the Student is not allowed to be admissioned in this way.
-         For detailed informations see [semantic checks](#semanticChecks).
+      - Description: This error is returned, if the given parameters produce some error.  
+      For detailed informations see [semantic checks](#semanticChecks).
 
 
 ### Drop Admission
@@ -94,82 +96,17 @@ The Errors returned are defined [here](errors.md#Errors).
       - Description: This error is returned, if the required approvals are not present.
 
 
-### Get Admissions for User
-- ID = getAdmissionsForUser
+### Get Admissions
+- ID = getAdmissions
 - Send
     - enrollmentId :: String
-- Receive
-    - admissionList :: List\<[Admission](#Admission)\>
-      - Description: Exhaustive List of all Admissions User ever enrolled in. Empty if none exist.
-
-    - [GenericError](errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLUnprocessableLedgerState",
-        "title": "The state on the ledger does not conform to the specified format"
-      }
-      ```
-      - Description: This error is returned, if the state of data on the ledger is not consistent with the curent model. This error should only occurr if the model changes while the old ledger state remains without modification.
-
-    - [DetailedError](errors.md#DetailedError) 
-      ```json
-      {
-        "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format",
-        "invalidParams": [
-          {
-            "name": "string",
-            "reason": "string"
-          }
-        ]
-      }
-      ```
-      - Description: This error is returned, if the given parameters are not well formatted, they are listed in invalidParams.  
-      For detailed informations see [parameter checks](#parameterChecks).
-      (enrollmentId)
-
-
-### Get Admissions for Course
-- ID = getAdmissionsForCourse
-- Send
     - courseId :: String
-- Receive
-    - admissionList :: List\<[Admission](#Admission)\>
-      - Description: Exhaustive List of all Admissions referencing the course. Empty if none exist.
-
-    - [GenericError](errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLUnprocessableLedgerState",
-        "title": "The state on the ledger does not conform to the specified format"
-      }
-      ```
-      - Description: This error is returned, if the state of data on the ledger is not consistent with the curent model. This error should only occurr if the model changes while the old ledger state remains without modification.
-
-    - [DetailedError](errors.md#DetailedError) 
-      ```json
-      {
-        "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format",
-        "invalidParams": [
-          {
-            "name": "string",
-            "reason": "string"
-          }
-        ]
-      }
-      ```
-      - Description: This error is returned, if the given parameters are not well formatted, they are listed in invalidParams.  
-      For detailed informations see [parameter checks](#parameterChecks).
-      (courseId)
-
-### Get Admissions for Module
-- ID = getAdmissionsForModule
-- Send
     - moduleId :: String
 - Receive
     - admissionList :: List\<[Admission](#Admission)\>
-      - Description: Exhaustive List of all Admissions referencing the module. Empty if none exist.
+      - Description: Exhaustive List of all Admissions, filtered by
+      inputs "enrollmentId", "courseId", "moduleId".
+      Empty if no match could be found.
 
     - [GenericError](errors.md#GenericError) 
       ```json
@@ -195,7 +132,6 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the given parameters are not well formatted, they are listed in invalidParams.  
       For detailed informations see [parameter checks](#parameterChecks).
-      (moduleId)
 
 ## <a id="Models" />Models
 
@@ -206,13 +142,15 @@ The Errors returned are defined [here](errors.md#Errors).
   "enrollmentId": "0123456",
   "courseId": "ExampleCourse",
   "moduleId": "M.1",
-  "timestamp": "2020-09-27_24:59"
+  "timestamp": "2004-06-14T23:34:30"
 }
 ```
 
 ## <a id="Checks" />Input Checks
 ### <a id="parameterChecks" />Parameters
 - Checks, if parseable Json.
+- **admissionId**
+  - Check, if not null or an empty String.
 - **enrollmentId**
   - Check, if not null or an empty String.
 - **courseId**
@@ -220,7 +158,7 @@ The Errors returned are defined [here](errors.md#Errors).
 - **moduleId**
   - Check, if not null or an empty String.
 - **timestamp**
-  - Check, if valid date-String YYYY-MM-DD_hh:mm
+  - Check, if valid date-String YYYY-MM-DDThh:mm:ss
 
 ### <a id="semanticChecks" />SemanticChecks
 - **admissionPossible**

@@ -119,6 +119,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CourseAdmission'
+            examples:
+              AddCourseAdmission:
+                $ref: '#/components/examples/ExampleCourseAdmission'
       responses:
         "201":
           description: "Created"
@@ -330,6 +333,16 @@ components:
       allOf:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
         - type: object
+  examples:
+    ExampleCourseAdmission:
+      summary: "An example for a CourseAdmission object"
+      value:
+        enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6"
+        courseId: "eae27105-2fd5-11eb-ad58-572c5dfe1b7a"
+        moduleId: "M.1275.01158"
+        admissionId: ""
+        timestamp: ""
+        
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io" 

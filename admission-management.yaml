@@ -337,7 +337,7 @@ components:
     ExampleCourseAdmission:
       summary: "An example for a CourseAdmission object"
       value:
-        enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6"
+        enrollmentId: ""
         courseId: "eae27105-2fd5-11eb-ad58-572c5dfe1b7a"
         moduleId: "M.1275.01158"
         admissionId: ""

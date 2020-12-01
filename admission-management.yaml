@@ -34,7 +34,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JsonVersionNumber'
+                $ref: '#/components/schemas/JsonServiceVersion'
+  /version/hyperledger:
+    get:
+      tags:
+      - "Version Management"
+      summary: "Get Hyperledger version"
+      description: "Returns the version of the current hyperledger backend"
+      operationId: "getVersionHyperledger"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonHyperledgerVersion'
   /admissions/courses:
     get:
       tags:
@@ -323,10 +337,17 @@ components:
       allOf:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-proposals.yaml#/components/schemas/SignedProposal'
         - type: object
-    JsonVersionNumber:
+    JsonServiceVersion:
       type: object
       properties:
-        versionNumber:
+        serviceVersion:
+          type: string
+    JsonHyperledgerVersion:
+      type: object
+      properties:
+        hlfApiVersion:
+          type: string
+        chaincodeVersion:
           type: string
     GenericError:
       allOf:

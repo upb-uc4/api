@@ -70,6 +70,9 @@ paths:
                 type: "array"
                 items:
                   $ref: '#/components/schemas/CourseAdmission'
+              examples:
+                GetCourseAdmission:
+                  $ref: '#/components/examples/ExampleCourseAdmissionGet'
         "400":
           description: | 
             Bad Request  
@@ -107,7 +110,7 @@ paths:
       tags:
       - "Course Admission Management"
       summary: "Fetch a proposal for admitting a student to a course"
-      description: "Fetch a proposal for admitting the student with the enrollmentID to the course with the given courseId in a module with the given moduleId. AdmissionId will be set in the returned proposal."
+      description: "Fetch a proposal for admitting the student with the enrollmentID to the course with the given courseId. AdmissionId will be set in the returned proposal."
       operationId: "addAdmission"
       security:
         - uc4_token_login: []
@@ -121,7 +124,7 @@ paths:
               $ref: '#/components/schemas/CourseAdmission'
             examples:
               AddCourseAdmission:
-                $ref: '#/components/examples/ExampleCourseAdmission'
+                $ref: '#/components/examples/ExampleCourseAdmissionPost'
       responses:
         "201":
           description: "Created"
@@ -170,7 +173,7 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/GenericError'
                   - $ref: '#/components/schemas/DetailedError'
-    
+
   /admissions/courses/proposals/drop:
     post:
       tags:
@@ -334,7 +337,7 @@ components:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
         - type: object
   examples:
-    ExampleCourseAdmission:
+    ExampleCourseAdmissionPost:
       summary: "An example for a CourseAdmission object"
       value:
         enrollmentId: ""
@@ -342,7 +345,15 @@ components:
         moduleId: "M.1275.01158"
         admissionId: ""
         timestamp: ""
-        
+    ExampleCourseAdmissionGet:
+      summary: "An example for a filled course admission"
+      value:
+        enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6"
+        courseId: "eae27105-2fd5-11eb-ad58-572c5dfe1b7a"
+        moduleId: "M.1275.01158"
+        admissionId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6:eae27105-2fd5-11eb-ad58-572c5dfe1b7a"
+        timestamp: "2020-12-01"
+
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io" 

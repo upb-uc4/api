@@ -45,7 +45,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JsonVersionNumber'
+                $ref: '#/components/schemas/JsonServiceVersion'
 
   /users:
     get:
@@ -1091,10 +1091,10 @@ components:
         role:
           type: "string"
           enum: ["Admin", "Student", "Lecturer"]
-    JsonVersionNumber:
+    JsonServiceVersion:
       type: object
       properties:
-        versionNumber:
+        serviceVersion:
           type: string
     GenericError:
       allOf:

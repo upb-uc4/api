@@ -33,7 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JsonVersionNumber'
+                $ref: '#/components/schemas/JsonServiceVersion'
   /version/hyperledger:
     get:
       tags:
@@ -227,10 +227,10 @@ components:
       properties:
         semester:
           type: string
-    JsonVersionNumber:
+    JsonServiceVersion:
       type: object
       properties:
-        versionNumber:
+        serviceVersion:
           type: string
     GenericError:
       allOf:

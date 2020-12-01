@@ -9,7 +9,7 @@ For "admission" handling we offer the following interface.
 Additionally, as described in [General Communication](general-communication.md), different proposal calls can be made.
 
 
-## AddAdmission(enrollmentId: String, courseId: String, moduleId: String, timestamp: String)
+## AddAdmission(admission: Json([Admission](../chaincode/admission.md#Admission)))
 - Returns
     - Admission :: Json (refer to: [Admission](../chaincode/admission.md#Admission))
         - => Success
@@ -17,6 +17,9 @@ Additionally, as described in [General Communication](general-communication.md),
         - => error is returned
           - If the given parameters could not be parsed.
           - If the given transaction could not be performed due to semantic reasons.
+    - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
+        - => error is returned, 
+          - If the required approvals are not present on the ledger.
 
 ## DropAdmission(admissionId: String)
 - Returns
@@ -40,10 +43,5 @@ If any of theses parameter is empty, its filter will not be applied.
             inputs "enrollmentId", "courseId", "moduleId".
             Empty if no match could be found.
 
-    - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
-        - => error is returned,
-          - If the state of data on the ledger is not consistent with the curent model.
-            - This error should only occurr if the model changes while the old ledger state remains without modification.
-    - TransactionError :: Json (refer to: [DetailedError](../chaincode/errors.md#DetailedError))
-        - => error is returned,
-          - The enrollmentId is null or empty
+> Note! Invalid States on the ledger get ignored.
+> We return all valid Admissions that match the filters.

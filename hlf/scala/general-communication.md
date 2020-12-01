@@ -73,7 +73,8 @@ val proposal: String = certificateConnection.getProposalAddCertificate(enrollmen
 - have the USER create his signature for the "unsigned" proposal
 - receive the signature from the USER (together with the original proposal)
 
-- request the unsigned transaction
+- request the unsigned transaction by submitting the signed proposal
+
 ```scala
 val (unsignedTransaction, proposalTransactionId) = certificateConnection.getUnsignedTransaction(proposalBytes: Array[Byte], signature: Array[Byte])
 ```

@@ -107,7 +107,7 @@ paths:
       tags:
       - "Course Admission Management"
       summary: "Fetch a proposal for admitting a student to a course"
-      description: "Fetch a proposal for admitting the student with the enrollmentID to the course with the given courseId. AdmissionId will be set in the returned proposal."
+      description: "Fetch a proposal for admitting the student with the enrollmentID to the course with the given courseId in a module with the given moduleId. AdmissionId will be set in the returned proposal."
       operationId: "addAdmission"
       security:
         - uc4_token_login: []

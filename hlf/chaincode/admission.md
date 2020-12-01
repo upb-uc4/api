@@ -11,10 +11,7 @@ The Errors returned are defined [here](errors.md#Errors).
 ### Add Admission
 - ID = addAdmission
 - Send
-    - enrollmentId :: String
-    - courseId :: String
-    - moduleId :: String
-    - timestamp :: String \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
+    - jsonAdmission :: [Admission](#Admission)
 - Receive
     - [Admission](#Admission)
       -  Description: Done, returns the submitted data, decorated with an admissionId.
@@ -50,6 +47,15 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the given parameters produce some error.  
       For detailed informations see [semantic checks](#semanticChecks).
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLInsufficientApprovals",
+        "title": "The approvals present on the ledger do not suffice to execute this transaction"
+      }
+      ```
+      - Description: This error is returned, if the required approvals are not present.
 
 
 ### Drop Admission
@@ -142,7 +148,7 @@ The Errors returned are defined [here](errors.md#Errors).
   "enrollmentId": "0123456",
   "courseId": "ExampleCourse",
   "moduleId": "M.1",
-  "timestamp": "2004-06-14T23:34:30"
+  "timestamp": "2004-06-14T23:34:30" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
 }
 ```
 

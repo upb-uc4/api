@@ -1,0 +1,38 @@
+openapi: "3.0.0"
+info:
+  description: "This is the Proposal Definition for the UC4 API."
+  version: "0.13.1"
+  title: "UC4"
+tags:
+- name: "Proposals"
+  description: "Unused"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+paths:
+  /unused:
+    get:
+      tags:
+      - "Proposals"
+      responses:
+        "200":
+          description: "Ok"
+components:
+  schemas:
+    UnsignedProposal:
+      type: "object"
+      properties:
+        unsignedProposal:
+          type: string
+          format: Base64
+    SignedProposal:
+      type: "object"
+      properties:
+        unsignedProposal:
+          type: string
+          format: Base64
+        signature:
+          type: string
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

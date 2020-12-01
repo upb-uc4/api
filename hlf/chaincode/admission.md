@@ -11,10 +11,7 @@ The Errors returned are defined [here](errors.md#Errors).
 ### Add Admission
 - ID = addAdmission
 - Send
-    - enrollmentId :: String
-    - courseId :: String
-    - moduleId :: String
-    - timestamp :: String \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
+    - jsonAdmission :: [Admission](#Admission)
 - Receive
     - [Admission](#Admission)
       -  Description: Done, returns the submitted data, decorated with an admissionId.
@@ -38,7 +35,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - [DetailedError](errors.md#DetailedError) 
       ```json
       {
-        "type": "HLInvalidEntity",
+        "type": "HLInvalidAction",
         "title": "The following parameters produced some semantic error",
         "invalidParams": [
           {
@@ -142,7 +139,7 @@ The Errors returned are defined [here](errors.md#Errors).
   "enrollmentId": "0123456",
   "courseId": "ExampleCourse",
   "moduleId": "M.1",
-  "timestamp": "2004-06-14T23:34:30"
+  "timestamp": "2004-06-14T23:34:30" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
 }
 ```
 

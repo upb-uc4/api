@@ -47,6 +47,15 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the given parameters produce some error.  
       For detailed informations see [semantic checks](#semanticChecks).
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLInsufficientApprovals",
+        "title": "The approvals present on the ledger do not suffice to execute this transaction"
+      }
+      ```
+      - Description: This error is returned, if the required approvals are not present.
 
 
 ### Drop Admission

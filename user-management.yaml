@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.9.1"
+  version: "0.13.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/user-management
@@ -64,6 +64,12 @@ paths:
         required: false
         schema:
           type: "string"
+      - name: "is_active"
+        in: "query"
+        description: "A boolean that determines if only active users or only inactive users should be fetched"
+        required: false
+        schema:
+          type: boolean
       responses:
         "200":
           description: "OK"
@@ -120,10 +126,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/PostMessageStudent'
-                - $ref: '#/components/schemas/PostMessageLecturer'
-                - $ref: '#/components/schemas/PostMessageAdmin'
+              $ref: '#/components/schemas/PostMessageUser'
             examples:
               PostStudent:
                 $ref: '#/components/examples/ExamplePostMessageStudent'
@@ -334,7 +337,7 @@ paths:
       tags:
       - "User Management"
       summary: "Deletes a user"
-      description: "Deletes a user (when invoked by an administrator)"
+      description: "Soft-deletes a user (when invoked by an administrator). Removes all info except username for non-lecturers, and all except username, firstName, lastName and enrollmentId for lecturers. Sets the \"isActive\" flag to \"false\"."
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
@@ -388,7 +391,65 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-  
+  /users/{username}/force:            
+    delete:
+      tags:
+      - "User Management"
+      summary: "Force deletes a user"
+      description: "Force-deletes a user (when invoked by an administrator). Removes the user completely. This might lead to errors, e.g. if invoked on lecturers with existing courses."
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "forceDeleteUser"
+      parameters:
+      - name: "username"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: |
+            Bad Request    
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: KeyNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
   /users/{username}/image:
     get:
       tags:
@@ -656,8 +717,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-                              
-                
   /users/{username}/thumbnail:
     get:
       tags:
@@ -720,7 +779,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-  
   /students:
     get:
       tags:
@@ -738,6 +796,12 @@ paths:
         required: false
         schema:
           type: "string"
+      - name: "is_active"
+        in: "query"
+        description: "A boolean that determines if only active users or only inactive users should be fetched"
+        required: false
+        schema:
+          type: boolean
       responses:
         "200":
           description: "OK"
@@ -797,6 +861,12 @@ paths:
         required: false
         schema:
           type: "string"
+      - name: "is_active"
+        in: "query"
+        description: "A boolean that determines if only active users or only inactive users should be fetched"
+        required: false
+        schema:
+          type: boolean
       responses:
         "200":
           description: "OK"
@@ -856,6 +926,12 @@ paths:
         required: false
         schema:
           type: "string"
+      - name: "is_active"
+        in: "query"
+        description: "A boolean that determines if only active users or only inactive users should be fetched"
+        required: false
+        schema:
+          type: boolean
       responses:
         "200":
           description: "OK"
@@ -923,37 +999,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Admin'
-    PostMessageStudent:
-      allOf: 
-        - $ref: '#/components/schemas/PostMessageUser'
-        - type: object
-          properties:
-            student:
-              $ref: '#/components/schemas/Student'
-    PostMessageLecturer:
-      allOf: 
-        - $ref: '#/components/schemas/PostMessageUser'
-        - type: object
-          properties:
-            lecturer:
-              $ref: '#/components/schemas/Lecturer'
-    PostMessageAdmin:
-      allOf: 
-        - $ref: '#/components/schemas/PostMessageUser'
-        - type: object
-          properties:
-            admin:
-              $ref: '#/components/schemas/Admin'
     PostMessageUser:
       type: "object"
       properties:
+        governmentId:
+          type: string
         authUser:
           allOf:
             - $ref: "#/components/schemas/AuthUser"
+        user:
+          $ref: "#/components/schemas/User"
     User:
       type: "object"
       properties:
         username:
+          type: string
+        isActive:
+          type: boolean
+        enrollmentIdSecret:
           type: string
         role:
           type: string
@@ -975,6 +1038,8 @@ components:
           type: string
           format: phonenumber
           example: "+49123456789"
+        governmentId:
+          type: string
     Admin:
       allOf:
         - $ref: '#/components/schemas/User'
@@ -1045,14 +1110,16 @@ components:
         - type: object
   examples:
     ExamplePostMessageStudent:
-      summary: "Example for PostMessageStudent"
+      summary: "Example for PostMessageUser, containing a student"
       value:
+        governmentId: "T22000129"
         authUser:
           username: "test-student"
           password: "password123"
           role: "Student"
-        student:
+        user:
           username: "test-student"
+          enrollmentIdSecret: ""
           role: "Student"
           address:
             street: "Sandy Street"
@@ -1071,6 +1138,7 @@ components:
       summary: "Example for Student"
       value:
         username: "test-student"
+        enrollmentIdSecret: "secret113794857246"
         role: "Student"
         address:
           street: "Sandy Street"
@@ -1086,14 +1154,16 @@ components:
         latestImmatriculation: ""
         matriculationId: "1234567"
     ExamplePostMessageLecturer:
-      summary: "Example for PostMessageLecturer"
+      summary: "Example for PostMessageUser, containing a lecturer"
       value:
+        governmentId: "T22000129"
         authUser:
           username: "test-lec"
           password: "password123"
           role: "Lecturer"
-        lecturer:
+        user:
           username: "test-lec"
+          enrollmentIdSecret: ""
           role: "Lecturer"
           address:
             street: "Sandy Street"
@@ -1112,6 +1182,7 @@ components:
       summary: "Example for Lecturer"
       value:
         username: "test-lec"
+        enrollmentIdSecret: "secret113794857246"
         role: "Lecturer"
         address:
           street: "Sandy Street"
@@ -1127,14 +1198,16 @@ components:
         freeText: "Some cool publications about jedi stuff."
         researchArea: "The light side only, I swear!"
     ExamplePostMessageAdmin:
-      summary: "Example for PostMessageAdmin"
+      summary: "Example for PostMessageUser, containing a admin"
       value:
+        governmentId: "T22000129"
         authUser:
           username: "test-admin"
           password: "password123"
           role: "Admin"
-        admin:
+        user:
           username: "test-admin"
+          enrollmentIdSecret: ""
           role: "Admin"
           address:
             street: "Sandy Street"
@@ -1151,6 +1224,7 @@ components:
       summary: "Example for Admin"
       value:
         username: "test-admin"
+        enrollmentIdSecret: "secret113794857246"
         role: "Admin"
         address:
           street: "Sandy Street"
@@ -1163,7 +1237,6 @@ components:
         email: "luke@skywalker.com"
         birthDate: "1950-12-24"
         phoneNumber: "+49123456789"
-        
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

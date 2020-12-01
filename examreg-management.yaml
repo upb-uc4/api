@@ -14,7 +14,7 @@ tags:
     description: "Find out more"
     url: "https://github.com/upb-uc4"
 - name: "Examination Regulation Management"
-  description: "Everything about the configuration"
+  description: "Everything about the examination regulations"
   externalDocs:
     description: "Find out more"
     url: "https://github.com/upb-uc4"
@@ -44,7 +44,7 @@ paths:
       parameters:
       - name: "regulations"
         in: "query"
-        description: "A comma seperated list of examination regulations to filter by"
+        description: "A comma separated list of examination regulations to filter by"
         required: false
         schema:
           type: "string"
@@ -64,7 +64,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/ExaminationRegulation'
               examples:
-                ConfigurationExample:
+                ExaminationRegulationExample:
                   $ref: '#/components/examples/ExampleExaminationRegulations'
     post:
       tags:
@@ -83,7 +83,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExaminationRegulation'
               examples:
-                ConfigurationExample:
+                ExaminationRegulationExample:
                   $ref: '#/components/examples/ExampleExaminationRegulation'
         "400":
           description: | 
@@ -125,7 +125,7 @@ paths:
     delete:
       tags:
       - "Examination Regulation Management"
-      summary: "Flag an examination regulations as inactive"
+      summary: "Flag an examination regulation as inactive"
       description: "Flag an examination regulation as inactive, a change which will be persisted on chain."
       operationId: "deleteExaminationRegulation"
       security:
@@ -191,7 +191,7 @@ paths:
       parameters:
       - name: "moduleIds"
         in: "query"
-        description: "A comma seperated list of moduleIds to filter by"
+        description: "A comma separated list of moduleIds to filter by"
         required: false
         schema:
           type: "string"
@@ -336,10 +336,6 @@ components:
             name: "Math 2"
           - id: "M.1275.78235"
             name: "Complexity Theory"
-    JsonSemester:
-      summary: "An example for the JsonSemester"
-      value:
-        semester: "SS2020"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io" 

@@ -35,7 +35,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - [DetailedError](errors.md#DetailedError) 
       ```json
       {
-        "type": "HLInvalidAction",
+        "type": "HLInvalidEntity",
         "title": "The following parameters produced some semantic error",
         "invalidParams": [
           {

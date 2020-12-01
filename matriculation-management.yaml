@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Matriculation API for UC4."
-  version: "0.10.1"
+  version: "0.13.1"
   title: "UC4"
 servers:
   - url: https://uc4.cs.upb.de/api/matriculation-management
@@ -31,7 +31,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonVersionNumber'
-  /matriculation/{username}/proposal:
+  /matriculation/{username}/unsigned_proposal:
     post:
       tags:
       - "Matriculation Management"
@@ -103,13 +103,13 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/GenericError'
                   - $ref: '#/components/schemas/DetailedError'
-  /matriculation/{username}/submit:
+  /matriculation/{username}/signed_proposal:
     post:
       tags:
       - "Matriculation Management"
       summary: "Submit signed proposal for matriculation transaction"
       description: "Submit proposal for matriculation transaction. The transaction will enroll the student in the given semester, in the given fieldOfStudy."
-      operationId: "submitProposalAddEntry"
+      operationId: "submitProposal"
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
@@ -119,7 +119,64 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SignedProposalAddEntry'
+              $ref: '#/components/schemas/SignedProposal'
+            examples:
+              ExampleSignedProposalAddEntry:
+                $ref: '#/components/examples/ExampleSignedProposalAddEntry'
+      parameters:
+      - in: "path"
+        name: "username"
+        required: true
+        schema: 
+          type: "string"
+      responses:
+        "202":
+          description: "Accepted"
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid, HLUnprocessableEntity
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+  /matriculation/{username}/signed_transaction:
+    post:
+      tags:
+      - "Matriculation Management"
+      summary: "Submit signed transaction for matriculation transaction"
+      description: "Submit a signed matriculation transaction. The transaction will enroll the student in the given semester, in the given fieldOfStudy."
+      operationId: "submitTransaction"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      requestBody:
+        description: "PostMessageMatriculationData, containing the semester the student want to be enrolled in, and the corresponding fieldOfStudy."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignedProposal'
             examples:
               ExampleSignedProposalAddEntry:
                 $ref: '#/components/examples/ExampleSignedProposalAddEntry'
@@ -329,7 +386,15 @@ components:
         unsignedProposal:
           type: string
           format: Base64
-    SignedProposalAddEntry:
+    SignedProposal:
+      type: "object"
+      properties:
+        unsignedProposal:
+          type: string
+          format: Base64
+        signature:
+          type: string
+    SignedTransaction:
       type: "object"
       properties:
         unsignedProposal:

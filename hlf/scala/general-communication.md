@@ -64,9 +64,6 @@ The ADMIN can then
 ```scala
 val proposal: String = certificateConnection.getProposalAddCertificate(enrollmentId, certificate)
 ```
-> Note!
-> This process does not yet communicate with the HLF Network. 
-> It is very fast.
 
 > Note!
 > The proposal is a simple Protobuf-object.

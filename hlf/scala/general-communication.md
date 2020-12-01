@@ -64,16 +64,44 @@ The ADMIN can then
 ```scala
 val proposal: String = certificateConnection.getProposalAddCertificate(enrollmentId, certificate)
 ```
-The proposal is a simple Json-object ([ProposalData](../chaincode/approval.md#ProposalData))
+> Note!
+> This process does not yet communicate with the HLF Network. 
+> It is very fast.
+
+> Note!
+> The proposal is a simple Protobuf-object.
 
  **_IMPORTANT: When asking for a proposal, the credentials used for setting up the initial connection are used to approve the transaction as well (in this case as the ADMIN)_**
 - pass it on to the USER that wants to sign it
 - have the USER create his signature for the "unsigned" proposal
 - receive the signature from the USER (together with the original proposal)
 
-- submit the signed proposal ("unsigned" proposal, signature)
+- request the unsigned transaction
 ```scala
-val result = certificateConnection.submitSignedProposal(proposalBytes: Array[Byte], signature: Array[Byte], userId: String)
+val (unsignedTransaction, proposalTransactionId) = certificateConnection.getUnsignedTransaction(proposalBytes: Array[Byte], signature: Array[Byte])
 ```
+> Note!
+> This process **does** communicate with the HLF Network. 
+> It is very slow.
+
+> Note!
+> The unsigned transaction returned is a protobuf-object as well.
+
+> Note!
+> The proposalTransactionId has to be passed to the submitTransaction-call.
+> We do not yet know if we can omit it.
+
+- pass it on to the USER that wants to sign it
+- have the USER create his signature for the "unsigned" transaction
+- receive the signature from the USER (together with the original unsignedTransaction)
+
+- submit the signed transaction
+```scala
+val result = certificateConnection.submitSignedTransaction(transactionBytes: Array[Byte], signature: Array[Byte], proposalTransactionId: String)
+```
+
+> Note!
+> submitTransaction and getUnsignedTransaction both communicate with the HLF Network.
+> We cannot provide any fixed bounds for execution time.
 
 For additional insight in the General hlf-api, please refer to its .Readme - File.

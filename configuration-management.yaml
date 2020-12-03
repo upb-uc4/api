@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Configuration API for UC4."
-  version: "0.13.1"
+  version: "0.13.2"
   title: "UC4"
 
 servers:
@@ -47,12 +47,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HyperledgerVersions'
+                $ref: '#/components/schemas/JsonHyperledgerNetworkVersion'
               examples:
                 ExampleHyperledgerVersions:
-                  $ref: '#/components/examples/ExampleHyperledgerVersions'
-                ExampleHyperledgerVersionsUnavailabe:
-                  $ref: '#/components/examples/ExampleHyperledgerVersionsUnavailable'
+                  $ref: '#/components/examples/ExampleJsonHyperledgerNetworkVersion'
   /configuration:
     get:
       tags:
@@ -95,7 +93,7 @@ paths:
                 $ref: '#/components/schemas/JsonSemester'
               examples:
                 ConfigurationExample:
-                  $ref: '#/components/examples/JsonSemester'
+                  $ref: '#/components/examples/ExampleJsonSemester'
         "400":
           description: | 
             Bad Request  
@@ -213,13 +211,9 @@ components:
           type: string
         message:
           type: string
-    HyperledgerVersions:
+    JsonHyperledgerNetworkVersion:
       type: "object"
       properties:
-        apiVersion:
-          type: string
-        chaincodeVersion:
-          type: string
         networkVersion:
           type: string
     JsonSemester:
@@ -241,25 +235,17 @@ components:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
         - type: object
   examples:
-    ExampleHyperledgerVersions:
-      summary: "An example for the HyperledgerVersions object"
+    ExampleJsonHyperledgerNetworkVersion:
+      summary: "An example for the JsonHyperledgerNetworkVersion object"
       value:
-        apiVersion: "v0.10.0"
-        chaincodeVersion: "v0.10.0"
-        networkVersion: "v0.10.0"
-    ExampleHyperledgerVersionsUnavailable:
-      summary: "An example for the HyperledgerVersions object, with an unavailable version"
-      value:
-        apiVersion: "v0.10.0"
-        chaincodeVersion: "v0.10.0"
-        networkVersion: null
+        networkVersion: "v0.13.0"
     ExampleConfiguration:
       summary: "An example for the configuration"
       value:
         countries: ["Germany", "United States", "Italy", "France", "United Kingdom", "Belgium", "Netherlands", "Spain", "Austria", "Switzerland", "Poland"]
         languages: ["German", "English"]
         courseTypes: ["Lecture", "Seminar", "Project Group"]
-    JsonSemester:
+    ExampleJsonSemester:
       summary: "An example for the JsonSemester"
       value:
         semester: "SS2020"

@@ -29,24 +29,10 @@ The Errors returned are defined [here](errors.md#Errors).
         ]
       }
       ```
-       - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.  
-       For detailed informations see [parameter checks](#parameterChecks).
-
-    - [DetailedError](errors.md#DetailedError) 
-      ```json
-      {
-        "type": "HLUnprocessableEntity",
-        "title": "The following parameters produced some semantic error",
-        "invalidParams": [
-          {
-            "name": "string",
-            "reason": "string"
-          }
-        ]
-      }
-      ```
-      - Description: This error is returned, if the given parameters produce some error.  
-      For detailed informations see [semantic checks](#semanticChecks).
+       - Description: This error is returned, 
+         - if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.  
+            For detailed informations see [parameter checks](#parameterChecks).
+         - if the given parameters produce some [semantic error](#semanticChecks).
     
     - [GenericError](errors.md#GenericError) 
       ```json

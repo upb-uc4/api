@@ -194,7 +194,7 @@ The Errors returned are defined [here](errors.md#Errors).
       For detailed informations see [parameter checks](#parameterChecks).
 
 ### Get Groups For User
-- ID = getGroupsFor User
+- ID = getGroupsForUser
 - Send
     - enrollmentId :: String
 

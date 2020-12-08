@@ -36,7 +36,7 @@ The Errors returned are defined [here](errors.md#Errors).
 - Send
     - contractName, transactionName, param1, ..., paramN :: String
 - Receive
-    - approvals :: List\<String\>
+    - approvals :: [SubmissionResult](#SubmissionResult)
 
     - [GenericError](errors.md#GenericError) 
       ```json
@@ -74,7 +74,40 @@ The Errors returned are defined [here](errors.md#Errors).
 
 ## <a id="Models" />Models
 
-- None
+### <a id="SubmissionResult" />SubmissionResult
+```json
+{
+  "existingApprovals": {
+    "users": [
+      "EnrollmentID_001"
+    ],
+    "groups": [
+      "Users"
+    ]
+  },
+  "missingApprovals": {
+    "users": [
+      "Lagom-Scala-Admin"
+    ],
+    "groups": [
+      "Admins"
+    ]
+  }
+}
+```
+
+### <a id="ApprovalList" />ApprovalList
+```json
+{
+  "users": [
+    "EnrollmentID_001",
+    "EnrollmentID_002"
+  ],
+  "groups": [
+    "Users"
+  ]
+}
+```
 
 ## <a id="Checks" />Input Checks
 

@@ -28,7 +28,7 @@ components:
     SignedTransaction:
       type: "object"
       properties:
-        unsignedProposal:
+        unsignedTransaction:
           type: string
           format: Base64
         signature:

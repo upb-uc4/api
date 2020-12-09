@@ -50,8 +50,8 @@ The Errors returned are defined [here](errors.md#Errors).
     - enrollmentId :: String
     - groupId :: String
 - Receive
-    - userList :: List\<String\>
-            - Description: ledgerState after transaction.
+    - ""
+      -  Description: Done; returns empty String on success.
 
     - [GenericError](errors.md#GenericError) 
       ```json

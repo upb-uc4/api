@@ -105,7 +105,7 @@ paths:
             application/json: 
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /admissions/courses/add_proposal:
+  /admissions/courses/unsigned_add_proposal:
     post:
       tags:
       - "Course Admission Management"
@@ -177,7 +177,7 @@ paths:
                   - $ref: '#/components/schemas/GenericError'
                   - $ref: '#/components/schemas/DetailedError'
 
-  /admissions/courses/drop_proposal:
+  /admissions/courses/unsigned_drop_proposal:
     post:
       tags:
       - "Course Admission Management"

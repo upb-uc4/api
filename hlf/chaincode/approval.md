@@ -104,7 +104,7 @@ The Errors returned are defined [here](errors.md#Errors).
     "EnrollmentID_002"
   ],
   "groups": [
-    "Users"
+    "Student"
   ]
 }
 ```

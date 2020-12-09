@@ -77,6 +77,7 @@ The Errors returned are defined [here](errors.md#Errors).
 ### <a id="SubmissionResult" />SubmissionResult
 ```json
 {
+  "operationId" : "0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93",
   "existingApprovals": {
     "users": [
       "EnrollmentID_001"

@@ -11,8 +11,8 @@ The Errors returned are defined [here](errors.md#Errors).
 ### Add User To Group
 - ID = addUserToGroup
 - Send
-    - enrollmentID :: String
-    - groupID :: String
+    - enrollmentId :: String
+    - groupId :: String
 - Receive
     - group :: [Group](#Group)
         - Description: ledgerState after transaction.

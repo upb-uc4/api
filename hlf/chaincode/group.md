@@ -200,7 +200,7 @@ The Errors returned are defined [here](errors.md#Errors).
 
 - Receive
     - groupIdList :: List\<String\>
-          - Description: Exhaustive List of all group names the user is part of.
+          - Description: Exhaustive List of all groupIds the user is part of.
             Empty, if user is not part of any group.
 
     - [GenericError](errors.md#GenericError) 

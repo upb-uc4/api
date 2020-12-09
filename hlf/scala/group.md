@@ -11,8 +11,8 @@ Additionally, as described in [General Communication](general-communication.md),
 
 ## AddUserToGroup(enrollmentId: String, groupId: String)
 - Returns
-    - userList :: Json (List:\<String\>)
-        - => Success
+    - ""
+    => Success
     - TransactionError :: Json (refer to: [DetailedError](../chaincode/errors.md#DetailedError))
         - => error is returned
           - If the given parameters could not be parsed.

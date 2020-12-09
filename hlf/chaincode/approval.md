@@ -82,7 +82,7 @@ The Errors returned are defined [here](errors.md#Errors).
       "EnrollmentID_001"
     ],
     "groups": [
-      "Users"
+      "Student"
     ]
   },
   "missingApprovals": {

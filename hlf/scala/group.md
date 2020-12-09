@@ -23,8 +23,8 @@ Additionally, as described in [General Communication](general-communication.md),
 
 ## RemoveUserFromGroup(enrollmentId: String, groupId: String)
 - Returns
-    - userList :: Json (List:\<String\>)
-        - => Success
+    - ""
+    => Success
     - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
         - => error is returned, 
           - If the groupId specified is not present on the ledger.

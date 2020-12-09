@@ -76,4 +76,6 @@ The proposal is a simple Json-object ([ProposalData](../chaincode/approval.md#Pr
 val result = certificateConnection.submitSignedProposal(proposalBytes: Array[Byte], signature: Array[Byte], userId: String)
 ```
 
+> NOTE! The result is returned as a [SubmissionResult](../chaincode/approval.md#SubmissionResult)
+
 For additional insight in the General hlf-api, please refer to its .Readme - File.

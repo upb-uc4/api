@@ -14,8 +14,8 @@ The Errors returned are defined [here](errors.md#Errors).
     - enrollmentId :: String
     - groupId :: String
 - Receive
-    - group :: [Group](#Group)
-        - Description: ledgerState after transaction.
+    - ""
+      -  Description: Done; returns empty String on success.
     - [DetailedError](errors.md#DetailedError) 
       ```json
       {

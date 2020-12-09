@@ -56,7 +56,7 @@ Additionally, as described in [General Communication](general-communication.md),
 
 ## GetUsersForGroup(groupId: String)
 - Returns
-    - groupList :: List\<String\>
+    - userList :: List\<String\>
     => Success
     - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
         - => error is returned, 

@@ -14,7 +14,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - enrollmentID :: String
     - groupID :: String
 - Receive
-    - userList :: List\<String\>
+    - group :: [Group](#Group)
         - Description: ledgerState after transaction.
     - [DetailedError](errors.md#DetailedError) 
       ```json

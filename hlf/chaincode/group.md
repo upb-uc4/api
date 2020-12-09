@@ -47,8 +47,8 @@ The Errors returned are defined [here](errors.md#Errors).
 ### Remove From Group
 - ID = removeUserFromGroup
 - Send
-    - enrollmentID :: String
-    - groupID :: String
+    - enrollmentId :: String
+    - groupId :: String
 - Receive
     - userList :: List\<String\>
             - Description: ledgerState after transaction.

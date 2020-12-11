@@ -92,7 +92,7 @@ The realTransactionResult is the chaincode response to the desired transaction
 The approval of the User has been stored on the ApprovalContract.
 An attempt has been made to execute the "real" transaction (e.g. "AddCertificate")
 
-========================
+========================  
 The entire process from "getProposal" to "submitSignedTransaction" has to be repeated for EVERY participant whose approval is needed on chain.
 If all required approvals are present, the "real" transaction (e.g. "AddCertificate") will have been executed.
 

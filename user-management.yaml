@@ -370,7 +370,7 @@ paths:
         "403":
           description: |
             Forbidden  
-            types: NotEnoughPrivileges
+            types: NotEnoughPrivileges, OwnerMismatch
           content:
             application/json:
               schema:

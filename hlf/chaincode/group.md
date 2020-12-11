@@ -94,7 +94,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - enrollmentId :: String
 - Receive
     - ""
-      -  Description: Done, returns the submitted data.
+      -  Description: Done; returns empty String on success.
 
     - [GenericError](errors.md#GenericError) 
       ```json

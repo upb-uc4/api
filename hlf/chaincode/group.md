@@ -234,7 +234,7 @@ The Errors returned are defined [here](errors.md#Errors).
 ```json
 {
   "groupId": "0123456ExampleGroup",
-  "userList": ["0123456", "123"]
+  "userList": ["EnrollmentIdExample123", "EnrollmentIdExample124"]
 }
 ```
 

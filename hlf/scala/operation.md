@@ -43,7 +43,8 @@ If any of theses parameter is empty, its filter will not be applied.
 > Note! Invalid States on the ledger get ignored.
 > We return all valid Operations that match the filters.
 
-## GetOperation(operationId: String)
+## GetOperationData(operationId: String)
+
 - Returns
     - OperationData :: Json (refer to: [OperationData](../chaincode/operation.md#OperationData))
         - => Success

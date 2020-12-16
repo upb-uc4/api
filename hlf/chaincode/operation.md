@@ -125,15 +125,6 @@ The Errors returned are defined [here](errors.md#Errors).
       - Description: Returns the full list of existing Operations matching the filter parameters.
         If these parameters are empty, the exhaustive list of all existing Operations is returned.
 
-    - [GenericError](errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLUnprocessableLedgerState",
-        "title": "The state on the ledger does not conform to the specified format"
-      }
-      ```
-      - Description: This error is returned, if the state of data on the ledger is not consistent with the current model. This error should only occur if the model changes while the old ledger state remains without modification.
-
 ## <a id="Models" />Models
 
 ### <a id="OperationData" />OperationData

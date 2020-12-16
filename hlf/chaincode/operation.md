@@ -82,6 +82,14 @@ The Errors returned are defined [here](errors.md#Errors).
 - Receive
     - operationData :: [OperationData](#OperationData)
 
+- [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLNotFound",
+        "title": "There is no Operation for the given operationId"
+      }
+      ```
+      - Description: This error is returned, if there is no operation for the specified operationId present on the ledger.
     - [GenericError](errors.md#GenericError) 
       ```json
       {

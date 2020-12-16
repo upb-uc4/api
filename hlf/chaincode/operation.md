@@ -50,6 +50,14 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the current model. This error should only occur if the model changes while the old ledger state remains without modification.
 
+- [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLNotFound",
+        "title": "There is no Operation for the given operationId"
+      }
+      ```
+      - Description: This error is returned, if there is no operation for the specified operationId present on the ledger.
     - [DetailedError](errors.md#DetailedError) 
       ```json
       {

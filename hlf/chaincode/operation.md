@@ -9,7 +9,9 @@ The Errors returned are defined [here](errors.md#Errors).
 ### ApproveTransaction
 - ID = approveTransaction
 - Send
-    - contractName, transactionName, param1, ..., paramN :: String
+    - contractName, transactionName :: String
+    - params :: List\<String\>
+
 - Receive
     - operationData :: [OperationData](#OperationData) 
       -  Description: Success, returns the list of approvals.

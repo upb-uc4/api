@@ -36,59 +36,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/JsonVersionNumber'
 
-  /reports/{username}/prepare:
-    get:
-      tags:
-      - "Report Management"
-      summary: "Prepare a User's report"
-      security:
-        - uc4_token_login: [] 
-        - uc4_token_login_header: []
-      description: "Prepare a User's report containing all their data stored in the system, both on chain and in database."
-      operationId: "prepareReport"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "The User whose data is requested"
-        required: true
-        schema:
-          type: "string"
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          description: |
-            Bad Request    
-            types: MalformedLoginToken, MultipleAuthorizationError
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: NotEnoughPrivileges, OwnerMismatch
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity   
-            types: LoginTokenSignatureInvalid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-  /reports/{username}/result:
+  /reports/{username}/archive:
     get:
       tags:
       - "Report Management"
@@ -96,18 +44,34 @@ paths:
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
-      description: "Get a User's report containing all their data stored in the system, both on chain and in database. Needs prepare endpoint to be called at some point before"
-      operationId: "getReport"
+      description: "Get a User's report containing all their data stored in the system, both on chain and in database. On first call, such an archieve is prepared and a 202 is returned. If an archieve is currently present, the archive is returned."
+      operationId: "getArchivedReport"
       parameters:
       - name: "username"
         in: "path"
-        description: "The User whose data is requested"
+        description: "The User whose archive is requested"
         required: true
         schema:
           type: "string"
       responses:
         "200":
           description: "OK"
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              description: "content type and encoding"
+            Last-Modified:
+              schema:
+                type: string
+              description: "Timestamp of when this resource was created"
+        "202":
+          description: "Accepted"
         "400":
           description: |
             Bad Request    
@@ -150,44 +114,6 @@ components:
       type: http
       scheme: bearer
   schemas:
-    Course:
-      type: "object"
-      properties:
-        courseId:
-          type: string
-        moduleIds:
-          type: array
-          items:
-            type: string
-        courseName:
-          type: string
-        courseType:
-          type: string
-          enum: ["Lecture", "Seminar", "Project Group"]
-        startDate:
-          type: "string"
-          format: "date"
-        endDate:
-          type: "string"
-          format: "date"
-        ects:
-          type: "integer"
-          format: "int32"
-          minimum: 1
-        lecturerId:
-          type: "string"
-        maxParticipants: 
-          type: "integer"
-          format: "int32"
-          minimum: 1
-        currentParticipants: 
-          type: "integer"
-          format: "int32"
-        courseLanguage: 
-          type: "string"
-          enum: ["German", "English"]
-        courseDescription:
-          type: "string"
     JsonVersionNumber:
       type: object
       properties:

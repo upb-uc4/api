@@ -57,7 +57,7 @@ paths:
         "200":
           description: "OK"
           content:
-            image/*:
+            archive/*:
               schema:
                 type: string
                 format: binary
@@ -66,7 +66,7 @@ paths:
               schema:
                 type: string
               description: "content type and encoding"
-            Last-Modified:
+            X-UC4-Timestamp:
               schema:
                 type: string
               description: "Timestamp of when this resource was created"

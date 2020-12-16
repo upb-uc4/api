@@ -27,6 +27,7 @@ Additionally, as described in [General Communication](general-communication.md),
           - If the given parameters could not be parsed.
     - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
         - => error is returned
+          - If the operationId is not present on the ledger.
           - If the state of data on the ledger is not consistent with the curent model.
             - This error should only occurr if the model changes while the old ledger state remains without modification.
 

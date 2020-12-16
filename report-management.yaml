@@ -70,8 +70,17 @@ paths:
               schema:
                 type: string
               description: "Timestamp of when this resource was created"
+            Cache-Control:
+              schema:
+                type: string
+              description: "We do not want caching of the report resource"
         "202":
           description: "Accepted"
+          headers:
+            X-UC4-Timestamp:
+              schema:
+                type: string
+              description: "Timestamp of when this resource was created"
         "400":
           description: |
             Bad Request    
@@ -100,6 +109,49 @@ paths:
           description: |
             Unprocessable Entity   
             types: LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+    delete:
+      tags:
+      - "Report Management"
+      summary: "Delete a User's report."
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      description: "Delete a User's stored report. Does nothing if the report does not exist, or if it is still preparing."
+      operationId: "deleteArchivedReport"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The User whose report is to be deleted"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: |
+            Bad Request    
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges, OwnerMismatch
           content:
             application/json:
               schema:

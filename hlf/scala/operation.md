@@ -31,7 +31,8 @@ Additionally, as described in [General Communication](general-communication.md),
           - If the state of data on the ledger is not consistent with the curent model.
             - This error should only occurr if the model changes while the old ledger state remains without modification.
 
-## GetOperations(enrollmentId: String, state: String)
+## GetOperations(operationId: String, state: String)
+
 Gets the full List of existing Operations.
 Applies filters to match enrollmendId, state.
 If any of theses parameter is empty, its filter will not be applied.

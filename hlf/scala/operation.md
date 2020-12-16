@@ -38,7 +38,8 @@ If any of theses parameter is empty, its filter will not be applied.
 - Returns
     - OperationsList :: List\<String Json (refer to: [OperationData](../chaincode/operation.md#OperationData))\> 
         - => Exhaustive List of all Operations, filtered by
-            inputs "enrollmentId", "state".
+            inputs "operationId", "state".
+
             Empty if no match could be found.
 
 > Note! Invalid States on the ledger get ignored.

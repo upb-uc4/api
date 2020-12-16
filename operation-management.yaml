@@ -1,0 +1,295 @@
+openapi: "3.0.0"
+info:
+  description: "This is the Operation API for UC4."
+  version: "0.12.1"
+  title: "UC4"
+
+servers:
+  - url: https://uc4.cs.upb.de/api/operation-management
+
+tags:
+- name: "Version Management"
+  description: "Everything about the Version"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+- name: "Operation Management"
+  description: "Everything about the Operations"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+
+paths:
+  /version:
+    get:
+      tags:
+      - "Version Management"
+      summary: "Get version"
+      description: "Returns the version of the current service"
+      operationId: "getVersion"
+
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonVersionNumber'
+  /operations:
+    get:
+      tags:
+      - "Operation Management"
+      summary: "Get Operations"
+      description: "Returns all courses, optionally filtered by query parameters"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "getAllCourses"
+      parameters:
+      - name: "onlyOwn"
+        in: "query"
+        description: "Flag that determines, if only operations initiated by yourself are fetched"
+        required: false
+        schema:
+          type: 'boolean'
+      - name: "onlyWorkable"
+        in: "query"
+        description: "Flag that determines, if only operations that you can approve/deny are fetched"
+        required: false
+        schema:
+          type: 'boolean'
+      - name: "archived"
+        in: "query"
+        description: "Flag that determines, if only archived operations are fetched"
+        required: false
+        schema:
+          type: 'boolean'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/Operation'
+        "400":
+            description: |
+              Bad Request    
+              types: MalformedLoginToken, MultipleAuthorizationError
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges, OwnerMismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+            description: |
+              Unprocessable Entity   
+              types: LoginTokenSignatureInvalid
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+  /operations/{operationId}:
+    get:
+      tags:
+      - "Operation Management"
+      summary: "Find Operation by OperationId"
+      description: "Find course by OperationId"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "findByOperationId"
+      parameters:
+      - name: "operationId"
+        in: "path"
+        description: "Id of Operation to fetch"
+        required: true
+        schema:
+          type: "string"
+      responses:
+          "200":
+            description: "OK"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Operation'
+          "400":
+            description: |
+              Bad Request    
+              types: MalformedLoginToken, MultipleAuthorizationError
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "401":
+            description: |
+              Unauthorized  
+              types: JwtAuthorization, LoginTokenExpired
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "403":
+            description: |
+              Forbidden  
+              types: NotEnoughPrivileges, OwnerMismatch
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "404":
+            description: |
+              Not Found  
+              types: KeyNotFound
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "422":
+            description: |
+              Unprocessable Entity   
+              types: LoginTokenSignatureInvalid
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+    delete:
+      tags:
+      - "Operation Management"
+      summary: "Deletes a course"
+      description: ""
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "deleteCourse"
+      parameters:
+      - name: "operationId"
+        in: "path"
+        description: "ID of Operation to delete"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+            description: |
+              Bad Request    
+              types: MalformedLoginToken, MultipleAuthorizationError
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges, OwnerMismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: KeyNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+            description: |
+              Unprocessable Entity   
+              types: LoginTokenSignatureInvalid
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+    
+components:
+  securitySchemes:
+    uc4_token_login:
+      type: apiKey
+      in: cookie
+      name: login
+    uc4_token_login_header:
+      type: http
+      scheme: bearer
+  schemas:
+    Operation:
+      type: "object"
+      properties:
+        operationId:
+          type: string
+        transactionInfo:
+          $ref: '#/components/schemas/TransactionInfo'
+        state:
+          type: string
+          enum: ["Pending", "Finished", "Rejected"]
+        reason:
+          type: string
+        existingApprovals:
+          $ref: '#/components/schemas/ApprovalList'
+        missingApprovals:
+          $ref: '#/components/schemas/ApprovalList'
+    TransactionInfo:
+      type: "object"
+      properties:
+        contractName:
+          type: string
+        transactionName:
+          type: string
+        parameters:
+          type: array
+          items:
+            type: string
+    ApprovalList:
+      type: "object"
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+        groups:
+          type: array
+          items:
+            type: string
+    JsonVersionNumber:
+      type: object
+      properties:
+        versionNumber:
+          type: string
+    GenericError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
+        - type: object
+    DetailedError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+        - type: object
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io" 

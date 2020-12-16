@@ -134,11 +134,12 @@ The Errors returned are defined [here](errors.md#Errors).
   "transactionInfo" : {
     "contractName" : "UC4.Certificate",
     "transactionName" : "addCertificate",
-    "parameters": [
-      "EnrollmentID_001",
-      "legit_certificate"
-    ]
+    "parameters": "[
+      \"EnrollmentID_001\",
+      \"legit_certificate\"
+    ]"
   },
+
   "state" : "(PENDING|FINISHED|REJECTED)",
   "reason" : "(A User denied with the following message: <message>
               |The Transaction failed with an error of type: 'HLConflict')",

@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Configuration API for UC4."
-  version: "0.13.2"
+  version: "0.14.1"
   title: "UC4"
 
 servers:
@@ -34,7 +34,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonServiceVersion'
-  /version/hyperledger:
+  /version/hyperledger-network:
     get:
       tags:
       - "Version Management"

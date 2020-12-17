@@ -105,7 +105,7 @@ paths:
             application/json: 
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /admissions/courses/proposals/add:
+  /admissions/courses/unsigned_add_proposal:
     post:
       tags:
       - "Course Admission Management"
@@ -132,6 +132,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnsignedProposal'
+              examples:
+                UnsignedProposalAddEntry:
+                  $ref: '#/components/examples/ExampleUnsignedProposal'
           headers:
             Location:
               schema:
@@ -174,7 +177,7 @@ paths:
                   - $ref: '#/components/schemas/GenericError'
                   - $ref: '#/components/schemas/DetailedError'
 
-  /admissions/courses/proposals/drop:
+  /admissions/courses/unsigned_drop_proposal:
     post:
       tags:
       - "Course Admission Management"
@@ -198,6 +201,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnsignedProposal'
+              examples:
+                UnsignedProposalAddEntry:
+                  $ref: '#/components/examples/ExampleUnsignedProposal'
         "400":
             description: |
               Bad Request    
@@ -238,23 +244,84 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/GenericError'
-  /admissions/proposals/submit:
+  /admissions/signed_proposal:
     post:
       tags:
       - "Course Admission Management"
       summary: "Submit a signed proposal"
-      description: "Submit a signed proposal."
+      description: "Submit a signed proposal. Returns the transaction, which, for the transaction to be commited, needs to be signed and then sent to the correct endpoint."
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
       operationId: "submitProposal"
       requestBody:
-        description: "Signed Proposal to be committed to chain."
+        description: "Signed Proposal from which to create a transaction."
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SignedProposal'
+            examples:
+                UnsignedProposalAddEntry:
+                  $ref: '#/components/examples/ExampleSignedProposal'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnsignedTransaction'
+              examples:
+                UnsignedTransaction:
+                  $ref: '#/components/examples/ExampleUnsignedTransaction'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid, HLUnprocessableEntity
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+  /admissions/signed_transaction:
+    post:
+      tags:
+      - "Course Admission Management"
+      summary: "Submit a signed transaction"
+      description: "Submit a signed transaction, which will be committed to the chain."
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "submitTransaction"
+      requestBody:
+        description: "Signed Transaction to be committed to chain."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignedTransaction'
+            examples:
+                UnsignedProposalAddEntry:
+                  $ref: '#/components/examples/ExampleSignedTransaction'
       responses:
         "202":
           description: "Accepted"
@@ -323,6 +390,14 @@ components:
       allOf:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-proposals.yaml#/components/schemas/SignedProposal'
         - type: object
+    UnsignedTransaction:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-proposals.yaml#/components/schemas/UnsignedTransaction'
+        - type: object
+    SignedTransaction:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-proposals.yaml#/components/schemas/SignedTransaction'
+        - type: object
     JsonVersionNumber:
       type: object
       properties:
@@ -353,6 +428,25 @@ components:
         moduleId: "M.1275.01158"
         admissionId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6:eae27105-2fd5-11eb-ad58-572c5dfe1b7a"
         timestamp: "2020-12-01"
+    ExampleUnsignedProposal:
+      summary: "Example for UnsignedProposal for AddEntry"
+      value:
+        unsignedProposal: "CpUJCmoIAxABGgsIgL22/AUQ+NbCWSIJbXljaGFubmVsKkBhMzUwNzA1YWNiMGVmNDUyMzQxN2RjYTRkMTA0ZDUxNmYzMmMxNTgwNzhiYTA4Yzk0NmU1OGRkZWIzZWJhYTJmOgoSCBIGdWM0LWNjEqYICokICgdvcmcxTVNQEv0HLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN4akNDQW0yZ0F3SUJBZ0lVYkFLNmdwb1BGaTQxeEloY1Z5YkdXZUV0cXpBd0NnWUlLb1pJemowRUF3SXcKWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRSwpFd3RJZVhCbGNteGxaR2RsY2pFUE1BMEdBMVVFQ3hNR1JtRmljbWxqTVJFd0R3WURWUVFERXdoeVkyRXRiM0puCk1UQWVGdzB5TURFd01Ua3hNelU0TURCYUZ3MHlNVEV3TVRreE5EQXpNREJhTURneERqQU1CZ05WQkFzVEJXRmsKYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNRwpCeXFHU000OUFnRUdDQ3FHU000OUF3RUhBMElBQktab1BNRVpYa1VUdHV3R3VZYmE3UWJHcWpxSFRuVnEyeGVDCklERG1kYmMyUkhBMjBEZjMwY3VUN1dHMVJzdGIyWmpoRS9ESWhVQjRlUzMwbkxTRFJobWpnZ0VyTUlJQkp6QU8KQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3RwpBMVVkRXdFQi93UUNNQUF3SFFZRFZSME9CQllFRk5pbndnNkRveXliS09veEUweENkT2VkOTUraE1COEdBMVVkCkl3UVlNQmFBRkhFN1lISTJwVFhRaWZ4R3o5c2l2cURYTGV1Yk1DZ0dBMVVkRVFRaE1CK0NIWE5qWVd4aExYSmwKWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1GawpiV2x1SWpvaWRISjFaU0lzSW1obUxrRm1abWxzYVdGMGFXOXVJam9pSWl3aWFHWXVSVzV5YjJ4c2JXVnVkRWxFCklqb2ljMk5oYkdFdGNtVm5hWE4wY21GMGFXOXVMV0ZrYldsdUxXOXlaekVpTENKb1ppNVVlWEJsSWpvaVlXUnQKYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQQorN0p2amFHd25RUUNJRUJKTVpUUnc5WmdhVjNpS084S2t6WEw5TGdnUkpIam5pSFVOdWpZME1WVAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tChIYTH47gBwXl+errTr7n7m2byTjHtQteNtsEssICsgICsUICAESCBIGdWM0LWNjGrYICh5VQzQuQ2VydGlmaWNhdGU6YWRkQ2VydGlmaWNhdGUKAzEwMQqOCC0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLVxuTUlJQ3hqQ0NBbTJnQXdJQkFnSVViQUs2Z3BvUEZpNDF4SWhjVnliR1dlRXRxekF3Q2dZSUtvWkl6ajBFQXdJd1xuWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRS1xuRXd0SWVYQmxjbXhsWkdkbGNqRVBNQTBHQTFVRUN4TUdSbUZpY21sak1SRXdEd1lEVlFRREV3aHlZMkV0YjNKblxuTVRBZUZ3MHlNREV3TVRreE16VTRNREJhRncweU1URXdNVGt4TkRBek1EQmFNRGd4RGpBTUJnTlZCQXNUQldGa1xuYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNR1xuQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJLWm9QTUVaWGtVVHR1d0d1WWJhN1FiR3FqcUhUblZxMnhlQ1xuSUREbWRiYzJSSEEyMERmMzBjdVQ3V0cxUnN0YjJaamhFL0RJaFVCNGVTMzBuTFNEUmhtamdnRXJNSUlCSnpBT1xuQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3R1xuQTFVZEV3RUIvd1FDTUFBd0hRWURWUjBPQkJZRUZOaW53ZzZEb3l5YktPb3hFMHhDZE9lZDk1K2hNQjhHQTFVZFxuSXdRWU1CYUFGSEU3WUhJMnBUWFFpZnhHejlzaXZxRFhMZXViTUNnR0ExVWRFUVFoTUIrQ0hYTmpZV3hoTFhKbFxuWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1Ga1xuYldsdUlqb2lkSEoxWlNJc0ltaG1Ma0ZtWm1sc2FXRjBhVzl1SWpvaUlpd2lhR1l1Ulc1eWIyeHNiV1Z1ZEVsRVxuSWpvaWMyTmhiR0V0Y21WbmFYTjBjbUYwYVc5dUxXRmtiV2x1TFc5eVp6RWlMQ0pvWmk1VWVYQmxJam9pWVdSdFxuYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQVxuKzdKdmphR3duUVFDSUVCSk1aVFJ3OVpnYVYzaUtPOEtrelhMOUxnZ1JKSGpuaUhVTnVqWTBNVlRcbi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS1cbg=="
+    ExampleSignedProposal:
+      summary: "Example for SignedProposal for AddEntry"
+      value:
+        unsignedProposal: "CpUJCmoIAxABGgsIgL22/AUQ+NbCWSIJbXljaGFubmVsKkBhMzUwNzA1YWNiMGVmNDUyMzQxN2RjYTRkMTA0ZDUxNmYzMmMxNTgwNzhiYTA4Yzk0NmU1OGRkZWIzZWJhYTJmOgoSCBIGdWM0LWNjEqYICokICgdvcmcxTVNQEv0HLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN4akNDQW0yZ0F3SUJBZ0lVYkFLNmdwb1BGaTQxeEloY1Z5YkdXZUV0cXpBd0NnWUlLb1pJemowRUF3SXcKWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRSwpFd3RJZVhCbGNteGxaR2RsY2pFUE1BMEdBMVVFQ3hNR1JtRmljbWxqTVJFd0R3WURWUVFERXdoeVkyRXRiM0puCk1UQWVGdzB5TURFd01Ua3hNelU0TURCYUZ3MHlNVEV3TVRreE5EQXpNREJhTURneERqQU1CZ05WQkFzVEJXRmsKYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNRwpCeXFHU000OUFnRUdDQ3FHU000OUF3RUhBMElBQktab1BNRVpYa1VUdHV3R3VZYmE3UWJHcWpxSFRuVnEyeGVDCklERG1kYmMyUkhBMjBEZjMwY3VUN1dHMVJzdGIyWmpoRS9ESWhVQjRlUzMwbkxTRFJobWpnZ0VyTUlJQkp6QU8KQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3RwpBMVVkRXdFQi93UUNNQUF3SFFZRFZSME9CQllFRk5pbndnNkRveXliS09veEUweENkT2VkOTUraE1COEdBMVVkCkl3UVlNQmFBRkhFN1lISTJwVFhRaWZ4R3o5c2l2cURYTGV1Yk1DZ0dBMVVkRVFRaE1CK0NIWE5qWVd4aExYSmwKWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1GawpiV2x1SWpvaWRISjFaU0lzSW1obUxrRm1abWxzYVdGMGFXOXVJam9pSWl3aWFHWXVSVzV5YjJ4c2JXVnVkRWxFCklqb2ljMk5oYkdFdGNtVm5hWE4wY21GMGFXOXVMV0ZrYldsdUxXOXlaekVpTENKb1ppNVVlWEJsSWpvaVlXUnQKYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQQorN0p2amFHd25RUUNJRUJKTVpUUnc5WmdhVjNpS084S2t6WEw5TGdnUkpIam5pSFVOdWpZME1WVAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tChIYTH47gBwXl+errTr7n7m2byTjHtQteNtsEssICsgICsUICAESCBIGdWM0LWNjGrYICh5VQzQuQ2VydGlmaWNhdGU6YWRkQ2VydGlmaWNhdGUKAzEwMQqOCC0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLVxuTUlJQ3hqQ0NBbTJnQXdJQkFnSVViQUs2Z3BvUEZpNDF4SWhjVnliR1dlRXRxekF3Q2dZSUtvWkl6ajBFQXdJd1xuWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRS1xuRXd0SWVYQmxjbXhsWkdkbGNqRVBNQTBHQTFVRUN4TUdSbUZpY21sak1SRXdEd1lEVlFRREV3aHlZMkV0YjNKblxuTVRBZUZ3MHlNREV3TVRreE16VTRNREJhRncweU1URXdNVGt4TkRBek1EQmFNRGd4RGpBTUJnTlZCQXNUQldGa1xuYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNR1xuQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJLWm9QTUVaWGtVVHR1d0d1WWJhN1FiR3FqcUhUblZxMnhlQ1xuSUREbWRiYzJSSEEyMERmMzBjdVQ3V0cxUnN0YjJaamhFL0RJaFVCNGVTMzBuTFNEUmhtamdnRXJNSUlCSnpBT1xuQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3R1xuQTFVZEV3RUIvd1FDTUFBd0hRWURWUjBPQkJZRUZOaW53ZzZEb3l5YktPb3hFMHhDZE9lZDk1K2hNQjhHQTFVZFxuSXdRWU1CYUFGSEU3WUhJMnBUWFFpZnhHejlzaXZxRFhMZXViTUNnR0ExVWRFUVFoTUIrQ0hYTmpZV3hoTFhKbFxuWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1Ga1xuYldsdUlqb2lkSEoxWlNJc0ltaG1Ma0ZtWm1sc2FXRjBhVzl1SWpvaUlpd2lhR1l1Ulc1eWIyeHNiV1Z1ZEVsRVxuSWpvaWMyTmhiR0V0Y21WbmFYTjBjbUYwYVc5dUxXRmtiV2x1TFc5eVp6RWlMQ0pvWmk1VWVYQmxJam9pWVdSdFxuYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQVxuKzdKdmphR3duUVFDSUVCSk1aVFJ3OVpnYVYzaUtPOEtrelhMOUxnZ1JKSGpuaUhVTnVqWTBNVlRcbi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS1cbg=="
+        signature: "MEUCIQDSJnJ7Sltv5P2i7efpbT9H2xKfP4fKsQ/xd4TuC8egWwIgbYnEGLV3WD/+9tOzYYfzJ2nSXc4urSxDQJcgmRlgzGo="
+    ExampleSignedTransaction:
+      summary: "Example for SignedTransaction for AddEntry"
+      value:
+        unsignedTransaction: "CpUJCmoIAxABGgsIgL22/AUQ+NbCWSIJbXljaGFubmVsKkBhMzUwNzA1YWNiMGVmNDUyMzQxN2RjYTRkMTA0ZDUxNmYzMmMxNTgwNzhiYTA4Yzk0NmU1OGRkZWIzZWJhYTJmOgoSCBIGdWM0LWNjEqYICokICgdvcmcxTVNQEv0HLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN4akNDQW0yZ0F3SUJBZ0lVYkFLNmdwb1BGaTQxeEloY1Z5YkdXZUV0cXpBd0NnWUlLb1pJemowRUF3SXcKWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRSwpFd3RJZVhCbGNteGxaR2RsY2pFUE1BMEdBMVVFQ3hNR1JtRmljbWxqTVJFd0R3WURWUVFERXdoeVkyRXRiM0puCk1UQWVGdzB5TURFd01Ua3hNelU0TURCYUZ3MHlNVEV3TVRreE5EQXpNREJhTURneERqQU1CZ05WQkFzVEJXRmsKYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNRwpCeXFHU000OUFnRUdDQ3FHU000OUF3RUhBMElBQktab1BNRVpYa1VUdHV3R3VZYmE3UWJHcWpxSFRuVnEyeGVDCklERG1kYmMyUkhBMjBEZjMwY3VUN1dHMVJzdGIyWmpoRS9ESWhVQjRlUzMwbkxTRFJobWpnZ0VyTUlJQkp6QU8KQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3RwpBMVVkRXdFQi93UUNNQUF3SFFZRFZSME9CQllFRk5pbndnNkRveXliS09veEUweENkT2VkOTUraE1COEdBMVVkCkl3UVlNQmFBRkhFN1lISTJwVFhRaWZ4R3o5c2l2cURYTGV1Yk1DZ0dBMVVkRVFRaE1CK0NIWE5qWVd4aExYSmwKWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1GawpiV2x1SWpvaWRISjFaU0lzSW1obUxrRm1abWxzYVdGMGFXOXVJam9pSWl3aWFHWXVSVzV5YjJ4c2JXVnVkRWxFCklqb2ljMk5oYkdFdGNtVm5hWE4wY21GMGFXOXVMV0ZrYldsdUxXOXlaekVpTENKb1ppNVVlWEJsSWpvaVlXUnQKYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQQorN0p2amFHd25RUUNJRUJKTVpUUnc5WmdhVjNpS084S2t6WEw5TGdnUkpIam5pSFVOdWpZME1WVAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tChIYTH47gBwXl+errTr7n7m2byTjHtQteNtsEssICsgICsUICAESCBIGdWM0LWNjGrYICh5VQzQuQ2VydGlmaWNhdGU6YWRkQ2VydGlmaWNhdGUKAzEwMQqOCC0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLVxuTUlJQ3hqQ0NBbTJnQXdJQkFnSVViQUs2Z3BvUEZpNDF4SWhjVnliR1dlRXRxekF3Q2dZSUtvWkl6ajBFQXdJd1xuWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRS1xuRXd0SWVYQmxjbXhsWkdkbGNqRVBNQTBHQTFVRUN4TUdSbUZpY21sak1SRXdEd1lEVlFRREV3aHlZMkV0YjNKblxuTVRBZUZ3MHlNREV3TVRreE16VTRNREJhRncweU1URXdNVGt4TkRBek1EQmFNRGd4RGpBTUJnTlZCQXNUQldGa1xuYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNR1xuQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJLWm9QTUVaWGtVVHR1d0d1WWJhN1FiR3FqcUhUblZxMnhlQ1xuSUREbWRiYzJSSEEyMERmMzBjdVQ3V0cxUnN0YjJaamhFL0RJaFVCNGVTMzBuTFNEUmhtamdnRXJNSUlCSnpBT1xuQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3R1xuQTFVZEV3RUIvd1FDTUFBd0hRWURWUjBPQkJZRUZOaW53ZzZEb3l5YktPb3hFMHhDZE9lZDk1K2hNQjhHQTFVZFxuSXdRWU1CYUFGSEU3WUhJMnBUWFFpZnhHejlzaXZxRFhMZXViTUNnR0ExVWRFUVFoTUIrQ0hYTmpZV3hoTFhKbFxuWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1Ga1xuYldsdUlqb2lkSEoxWlNJc0ltaG1Ma0ZtWm1sc2FXRjBhVzl1SWpvaUlpd2lhR1l1Ulc1eWIyeHNiV1Z1ZEVsRVxuSWpvaWMyTmhiR0V0Y21WbmFYTjBjbUYwYVc5dUxXRmtiV2x1TFc5eVp6RWlMQ0pvWmk1VWVYQmxJam9pWVdSdFxuYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQVxuKzdKdmphR3duUVFDSUVCSk1aVFJ3OVpnYVYzaUtPOEtrelhMOUxnZ1JKSGpuaUhVTnVqWTBNVlRcbi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS1cbg=="
+        signature: "MEUCIQDSJnJ7Sltv5P2i7efpbT9H2xKfP4fKsQ/xd4TuC8egWwIgbYnEGLV3WD/+9tOzYYfzJ2nSXc4urSxDQJcgmRlgzGo="
+    ExampleUnsignedTransaction:
+      summary: "Example for UnsignedTransaction for AddEntry"
+      value:
+        unsignedTransaction: "CpUJCmoIAxABGgsIgL22/AUQ+NbCWSIJbXljaGFubmVsKkBhMzUwNzA1YWNiMGVmNDUyMzQxN2RjYTRkMTA0ZDUxNmYzMmMxNTgwNzhiYTA4Yzk0NmU1OGRkZWIzZWJhYTJmOgoSCBIGdWM0LWNjEqYICokICgdvcmcxTVNQEv0HLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN4akNDQW0yZ0F3SUJBZ0lVYkFLNmdwb1BGaTQxeEloY1Z5YkdXZUV0cXpBd0NnWUlLb1pJemowRUF3SXcKWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRSwpFd3RJZVhCbGNteGxaR2RsY2pFUE1BMEdBMVVFQ3hNR1JtRmljbWxqTVJFd0R3WURWUVFERXdoeVkyRXRiM0puCk1UQWVGdzB5TURFd01Ua3hNelU0TURCYUZ3MHlNVEV3TVRreE5EQXpNREJhTURneERqQU1CZ05WQkFzVEJXRmsKYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNRwpCeXFHU000OUFnRUdDQ3FHU000OUF3RUhBMElBQktab1BNRVpYa1VUdHV3R3VZYmE3UWJHcWpxSFRuVnEyeGVDCklERG1kYmMyUkhBMjBEZjMwY3VUN1dHMVJzdGIyWmpoRS9ESWhVQjRlUzMwbkxTRFJobWpnZ0VyTUlJQkp6QU8KQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3RwpBMVVkRXdFQi93UUNNQUF3SFFZRFZSME9CQllFRk5pbndnNkRveXliS09veEUweENkT2VkOTUraE1COEdBMVVkCkl3UVlNQmFBRkhFN1lISTJwVFhRaWZ4R3o5c2l2cURYTGV1Yk1DZ0dBMVVkRVFRaE1CK0NIWE5qWVd4aExYSmwKWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1GawpiV2x1SWpvaWRISjFaU0lzSW1obUxrRm1abWxzYVdGMGFXOXVJam9pSWl3aWFHWXVSVzV5YjJ4c2JXVnVkRWxFCklqb2ljMk5oYkdFdGNtVm5hWE4wY21GMGFXOXVMV0ZrYldsdUxXOXlaekVpTENKb1ppNVVlWEJsSWpvaVlXUnQKYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQQorN0p2amFHd25RUUNJRUJKTVpUUnc5WmdhVjNpS084S2t6WEw5TGdnUkpIam5pSFVOdWpZME1WVAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tChIYTH47gBwXl+errTr7n7m2byTjHtQteNtsEssICsgICsUICAESCBIGdWM0LWNjGrYICh5VQzQuQ2VydGlmaWNhdGU6YWRkQ2VydGlmaWNhdGUKAzEwMQqOCC0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLVxuTUlJQ3hqQ0NBbTJnQXdJQkFnSVViQUs2Z3BvUEZpNDF4SWhjVnliR1dlRXRxekF3Q2dZSUtvWkl6ajBFQXdJd1xuWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRS1xuRXd0SWVYQmxjbXhsWkdkbGNqRVBNQTBHQTFVRUN4TUdSbUZpY21sak1SRXdEd1lEVlFRREV3aHlZMkV0YjNKblxuTVRBZUZ3MHlNREV3TVRreE16VTRNREJhRncweU1URXdNVGt4TkRBek1EQmFNRGd4RGpBTUJnTlZCQXNUQldGa1xuYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNR1xuQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJLWm9QTUVaWGtVVHR1d0d1WWJhN1FiR3FqcUhUblZxMnhlQ1xuSUREbWRiYzJSSEEyMERmMzBjdVQ3V0cxUnN0YjJaamhFL0RJaFVCNGVTMzBuTFNEUmhtamdnRXJNSUlCSnpBT1xuQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3R1xuQTFVZEV3RUIvd1FDTUFBd0hRWURWUjBPQkJZRUZOaW53ZzZEb3l5YktPb3hFMHhDZE9lZDk1K2hNQjhHQTFVZFxuSXdRWU1CYUFGSEU3WUhJMnBUWFFpZnhHejlzaXZxRFhMZXViTUNnR0ExVWRFUVFoTUIrQ0hYTmpZV3hoTFhKbFxuWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1Ga1xuYldsdUlqb2lkSEoxWlNJc0ltaG1Ma0ZtWm1sc2FXRjBhVzl1SWpvaUlpd2lhR1l1Ulc1eWIyeHNiV1Z1ZEVsRVxuSWpvaWMyTmhiR0V0Y21WbmFYTjBjbUYwYVc5dUxXRmtiV2x1TFc5eVp6RWlMQ0pvWmk1VWVYQmxJam9pWVdSdFxuYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQVxuKzdKdmphR3duUVFDSUVCSk1aVFJ3OVpnYVYzaUtPOEtrelhMOUxnZ1JKSGpuaUhVTnVqWTBNVlRcbi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS1cbg=="
+    
 
 externalDocs:
   description: "Find out more about Swagger"

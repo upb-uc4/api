@@ -39,7 +39,8 @@ The Errors returned are defined [here](errors.md#Errors).
     - rejectMessage :: String
 - Receive
     - operationData :: [OperationData](#OperationData) 
-      -  Description: Success, returns the list of approvals.
+      -  Description: Success, returns the list of operations.
+
 
     - [GenericError](errors.md#GenericError) 
       ```json

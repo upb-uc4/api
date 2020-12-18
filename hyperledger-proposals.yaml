@@ -19,6 +19,20 @@ paths:
           description: "Ok"
 components:
   schemas:
+    UnsignedTransaction:
+      type: "object"
+      properties:
+        unsignedTransaction:
+          type: string
+          format: Base64
+    SignedTransaction:
+      type: "object"
+      properties:
+        unsignedTransaction:
+          type: string
+          format: Base64
+        signature:
+          type: string
     UnsignedProposal:
       type: "object"
       properties:

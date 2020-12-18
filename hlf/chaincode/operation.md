@@ -181,10 +181,11 @@ The Errors returned are defined [here](errors.md#Errors).
 {
   "contractName" : "UC4.Certificate",
   "transactionName" : "addCertificate",
-  "parameters": [
-    "EnrollmentID_001",
-    "legit_certificate"
-  ]
+  "parameters": "[
+    \"EnrollmentID_001\",
+    "\legit_certificate\"
+  ]"
+
 }
 ```
 

@@ -54,7 +54,7 @@ paths:
           type: 'boolean'
       - name: "selfActionRequired"
         in: "query"
-        description: "Flag that determines, if only operations that you can approve/deny are fetched"
+        description: "Flag that determines, if only operations that you can approve/reject are fetched"
         required: false
         schema:
           type: 'boolean'

@@ -5,7 +5,7 @@ info:
   title: "UC4"
 
 servers:
-  - url: https://uc4.cs.upb.de/api/report-management
+  - url: https://uc4.cs.upb.de/api/production/report-management
 
 tags:
 - name: "Version Management"

@@ -34,7 +34,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JsonVersionNumber'
+                $ref: '#/components/schemas/JsonServiceVersion'
   /courses:
     post:
       tags:
@@ -333,10 +333,10 @@ components:
           enum: ["German", "English"]
         courseDescription:
           type: "string"
-    JsonVersionNumber:
+    JsonServiceVersion:
       type: object
       properties:
-        versionNumber:
+        serviceVersion:
           type: string
     GenericError:
       allOf:

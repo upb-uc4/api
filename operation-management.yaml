@@ -60,7 +60,7 @@ paths:
           type: 'boolean'
       - name: "states"
         in: "query"
-        description: "List of states to filter by (PENDING, FINISHED, or REJECTED)"
+        description: "Comma-seperated list of operation states to filter by (PENDING, FINISHED, or REJECTED)"
         required: false
         schema:
           type: 'string'

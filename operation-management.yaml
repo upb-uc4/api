@@ -116,7 +116,7 @@ paths:
       tags:
       - "Operation Management"
       summary: "Find Operation by OperationId"
-      description: "Find course by OperationId"
+      description: "Find operation by OperationId"
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []

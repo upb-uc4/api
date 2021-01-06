@@ -46,21 +46,27 @@ paths:
         - uc4_token_login_header: []
       operationId: "getAllCourses"
       parameters:
-      - name: "onlyOwn"
+      - name: "selfInitiated"
         in: "query"
         description: "Flag that determines, if only operations initiated by yourself are fetched"
         required: false
         schema:
           type: 'boolean'
-      - name: "onlyWorkable"
+      - name: "selfActionRequired"
         in: "query"
         description: "Flag that determines, if only operations that you can approve/deny are fetched"
         required: false
         schema:
           type: 'boolean'
-      - name: "archived"
+      - name: "states"
         in: "query"
-        description: "Flag that determines, if only archived operations are fetched"
+        description: "List of states to filter by (PENDING, FINISHED, or REJECTED)"
+        required: false
+        schema:
+          type: 'string'
+      - name: "cacheOnly"
+        in: "query"
+        description: "Flag that determines, if operations are fetched from cache or from the blockchain. If not set, defaults to true"
         required: false
         schema:
           type: 'boolean'
@@ -248,7 +254,7 @@ components:
           $ref: '#/components/schemas/TransactionInfo'
         state:
           type: string
-          enum: ["Pending", "Finished", "Rejected"]
+          enum: ["PENDING", "FINISHED", "REJECTED"]
         reason:
           type: string
         existingApprovals:

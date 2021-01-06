@@ -125,7 +125,7 @@ paths:
       parameters:
       - name: "username"
         in: "path"
-        description: "The User whose report is to be deleted"
+        description: "The user whose report is to be deleted"
         required: true
         schema:
           type: "string"

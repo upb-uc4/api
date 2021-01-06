@@ -116,7 +116,7 @@ paths:
     delete:
       tags:
       - "Report Management"
-      summary: "Delete a User's report."
+      summary: "Delete a user's report."
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []

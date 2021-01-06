@@ -1,10 +1,12 @@
 openapi: "3.0.0"
 info:
   description: "This is the Configuration API for UC4."
-  version: "0.14.1"
+  version: "0.15.1"
   title: "UC4"
 
 servers:
+  - url: https://uc4.cs.upb.de/api/experimental/configuration-management
+  - url: https://uc4.cs.upb.de/api/develop/configuration-management
   - url: https://uc4.cs.upb.de/api/production/configuration-management
 
 tags:

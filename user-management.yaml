@@ -1,10 +1,14 @@
 openapi: "3.0.0"
 info:
   description: "This is the User API for UC4."
-  version: "0.13.1"
+  version: "0.15.1"
   title: "UC4"
+  
 servers:
-  - url: https://uc4.cs.upb.de/api/user-management
+  - url: https://uc4.cs.upb.de/api/experimental/user-management
+  - url: https://uc4.cs.upb.de/api/develop/user-management
+  - url: https://uc4.cs.upb.de/api/production/user-management
+      
 tags:
 - name: "Version Management"
   description: "Everything about the Version"

@@ -44,7 +44,7 @@ paths:
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
-      description: "Get a User's report containing all their data stored in the system, both on chain and in database. On first call, such an archieve is prepared and a 202 is returned. If an archieve is currently present, the archive is returned."
+      description: "Get a user's report containing all their data stored in the system, both on chain and in database. On first call, such an archieve is prepared and a 202 is returned. If an archieve is currently present, the archive is returned."
       operationId: "getArchivedReport"
       parameters:
       - name: "username"

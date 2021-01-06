@@ -77,7 +77,7 @@ paths:
         "202":
           description: "Accepted"
           headers:
-            X-UC4-Timestamp:
+            x-uc4-timestamp:
               schema:
                 type: string
               description: "Timestamp of when this resource was created"

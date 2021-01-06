@@ -5,6 +5,8 @@ info:
   title: "UC4"
 
 servers:
+  - url: https://uc4.cs.upb.de/api/experimental/report-management
+  - url: https://uc4.cs.upb.de/api/develop/report-management
   - url: https://uc4.cs.upb.de/api/production/report-management
 
 tags:

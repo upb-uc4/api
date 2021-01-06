@@ -172,12 +172,12 @@ paths:
     delete:
       tags:
       - "Operation Management"
-      summary: "Deletes a course"
-      description: ""
+      summary: "Remove an operation from cache"
+      description: "Removes an operation from cache. Operation will still be on chain. Can only remove Operation which are in FINISHED or REJECTED state."
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
-      operationId: "deleteCourse"
+      operationId: "removeOperation"
       parameters:
       - name: "operationId"
         in: "path"

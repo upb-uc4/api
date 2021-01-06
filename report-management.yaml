@@ -120,7 +120,7 @@ paths:
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
-      description: "Delete a User's stored report. Does nothing if the report does not exist, or if it is still preparing."
+      description: "Delete a user's stored report. Does nothing if the report does not exist."
       operationId: "deleteArchivedReport"
       parameters:
       - name: "username"

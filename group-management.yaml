@@ -5,7 +5,9 @@ info:
   title: "UC4"
 
 servers:
-  - url: https://uc4.cs.upb.de/api/group-management
+  - url: https://uc4.cs.upb.de/api/experimental/group-management
+  - url: https://uc4.cs.upb.de/api/develop/group-management
+  - url: https://uc4.cs.upb.de/api/production/group-management
 
 tags:
 - name: "Version Management"

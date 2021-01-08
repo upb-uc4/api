@@ -31,17 +31,16 @@ Additionally, as described in [General Communication](general-communication.md),
           - If the state of data on the ledger is not consistent with the curent model.
             - This error should only occurr if the model changes while the old ledger state remains without modification.
 
-## GetOperations(enrollmentId: String, state: String)
+## GetOperations(existingEnrollmentId: String, missingEnrollmentId: String, initiatorEnrollmentId: String, state: String)
 
 Gets the full List of existing Operations.
 Applies filters to match enrollmendId, state.
 If any of theses parameter is empty, its filter will not be applied.
 - Returns
     - OperationsList :: List\<String Json (refer to: [OperationData](../chaincode/operation.md#OperationData))\> 
-        - => Exhaustive List of all Operations, filtered by
-            inputs "operationId", "state".
-
-            Empty if no match could be found.
+        - =>    Exhaustive List of all Operations, filtered by the parameters.
+                All filters are applied consecutively (logical AND).
+                Empty if no match could be found.
 
 > Note! Invalid States on the ledger get ignored.
 > We return all valid Operations that match the filters.

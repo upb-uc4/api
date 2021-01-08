@@ -1,11 +1,13 @@
 openapi: "3.0.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.12.1"
+  version: "0.15.1"
   title: "UC4"
 
 servers:
-  - url: https://uc4.cs.upb.de/api/course-management
+  - url: https://uc4.cs.upb.de/api/experimental/course-management
+  - url: https://uc4.cs.upb.de/api/develop/course-management
+  - url: https://uc4.cs.upb.de/api/production/course-management
 
 tags:
 - name: "Version Management"

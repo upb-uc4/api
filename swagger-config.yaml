@@ -17,3 +17,5 @@ urls:
       url: https://raw.githubusercontent.com/upb-uc4/api/develop/admission-management.yaml
     - name: Group-Management
       url: https://raw.githubusercontent.com/upb-uc4/api/develop/group-management.yaml
+    - name: Report-Management
+      url: https://raw.githubusercontent.com/upb-uc4/api/develop/report-management.yaml

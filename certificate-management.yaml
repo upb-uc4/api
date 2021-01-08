@@ -1,10 +1,12 @@
 openapi: "3.0.0"
 info:
   description: "This is the Certificate API for UC4."
-  version: "0.10.1"
+  version: "0.15.1"
   title: "UC4"
 
 servers:
+  - url: https://uc4.cs.upb.de/api/experimental/certificate-management
+  - url: https://uc4.cs.upb.de/api/develop/certificate-management
   - url: https://uc4.cs.upb.de/api/production/certificate-management
 
 tags:

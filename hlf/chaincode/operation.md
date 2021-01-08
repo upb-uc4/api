@@ -119,11 +119,14 @@ The Errors returned are defined [here](errors.md#Errors).
 ### GetOperations
 - ID = getOperations
 - Send
-    - enrollmentId :: String (optional)
+    - existingEnrollmentId :: String (optional)
+    - missingEnrollmentId :: String (optional)
+    - initiatorEnrollmentId :: String (optional)
     - state :: String (optional)
 - Receive
     - operationsList :: List\<[OperationData](#OperationData)\>
       - Description: Returns the full list of existing Operations matching the filter parameters.
+        All filters are applied consecutively (logical AND).
         If these parameters are empty, the exhaustive list of all existing Operations is returned.
 
 ## <a id="Models" />Models
@@ -140,7 +143,9 @@ The Errors returned are defined [here](errors.md#Errors).
       \"legit_certificate\"
     ]"
   },
-
+  "initiator" : "EnrollmentID_001"
+  "initiatedTimestamp" : "2004-06-14T23:34:30" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
+  "lastModifiedTimestamp" : "2004-06-14T23:34:30" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
   "state" : "(PENDING|FINISHED|REJECTED)",
   "reason" : "(A User denied with the following message: <message>
               |The Transaction failed with an error of type: 'HLConflict')",

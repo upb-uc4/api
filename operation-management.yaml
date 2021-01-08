@@ -273,10 +273,14 @@ components:
           enum: ["PENDING", "FINISHED", "REJECTED"]
         reason:
           type: string
+        initiator:
+          type: string
         existingApprovals:
           $ref: '#/components/schemas/ApprovalList'
         missingApprovals:
           $ref: '#/components/schemas/ApprovalList'
+        last-modified:
+          type: string
     TransactionInfo:
       type: "object"
       properties:

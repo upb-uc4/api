@@ -45,13 +45,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonHyperledgerVersion'
-  /matriculation/{username}/unsigned_proposal:
+  /matriculation/{username}/unsigned_proposal_approve:
     post:
       tags:
       - "Matriculation Management"
       summary: "Get unsigned proposal for the \"AddEntry\" transaction"
-      description: "Get proposal for matriculation transaction with the given information. The transaction can enroll the student in the given semester, in the given fieldOfStudy, if it is signed and submitted. Can only be invoked by the student themself."
-      operationId: "getProposalAddEntry"
+      description: "Get proposal for approving the matriculation transaction with the given information. The transaction can enroll the student in the given semester, in the given fieldOfStudy, if it is signed and submitted by all parties."
+      operationId: "getProposalAddEntryApproval"
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
@@ -61,7 +61,79 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PutMessageMatriculation'
+              $ref: '#/components/schemas/MatriculationAddEntryProposalQuery'
+            examples:
+              PutMessageMatriculation:
+                $ref: '#/components/examples/ExamplePutMessageMatriculation'
+      parameters:
+      - in: "path"
+        name: "username"
+        required: true
+        schema: 
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnsignedProposal'
+              examples:
+                UnsignedProposalAddEntry:
+                  $ref: '#/components/examples/ExampleUnsignedProposal'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: OwnerMismatch, NotEnoughPrivileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid, HLUnprocessableEntity
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+  /matriculation/{username}/unsigned_proposal_reject:
+    post:
+      tags:
+      - "Matriculation Management"
+      summary: "Get unsigned proposal for the \"AddEntry\" transaction"
+      description: "Get proposal for rejecting the matriculation transaction with the given information. The rejected transaction would enroll the student in the given semester, in the given fieldOfStudy, if it was signed and submitted by all parties. The operation will be in state REJECTED, if the rejecting party's approval was required."
+      operationId: "getProposalAddEntryRejection"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      requestBody:
+        description: "PutMessageMatriculation, containing the semester the student want to be enrolled in, and the corresponding fieldOfStudy."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatriculationAddEntryRejectionProposalQuery'
             examples:
               PutMessageMatriculation:
                 $ref: '#/components/examples/ExamplePutMessageMatriculation'
@@ -395,13 +467,20 @@ components:
       type: http
       scheme: bearer
   schemas:
-    PutMessageMatriculation:
+    MatriculationAddEntryProposalQuery:
       type: "object"
       properties:
         matriculation:
           type: array
           items:
             $ref: '#/components/schemas/SubjectMatriculation'
+    MatriculationAddEntryRejectionProposalQuery:
+      type: "object"
+      properties:
+        proposalQuery:
+          $ref: '#/components/schemas/MatriculationAddEntryProposalQuery'
+        reason:
+          type: string
     MatriculationData:
       type: "object"
       properties:

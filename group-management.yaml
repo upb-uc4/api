@@ -1,0 +1,65 @@
+openapi: "3.0.0"
+info:
+  description: "This is the Group API for UC4."
+  version: "0.15.1"
+  title: "UC4"
+
+servers:
+  - url: https://uc4.cs.upb.de/api/experimental/group-management
+  - url: https://uc4.cs.upb.de/api/develop/group-management
+  - url: https://uc4.cs.upb.de/api/production/group-management
+
+tags:
+- name: "Version Management"
+  description: "Everything about the Version"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+
+paths:
+  /version:
+    get:
+      tags:
+      - "Version Management"
+      summary: "Get version"
+      description: "Returns the version of the current service"
+      operationId: "getVersion"
+
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonServiceVersion'
+  /version/hyperledger:
+    get:
+      tags:
+      - "Version Management"
+      summary: "Get Hyperledger version"
+      description: "Returns the version of the current hyperledger backend"
+      operationId: "getVersionHyperledger"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonHyperledgerVersion'
+components:
+  schemas:
+    JsonServiceVersion:
+      type: object
+      properties:
+        serviceVersion:
+          type: string
+    JsonHyperledgerVersion:
+      type: object
+      properties:
+        hlfApiVersion:
+          type: string
+        chaincodeVersion:
+          type: string
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io" 

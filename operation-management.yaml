@@ -275,12 +275,14 @@ components:
           type: string
         initiator:
           type: string
+        initiatedTimestamp:
+          type: string
+        lastModifiedTimestamp:
+          type: string
         existingApprovals:
           $ref: '#/components/schemas/ApprovalList'
         missingApprovals:
           $ref: '#/components/schemas/ApprovalList'
-        last-modified:
-          type: string
     TransactionInfo:
       type: "object"
       properties:

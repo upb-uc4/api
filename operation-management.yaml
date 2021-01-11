@@ -80,9 +80,9 @@ paths:
         required: false
         schema:
           type: 'string'
-      - name: "cacheOnly"
+      - name: "watchlistOnly"
         in: "query"
-        description: "Flag that determines, if operations are fetched from cache or from the blockchain. If not set, defaults to true"
+        description: "Flag that determines, if only operations from the watchlist are fetched. If not set, defaults to false"
         required: false
         schema:
           type: 'boolean'
@@ -194,8 +194,8 @@ paths:
     delete:
       tags:
       - "Operation Management"
-      summary: "Remove an operation from cache"
-      description: "Removes an operation from cache. Operation will still be on chain. Can only remove Operation which are in FINISHED or REJECTED state."
+      summary: "Remove an operation from watchlist"
+      description: "Removes an operation from watchlist. Operation will still be on chain."
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []

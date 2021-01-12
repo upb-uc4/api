@@ -16,6 +16,15 @@ The Errors returned are defined [here](errors.md#Errors).
     - operationData :: [OperationData](#OperationData) 
       -  Description: Success, returns the list of approvals.
 
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLParameterNumberError",
+        "title": "The given number of parameters does not match the required number of parameters for the specified transaction"
+      }
+      ```
+       - Description: This error is returned, if the given number of parameters for the specified transaction does not match the number of required parameters.
+
     - [DetailedError](errors.md#DetailedError) 
       ```json
       {

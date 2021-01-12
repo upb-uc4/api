@@ -6,9 +6,10 @@ The Errors returned are defined [here](errors.md#Errors).
 
 ## Transactions
 
-### ApproveTransaction
+### ProposeTransaction
 - ID = approveTransaction
 - Send
+    - initiator :: String (enrollmentId)
     - contractName, transactionName :: String
     - params :: List\<String\>
 
@@ -32,8 +33,33 @@ The Errors returned are defined [here](errors.md#Errors).
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.  
        For detailed informations see [Input Checks](#Checks).
 
-### RejectTransaction
-- ID = rejectTransaction
+### ApproveOperation
+- ID = approveOperation
+- Send
+    - operationId :: String
+
+- Receive
+    - operationData :: [OperationData](#OperationData) 
+      -  Description: Success, returns the list of approvals.
+
+    - [DetailedError](errors.md#DetailedError) 
+      ```json
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "string",
+            "reason": "string"
+          }
+        ]
+      }
+      ```
+       - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.  
+       For detailed informations see [Input Checks](#Checks).
+
+### RejectOperation
+- ID = rejectOperation
 - Send
     - operationId :: String
     - rejectMessage :: String
@@ -75,50 +101,10 @@ The Errors returned are defined [here](errors.md#Errors).
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.  
        For detailed informations see [Input Checks](#Checks).
 
-
-### GetOperationData
-- ID = getOperationData
-- Send
-    - operationId :: String
-- Receive
-    - operationData :: [OperationData](#OperationData)
-
-- [GenericError](errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLNotFound",
-        "title": "There is no Operation for the given operationId"
-      }
-      ```
-      - Description: This error is returned, if there is no operation for the specified operationId present on the ledger.
-    - [GenericError](errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLUnprocessableLedgerState",
-        "title": "The state on the ledger does not conform to the specified format"
-      }
-      ```
-      - Description: This error is returned, if the state of data on the ledger is not consistent with the current model. This error should only occur if the model changes while the old ledger state remains without modification.
-
-    - [DetailedError](errors.md#DetailedError) 
-      ```json
-      {
-        "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format",
-        "invalidParams": [
-          {
-            "name": "string",
-            "reason": "string"
-          }
-        ]
-      }
-      ```
-       - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.  
-       For detailed informations see [Input Checks](#Checks).
-
 ### GetOperations
 - ID = getOperations
 - Send
+    - operationIds :: List\<String\> (optional)
     - existingEnrollmentId :: String (optional)
     - missingEnrollmentId :: String (optional)
     - initiatorEnrollmentId :: String (optional)
@@ -132,6 +118,9 @@ The Errors returned are defined [here](errors.md#Errors).
 ## <a id="Models" />Models
 
 ### <a id="OperationData" />OperationData
+The operationId in OperationData is constructed as follows:  
+operationId = SHA256($contractName:$transactionName:$parameters)  
+with the String given to the hash function being UTF8 encoded.
 ```json
 {
   "operationId" : "0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93",

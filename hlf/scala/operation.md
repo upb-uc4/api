@@ -44,16 +44,19 @@ Additionally, as described in [General Communication](general-communication.md),
           - If the state of data on the ledger is not consistent with the curent model.
             - This error should only occurr if the model changes while the old ledger state remains without modification.
 
-## GetOperations(operationIds: String, existingEnrollmentId: String, missingEnrollmentId: String, initiatorEnrollmentId: String, state: String)
+## GetOperations(operationIds: List\<String\>, existingEnrollmentId: String, missingEnrollmentId: String, initiatorEnrollmentId: String, involvedEnrollmentId: String, state: List\<String\>)
 
 Gets the full List of existing Operations.
 Applies filters to match operationId, enrollmendId, state.
 If any of theses parameter is empty, its filter will not be applied.
 - Returns
     - OperationsList :: List\<String Json (refer to: [OperationData](../chaincode/operation.md#OperationData))\> 
-        - =>    Exhaustive List of all Operations, filtered by the parameters.
-                All filters are applied consecutively (logical AND).
-                Empty if no match could be found.
+      - Description: Returns the full list of existing Operations matching the filter parameters.
+        All filters are applied consecutively (logical AND).
+      - If all these parameters are empty, the exhaustive list of all existing Operations is returned.
+      - "involvedEnrollmentId" represents an OR-Filter for existing-/missing-/initiator-enrollmentId
+      - List parameters are also a logical OR over all their entries
+
 
 > Note! Invalid States on the ledger get ignored.
 > We return all valid Operations that match the filters.

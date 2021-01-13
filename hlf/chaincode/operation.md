@@ -108,12 +108,15 @@ The Errors returned are defined [here](errors.md#Errors).
     - existingEnrollmentId :: String (optional)
     - missingEnrollmentId :: String (optional)
     - initiatorEnrollmentId :: String (optional)
-    - state :: String (optional)
+    - involvedEnrollmentId :: String (optional)
+    - state :: List\<String\> (optional)
 - Receive
     - operationsList :: List\<[OperationData](#OperationData)\>
       - Description: Returns the full list of existing Operations matching the filter parameters.
         All filters are applied consecutively (logical AND).
-        If these parameters are empty, the exhaustive list of all existing Operations is returned.
+      - If all these parameters are empty, the exhaustive list of all existing Operations is returned.
+      - "involvedEnrollmentId" represents an OR-Filter for existing-/missing-/initiator-enrollmentId
+      - List parameters are also a logical OR over all their entries
 
 ## <a id="Models" />Models
 

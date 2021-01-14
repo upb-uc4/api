@@ -49,13 +49,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonHyperledgerVersion'
-  /matriculation/unsigned_proposal:
+  /matriculation/{username}/unsigned_proposal:
     post:
       tags:
       - "Matriculation Management"
       summary: "Get unsigned proposal for the \"AddEntry\" transaction"
       description: "Get proposal for approving the matriculation transaction with the given information. The transaction can enroll the student in the given semester, in the given fieldOfStudy, if it is signed and submitted by all parties."
       operationId: "getProposalAddEntryApproval"
+      parameters:
+      - in: "path"
+        name: "username"
+        required: true
+        schema: 
+          type: "string"
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []

@@ -89,10 +89,11 @@ val (approvalResult, realTransactionResult) = operationConnection.submitSignedTr
 ```
 The approvalResult is a JsonObject [OperationData](../chaincode/operation.md#OperationData).
 The realTransactionResult is the chaincode response to the desired transaction
-(e.g. an InsufficientApproval Error, or information about the successfully changed ledger state)
+(e.g. an InsufficientApproval Error, or information about the successfully changed ledger state).
 
 The approval of the User has been stored on the OperationContract.
-An attempt has been made to execute the "real" transaction (e.g. "AddCertificate")
+An attempt has been made to execute the "real" transaction (e.g. "AddCertificate").
+If the approval or the "real" transaction fails due to the transaction itself being invalid (e.g. due to changed ledger state), the operation is rejected.
 
 ========================  
 

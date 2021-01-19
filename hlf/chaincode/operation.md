@@ -6,12 +6,13 @@ The Errors returned are defined [here](errors.md#Errors).
 
 ## Transactions
 
-### ProposeTransaction
-- ID = proposeTransaction
+### InitiateOperation
+- ID = initiateOperation
 
 - Send
     - initiator :: String (enrollmentId)
-    - contractName, transactionName :: String
+    - contractName :: String
+    - transactionName :: String
     - params :: List\<String\>
 
 - Receive

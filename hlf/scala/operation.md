@@ -10,7 +10,7 @@ For "operation" handling we offer the following interface.
 Additionally, as described in [General Communication](general-communication.md), different proposal calls can be made.
 
 
-## ProposeTransaction(contractName: String, transactionName: String, params: String*))
+## InitiateOperation(initiator: String, contractName: String, transactionName: String, params: String*))
 - Returns
     - OperationData :: Json (refer to: [OperationData](../chaincode/operation.md#OperationData))
         - => Success

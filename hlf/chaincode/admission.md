@@ -10,6 +10,11 @@ The Errors returned are defined [here](errors.md#Errors).
 
 ### Add Admission
 - ID = addAdmission
+- Required Approvals
+  - Users
+    - jsonAdmission.enrollmentId
+  - Groups
+    - System
 - Send
     - jsonAdmission :: [Admission](#Admission)
 - Receive
@@ -46,6 +51,11 @@ The Errors returned are defined [here](errors.md#Errors).
 
 ### Drop Admission
 - ID = dropAdmission
+- Required Approvals
+  - Users
+    - related enrollmentId
+  - Groups
+    - System
 - Send
     - admissionId :: String
 - Receive

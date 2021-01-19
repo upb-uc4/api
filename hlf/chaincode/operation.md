@@ -7,7 +7,8 @@ The Errors returned are defined [here](errors.md#Errors).
 ## Transactions
 
 ### ProposeTransaction
-- ID = approveTransaction
+- ID = proposeTransaction
+
 - Send
     - initiator :: String (enrollmentId)
     - contractName, transactionName :: String

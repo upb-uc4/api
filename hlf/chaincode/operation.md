@@ -111,7 +111,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - missingEnrollmentId :: String (optional)
     - initiatorEnrollmentId :: String (optional)
     - involvedEnrollmentId :: String (optional)
-    - state :: List\<String\> (optional)
+    - states :: List\<String\> (optional)
 - Receive
     - operationsList :: List\<[OperationData](#OperationData)\>
       - Description: Returns the full list of existing Operations matching the filter parameters.

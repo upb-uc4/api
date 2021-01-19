@@ -31,7 +31,7 @@ Additionally, as described in [General Communication](general-communication.md),
           - If the state of data on the ledger is not consistent with the curent model.
             - This error should only occurr if the model changes while the old ledger state remains without modification.
 
-## RejectOperation(operationId: String, rejectMessage: String)
+## <a id="RejectOperation" /> RejectOperation(operationId: String, rejectMessage: String)
 - Returns
     - OperationData :: Json (refer to: [OperationData](../chaincode/operation.md#OperationData))
         - => Success
@@ -44,7 +44,7 @@ Additionally, as described in [General Communication](general-communication.md),
           - If the state of data on the ledger is not consistent with the curent model.
             - This error should only occurr if the model changes while the old ledger state remains without modification.
 
-## GetOperations(operationIds: List\<String\>, existingEnrollmentId: String, missingEnrollmentId: String, initiatorEnrollmentId: String, involvedEnrollmentId: String, state: List\<String\>)
+## GetOperations(operationIds: List\<String\>, existingEnrollmentId: String, missingEnrollmentId: String, initiatorEnrollmentId: String, involvedEnrollmentId: String, states: List\<String\>)
 
 Gets the full List of existing Operations.
 Applies filters to match operationId, enrollmendId, state.

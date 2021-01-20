@@ -87,9 +87,11 @@ val transactionBytes = operationConnection.getUnsignedTransaction(proposalBytes:
 ```scala
 val approvalResult = operationConnection.submitSignedTransaction(transactionBytes: Array[Byte], signatureBytes: Array[Byte])
 
-val transactionResult = operationConnection.executeTransaction(jsonOperationData: String)
+val transactionResult = operationConnection.executeTransaction(jsonOperationData: String, timeoutMilliseconds: int = 5000)
 ```
-The approvalResult is a JsonObject [OperationData](../chaincode/operation.md#OperationData). Invoking executeTransactionFromOperation executes the transaction described by the transactionInfo in the OperationData.  
+The approvalResult is a JsonObject [OperationData](../chaincode/operation.md#OperationData). 
+Invoking executeTransactionFromOperation executes the transaction described by the transactionInfo in the OperationData.
+In case of a NetworkException, the transaction is retried until the specified timeout is reached.
 The transactionResult is the chaincode response to the desired transaction
 (e.g. an InsufficientApproval Error, or information about the successfully changed ledger state).
 

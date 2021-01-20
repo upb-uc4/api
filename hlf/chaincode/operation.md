@@ -124,7 +124,7 @@ The Errors returned are defined [here](errors.md#Errors).
 
 ### <a id="OperationData" />OperationData
 The operationId in OperationData is constructed as follows:  
-operationId = String(Base64(SHA256($contractName:$transactionName:$parameters))) 
+operationId = String(Base64(SHA256($contractName:$transactionName:$parameters))) // parameters is stripped of all spaces (replace(" ", ""))
 
 with the String given to the hash function being UTF8 encoded.
 ```json

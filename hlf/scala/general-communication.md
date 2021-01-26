@@ -97,7 +97,7 @@ The transactionResult is the chaincode response to the desired transaction
 
 If submitSignedTransaction succeeds, the approval of the User has been stored on the OperationContract.  
 If executeTransaction succeeds, the "real" transaction (e.g. "AddCertificate") is executed.  
-If the approval or the "real" transaction fails due to the transaction itself being invalid (e.g. due to changed ledger state), the operation is rejected.
+If the approval or the "real" transaction fails due to the transaction itself being invalid (e.g. due to changed ledger state), the operation is rejected by the chain.
 
 ========================  
 

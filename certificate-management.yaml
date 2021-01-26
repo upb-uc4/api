@@ -375,6 +375,124 @@ paths:
             application/json:  
               schema:
                 $ref: '#/components/schemas/GenericError'
+  /certificates/enrollmentId:
+    get:
+      tags:
+      - "Certificate Management"
+      summary: "Get the enrollmentIds specified by the query parameter"
+      description: "Fetch the enrollmentIds of the users with the specified usernames"
+      operationId: "getEnrollmentIDs"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
+      parameters:
+      - name: "usernames"
+        in: "query"
+        description: "Comma separated list of usernames, of which the enrollmentIds are fetched"
+        required: true
+        schema:
+          type: 'string'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonUsernameEnrollmentId'
+              examples:
+                ExampleJsonUsernameEnrollmentId:
+                  $ref: '#/components/examples/ExampleJsonUsernameEnrollmentId'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+            description: |
+              Not Found  
+              types: KeyNotFound
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /certificates/username:
+    get:
+      tags:
+      - "Certificate Management"
+      summary: "Get the usernames specified by the query parameter"
+      description: "Fetch the usernames of the users with the specified enrollmentIds"
+      operationId: "getUsernames"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
+      parameters:
+      - name: "enrollmentIds"
+        in: "query"
+        description: "Comma separated list of enrollmentIds, of which the usernames are fetched"
+        required: true
+        schema:
+          type: 'string'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonUsernameEnrollmentId'
+              examples:
+                ExampleJsonUsernameEnrollmentId:
+                  $ref: '#/components/examples/ExampleJsonUsernameEnrollmentId'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+            description: |
+              Not Found  
+              types: KeyNotFound
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/GenericError'
 components:
   securitySchemes:
     uc4_token_login:
@@ -423,6 +541,13 @@ components:
       properties:
         username:
           type: string
+    JsonUsernameEnrollmentId:
+      type: "object"
+      properties:
+        username:
+          type: string
+        enrollmentId:
+          type: string
     JsonServiceVersion:
       type: object
       properties:
@@ -445,6 +570,13 @@ components:
         - type: object
         
   examples:
+    ExampleJsonUsernameEnrollmentId:
+      summary: "An Example for an JsonUsernameEnrollmentId object"
+      value:
+        - username: "student"
+          enrollmentId: "0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93"
+        - username: "student2"
+          enrollmentId: "008747125d802de1500be52313d865b1126d0ac0eb3a1de80f90bc8436680336"
     PostMessageCsrExample:
       summary : "PostMessageCsr Example"
       value:

@@ -16,9 +16,9 @@ The Errors returned are defined [here](errors.md#Errors).
   - Groups
     - System
 - Send
-    - examResultEntries :: List\<[ExamResultEntry](#ExamResultEntry)\>
+    - examResult :: [ExamResult](#ExamResult)
 - Receive
-    - examResultEntries :: List\<[ExamResultEntry](#ExamResultEntry)\>
+    - examResult :: [ExamResult](#ExamResult)
       -  Description: Done; returns final object on ledger.
 
     - [DetailedError](errors.md#DetailedError) 

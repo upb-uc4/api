@@ -148,11 +148,6 @@ paths:
               examples:
                 UnsignedProposalAddEntry:
                   $ref: '#/components/examples/ExampleUnsignedProposal'
-          headers:
-            Location:
-              schema:
-                type: string
-                description: "URI of the newly created Admission"
         "400":
           description: | 
             Bad Request  

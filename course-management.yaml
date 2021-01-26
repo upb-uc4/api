@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Course API for UC4."
-  version: "0.15.1"
+  version: "0.16.1"
   title: "UC4"
 
 servers:
@@ -124,6 +124,12 @@ paths:
       - name: "moduleIds"
         in: "query"
         description: "Comma seperated list of module Ids to filter by"
+        required: false
+        schema:
+          type: 'string'
+      - name: "examregNames"
+        in: "query"
+        description: "Comma seperated list of names of examination regulations to filter by. Only courses with moduleIds contained in the given examination regulations will be returned"
         required: false
         schema:
           type: 'string'

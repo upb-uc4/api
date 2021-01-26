@@ -61,7 +61,9 @@ The Errors returned are defined [here](errors.md#Errors).
     - examList :: List\<[Exam](#Exam)\>
       - Description: Returns the full list of existing Exams matching the filter parameters.
         All filters are applied consecutively (logical AND).
+        A single List\<String\> filter is treated as a logical OR.
         If these parameters are empty, the exhaustive list of all existing Exams is returned.
+
       - Empty List if none could be found.
 
     - [DetailedError](errors.md#DetailedError) 

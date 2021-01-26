@@ -22,7 +22,7 @@ Additionally, as described in [General Communication](general-communication.md),
           - If the required approvals are not present on the ledger.
   
 ## GetExamResultEntries(enrollmentId: String, examIds: List<\String\>)
-Gets the full List of existing Exams.
+Gets the full List of existing ExamsResultEntries.
 Applies filters to match enrollmentId, examIds.
 If any of theses parameter is empty, its filter will not be applied.
 - Returns

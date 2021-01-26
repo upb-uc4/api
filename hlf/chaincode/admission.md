@@ -225,8 +225,10 @@ with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
 
 - **addAdmission**
   - Check, if **enrollmentId** is matriculated in an examinationRegulation containing the **moduleId**, referenced in the exam behind the examId.
+  - Check, if **enrollmentId** is not admitted to the same exam already.
   - Check, if **enrollmentId** is admitted to the **couseId**, referenced in the exam behind the examId.
   - Check, if the **examId** is currently admittable
+
 
 - **dropAdmission**
   - Check, if the **examId** is currently droppable

@@ -184,10 +184,10 @@ with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
   "admissionId": "0123456:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
   "enrollmentId": "0123456",
   "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
-  "timestamp": "2004-06-14T23:34:30" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
+  "timestamp": "2004-06-14T23:34:30",
   "type": "Exam"
-}
-```
+}```
+with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
 
 ## <a id="Checks" />Input Checks
 ### <a id="parameterChecks" />Parameters

@@ -36,7 +36,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
        - Description: This error is returned, 
          - if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.  
-            For detailed informations see [parameter checks](#parameterChecks).
+            For detailed informations see [Input Checks](#Checks).
     
     - [GenericError](errors.md#GenericError) 
       ```json
@@ -94,7 +94,8 @@ The Errors returned are defined [here](errors.md#Errors).
   "ects": 6,
   "admittableUntil": "2021-01-12T23:59:59",
   "droppableUntil": "2021-02-05T23:59:59"
-}```
+}
+```
 with all dates in format specified in  \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
 
 ## <a id="Checks" />Input Checks
@@ -104,27 +105,18 @@ with all dates in format specified in  \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
   - Check, if not null or an empty String.
 - **lecturerEnrollmentId**
   - Check, if not null or an empty String.
-  - Check, if user exists (Certificate exists)
 - **moduleId**
   - Check, if not null or an empty String.
-  - Check, if the exists an ExaminationRegulation which contains the module.
 - **type**
   - AnyOf("Written Exam")
 - **date**
   - Check, if valid date-String YYYY-MM-DDThh:mm:ss
-  - Check, if date lies in the future.
 - **ects**
   - Check, if format is integer and value not negative
 - **admittableUntil**
   - Check, if valid date-String YYYY-MM-DDThh:mm:ss
-  - Check, if date lies in the future.
-  - Check, if date lies in before **date**.
-  - Check, if date lies in before **droppableUntil**.
 - **droppableUntil**
   - Check, if valid date-String YYYY-MM-DDThh:mm:ss
-  - Check, if date lies in the future.
-  - Check, if date lies in before **date**.
-  - Check, if date lies in after **admittableUntil**.
 - **examIds**
   - Check, if valid jsonList of String.
 - **courseIds**
@@ -139,3 +131,16 @@ with all dates in format specified in  \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
   - Check, if valid date-String YYYY-MM-DDThh:mm:ss
 - **droppableAt**
   - Check, if valid date-String YYYY-MM-DDThh:mm:ss
+  
+
+### <a id="semanticChecks" />SemanticCheck
+
+- **addExam**
+  - Check, if Certificate for user: **lecturerEnrollmentId** exists
+  - Check, if the exists an ExaminationRegulation which contains the **moduleId**.
+  - Check, if **date** lies in the future.
+  - Check, if **admittableUntil** lies in the future.
+  - Check, if **droppableUntil** lies in the future.
+  - Check, if **admittableUntil** is before **date**.
+  - Check, if **droppableUntil** is before **date**.
+  - Check, if **admittableUntil** is before **droppableUntil**.

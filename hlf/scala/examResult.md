@@ -9,9 +9,9 @@ For "examResult" handling we offer the following interface.
 Additionally, as described in [General Communication](general-communication.md), different proposal calls can be made.
 
 
-## AddExamResult(examResultJson: String)
+## AddExamResult(examResultJson: String Json [ExamResult](../chaincode/examResult.md#ExamResult))
 - Returns
-    ExamResultJson :: Json (refer to: [ExamResultEntry](../chaincode/examResult.md#ExamResultEntry))
+    ExamResultJson :: Json (refer to: [ExamResult](../chaincode/examResult.md#ExamResult))
         - => Success
     - TransactionError :: Json (refer to: [DetailedError](../chaincode/errors.md#DetailedError))
         - => error is returned

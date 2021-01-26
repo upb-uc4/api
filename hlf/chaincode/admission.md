@@ -162,7 +162,8 @@ The Errors returned are defined [here](errors.md#Errors).
   "enrollmentId": "0123456",
   "timestamp": "2004-06-14T23:34:30",
   "type": "Course"
-}```
+}
+```
 with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
 
 ### <a id="CourseAdmission" />CourseAdmission
@@ -172,10 +173,11 @@ with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
   "enrollmentId": "0123456",
   "courseId": "ExampleCourse",
   "moduleId": "M.1",
-  "timestamp": "2004-06-14T23:34:30" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
+  "timestamp": "2004-06-14T23:34:30",
   "type": "Course"
 }
 ```
+with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
 
 
 ### <a id="ExamAdmission" />ExamAdmission
@@ -186,7 +188,8 @@ with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
   "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
   "timestamp": "2004-06-14T23:34:30",
   "type": "Exam"
-}```
+}
+```
 with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
 
 ## <a id="Checks" />Input Checks

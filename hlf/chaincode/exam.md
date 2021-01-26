@@ -86,16 +86,16 @@ The Errors returned are defined [here](errors.md#Errors).
 ```json
 {
   "examId": "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00",
-  "courseId": "ExampleCourse"
-  "lecturerEnrollmentId": "0123456"
-  "moduleId": "M.1"
-  "type": "Written Exam"
-  "date": "2021-02-12T10:00:00" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
-  "ects": 6
-  "admittableUntil": "2021-01-12T23:59:59" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
-  "droppableUntil": "2021-02-05T23:59:59" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
-}
-```
+  "courseId": "ExampleCourse",
+  "lecturerEnrollmentId": "0123456",
+  "moduleId": "M.1",
+  "type": "Written Exam",
+  "date": "2021-02-12T10:00:00",
+  "ects": 6,
+  "admittableUntil": "2021-01-12T23:59:59",
+  "droppableUntil": "2021-02-05T23:59:59"
+}```
+with all dates in format specified in  \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
 
 ## <a id="Checks" />Input Checks
 ### <a id="parameterChecks" />Parameters

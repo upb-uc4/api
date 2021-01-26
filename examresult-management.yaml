@@ -193,6 +193,14 @@ components:
       type: http
       scheme: bearer
   schemas:
+    ExamResult:
+      type: object
+      properties:
+        examResultEntries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExamResultEntry'
+        
     ExamResultEntry:
       type: object
       properties:
@@ -232,15 +240,22 @@ components:
     ExampleExamResult:
       summary: "An example for an exam result"
       value:
+        examResultEntries:
         - examId: "eae27105-2fd5-11eb-ad58-572c5dfe1b7a:M.1275.01158:Written Exam:2021-04-01"
           enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6"
           grade: "1.0"
+        - examId: "eae27105-2fd5-11eb-ad58-572c5dfe1b7a:M.1275.01158:Written Exam:2021-04-01"
+          enrollmentId: "e53143d725255d709459845634156f64864866185d6186186486486485631535"
+          grade: "1.7"
     ExampleGetExamResultEntries:
       summary: "An example for an exam result get operation"
       value:
         - examId: "eae27105-2fd5-11eb-ad58-572c5dfe1b7a:M.1275.01158:Written Exam:2021-04-01"
           enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6"
           grade: "1.0"
+        - examId: "eae27105-2fd5-11eb-ad58-572c5dfe1b7a:M.1275.01158:Written Exam:2021-04-01"
+          enrollmentId: "e53143d725255d709459845634156f64864866185d6186186486486485631535"
+          grade: "1.7"
     ExampleUnsignedProposal:
       summary: "Example for UnsignedProposal"
       value:

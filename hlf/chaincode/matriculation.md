@@ -47,6 +47,15 @@ The Errors returned are defined [here](errors.md#Errors).
       }
       ```
       - Description: This error is returned, if the required approvals are not present.
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLOperationNotPending",
+        "title": "The operation is not PENDING anymore"
+      }
+      ```
+       - Description: This error is returned, if the operation for this transaction is not pending.
 
 
 
@@ -164,6 +173,15 @@ This method adds a single entry to the list of semesters in the MatriculationDat
       }
       ```
       - Description: This error is returned, if the required approvals are not present.
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLOperationNotPending",
+        "title": "The operation is not PENDING anymore"
+      }
+      ```
+       - Description: This error is returned, if the operation for this transaction is not pending.
 
 
 ## <a id="Models" />Models

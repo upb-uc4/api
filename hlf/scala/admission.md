@@ -9,9 +9,9 @@ For "admission" handling we offer the following interface.
 Additionally, as described in [General Communication](general-communication.md), different proposal calls can be made.
 
 
-## AddAdmission(admission: Json([Admission](../chaincode/admission.md#Admission)))
+## AddAdmission(admission: Json([Admission](../chaincode/admission.md#AbstractAdmission)))
 - Returns
-    - Admission :: Json (refer to: [Admission](../chaincode/admission.md#Admission))
+    - Admission :: Json (refer to: [Admission](../chaincode/admission.md#AbstractAdmission))
         - => Success
     - TransactionError :: Json (refer to: [DetailedError](../chaincode/errors.md#DetailedError))
         - => error is returned
@@ -33,7 +33,7 @@ Additionally, as described in [General Communication](general-communication.md),
         - => error is returned
           - If the given parameters could not be parsed.
 
-## GetAdmissions(enrollmentId: String, courseId: String, moduleId: String)
+## GetCourseAdmissions(enrollmentId: String, courseId: String, moduleId: String)
 Gets the full List of existing Admissions.
 Applies filters to match enrollmendId, courseId, moduleId.
 If any of theses parameter is empty, its filter will not be applied.
@@ -41,6 +41,16 @@ If any of theses parameter is empty, its filter will not be applied.
     - AdmissionsList :: List\<String Json (refer to: [Admission](../chaincode/admission.md#Admission))\> 
         - => Exhaustive List of all Admissions, filtered by
             inputs "enrollmentId", "courseId", "moduleId".
+            Empty if no match could be found.
+
+## GetExamAdmissions(admissionIds: List\<String\>, enrollmentId: String, examIds: List\<String\>)
+Gets the full List of existing Admissions.
+Applies filters to match admissionIds, enrollmentId, examIds.
+If any of theses parameter is empty, its filter will not be applied.
+- Returns
+    - AdmissionsList :: List\<String Json (refer to: [Admission](../chaincode/admission.md#Admission))\> 
+        - => Exhaustive List of all Admissions, filtered by
+            inputs "admissionIds", "enrollmentId", "examIds".
             Empty if no match could be found.
 
 > Note! Invalid States on the ledger get ignored.

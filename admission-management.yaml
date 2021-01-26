@@ -289,9 +289,9 @@ paths:
         required: false
         schema:
           type: "string"
-      - name: "examId"
+      - name: "examIds"
         in: "query"
-        description: "ExamId to filter by"
+        description: "Comma separated list of examIds to filter by"
         required: false
         schema:
           type: "string"

@@ -80,7 +80,7 @@ The Errors returned are defined [here](errors.md#Errors).
 ### <a id="ExamResultEntry" />ExamResultEntry
 ```json
 {
-  "enrollmentId": "0123456"
+  "enrollmentId": "0123456",
   "examId": "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00",
   "grade": "1.0"
 }

@@ -24,6 +24,15 @@ The Errors returned are defined [here](errors.md#Errors).
       }
       ```
        - Description: This error is returned, if the given number of parameters for the specified transaction does not match the number of required parameters.
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLApprovalDenied",
+        "title": "You are not allowed to approve the given operation"
+      }
+      ```
+       - Description: This error is returned, if the user trying to approve is not allowed to approve the operation.
 
     - [DetailedError](errors.md#DetailedError) 
       ```json
@@ -49,7 +58,15 @@ The Errors returned are defined [here](errors.md#Errors).
 - Receive
     - operationData :: [OperationData](#OperationData) 
       -  Description: Success, returns the list of operations.
-
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLRejectionDenied",
+        "title": "You are not allowed to reject the given operation"
+      }
+      ```
+       - Description: This error is returned, if the user trying to reject is not allowed to reject the operation.
 
     - [GenericError](errors.md#GenericError) 
       ```json

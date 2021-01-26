@@ -29,6 +29,7 @@ If any of theses parameter is empty, its filter will not be applied.
     - ExamResultList :: List\<String Json (refer to: [ExamResultEntry](../chaincode/examResult.md#ExamResultEntry))\> 
         - =>    Exhaustive List of all ExamResultEntries, filtered by the parameters.
                 All filters are applied consecutively (logical AND).
+                Each single List\<String\> filter is treated as a logical OR.
                 Empty if no match could be found.
 
 > Note! Invalid States on the ledger get ignored.

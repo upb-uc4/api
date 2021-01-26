@@ -11,9 +11,9 @@ The Errors returned are defined [here](errors.md#Errors).
 ### Add Admission
 - ID = addAdmission
 - Send
-    - jsonAdmission :: [Admission](#Admission)
+    - jsonAdmission :: [AbstractAdmission](#AbstractAdmission)
 - Receive
-    - [Admission](#Admission)
+    - Subclass of [AbstractAdmission](#AbstractAdmission)
       -  Description: Done, returns the submitted data, decorated with an admissionId.
 
     - [DetailedError](errors.md#DetailedError) 
@@ -88,8 +88,8 @@ The Errors returned are defined [here](errors.md#Errors).
       - Description: This error is returned, if the required approvals are not present.
 
 
-### Get Admissions
-- ID = getAdmissions
+### Get Course Admissions
+- ID = getCourseAdmissions
 - Send
     - enrollmentId :: String
     - courseId :: String
@@ -125,9 +125,47 @@ The Errors returned are defined [here](errors.md#Errors).
       - Description: This error is returned, if the given parameters are not well formatted, they are listed in invalidParams.  
       For detailed informations see [parameter checks](#parameterChecks).
 
+### Get Exam Admissions
+- ID = getExamAdmissions
+- Send
+    - admissionIds :: List\<String\>
+    - enrollmentId :: String
+    - examIds :: List\<String\>
+- Receive
+    - admissionList :: List\<[Admission](#Admission)\>
+      - Description: Exhaustive List of all Admissions, filtered by
+      inputs "admissionIds", "enrollmentId", "examIds".
+      Empty if no match could be found.
+
+    - [DetailedError](errors.md#DetailedError) 
+      ```json
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "string",
+            "reason": "string"
+          }
+        ]
+      }
+      ```
+      - Description: This error is returned, if the given parameters are not well formatted, they are listed in invalidParams.  
+      For detailed informations see [parameter checks](#parameterChecks).
+
 ## <a id="Models" />Models
 
-### <a id="Admission" />Admission
+### <a id="Admission" />AbstractAdmission
+```json
+{
+  "admissionId": "0123456:ExampleCourse",
+  "enrollmentId": "0123456",
+  "timestamp": "2004-06-14T23:34:30" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
+  "type": "Course"
+}
+```
+
+### <a id="CourseAdmission" />CourseAdmission
 ```json
 {
   "admissionId": "0123456:ExampleCourse",
@@ -135,6 +173,19 @@ The Errors returned are defined [here](errors.md#Errors).
   "courseId": "ExampleCourse",
   "moduleId": "M.1",
   "timestamp": "2004-06-14T23:34:30" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
+  "type": "Course"
+}
+```
+
+
+### <a id="ExamAdmission" />ExamAdmission
+```json
+{
+  "admissionId": "0123456:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+  "enrollmentId": "0123456",
+  "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+  "timestamp": "2004-06-14T23:34:30" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
+  "type": "Exam"
 }
 ```
 
@@ -149,9 +200,31 @@ The Errors returned are defined [here](errors.md#Errors).
   - Check, if not null or an empty String.
 - **moduleId**
   - Check, if not null or an empty String.
+- **examId**
+  - Check, if not null or an empty String.
 - **timestamp**
   - Check, if valid date-String YYYY-MM-DDThh:mm:ss
+- **type**
+  - Check, if one of valid Inputs ("Course", "Exam")
+- **admissionIds**
+  - Check, if valid jsonList of String.
+- **examIds**
+  - Check, if valid jsonList of String.
 
 ### <a id="semanticChecks" />SemanticChecks
-- **admissionPossible**
+
+#### CourseAdmission: 
+
+- **addAdmission**
   - Check, if **enrollmentId** is matriculated in an examinationRegulation containing the **moduleId**.
+
+#### ExamAdmission: 
+
+- **addAdmission**
+  - Check, if **enrollmentId** is matriculated in an examinationRegulation containing the **moduleId**, referenced in the exam behind the examId.
+  - Check, if **enrollmentId** is admitted to the **couseId**, referenced in the exam behind the examId.
+  - Check, if the **examId** is currently admittable
+
+- **dropAdmission**
+  - Check, if the **examId** is currently droppable
+  - Check, if **enrollmentId** is currently admitted to **examId** 

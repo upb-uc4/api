@@ -42,6 +42,15 @@ The Errors returned are defined [here](errors.md#Errors).
       }
       ```
       - Description: This error is returned, if the required approvals are not present.
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLOperationNotPending",
+        "title": "The operation is not PENDING anymore"
+      }
+      ```
+       - Description: This error is returned, if the operation for this transaction is not pending.
 
 
 ### Drop Admission
@@ -86,6 +95,15 @@ The Errors returned are defined [here](errors.md#Errors).
       }
       ```
       - Description: This error is returned, if the required approvals are not present.
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLOperationNotPending",
+        "title": "The operation is not PENDING anymore"
+      }
+      ```
+       - Description: This error is returned, if the operation for this transaction is not pending.
 
 
 ### Get Admissions

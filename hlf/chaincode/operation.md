@@ -37,8 +37,8 @@ The Errors returned are defined [here](errors.md#Errors).
     - [GenericError](errors.md#GenericError) 
       ```json
       {
-        "type": "HLOperationNotPending",
-        "title": "The operation is not PENDING anymore"
+        "type": "HLApprovalImpossible",
+        "title": "The operation is not in pending state"
       }
       ```
        - Description: This error is returned, if the user is trying to approve an operation that is not pending.
@@ -80,8 +80,8 @@ The Errors returned are defined [here](errors.md#Errors).
     - [GenericError](errors.md#GenericError) 
       ```json
       {
-        "type": "HLOperationNotPending",
-        "title": "The operation is not PENDING anymore"
+        "type": "HLRejectionImpossible",
+        "title": "The operation is not in pending state"
       }
       ```
        - Description: This error is returned, if the user is trying to reject an operation that is not pending.

@@ -46,8 +46,8 @@ The Errors returned are defined [here](errors.md#Errors).
     - [GenericError](errors.md#GenericError) 
       ```json
       {
-        "type": "HLOperationNotPending",
-        "title": "The operation is not PENDING anymore"
+        "type": "HLExecutionImpossible",
+        "title": "The operation is not in pending state"
       }
       ```
        - Description: This error is returned, if the operation for this transaction is not pending.
@@ -99,8 +99,8 @@ The Errors returned are defined [here](errors.md#Errors).
     - [GenericError](errors.md#GenericError) 
       ```json
       {
-        "type": "HLOperationNotPending",
-        "title": "The operation is not PENDING anymore"
+        "type": "HLExecutionImpossible",
+        "title": "The operation is not in pending state"
       }
       ```
        - Description: This error is returned, if the operation for this transaction is not pending.

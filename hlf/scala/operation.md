@@ -14,6 +14,9 @@ Additionally, as described in [General Communication](general-communication.md),
 - Returns
     - OperationData :: Json (refer to: [OperationData](../chaincode/operation.md#OperationData))
         - => Success
+    - TransactionError :: Json (refer to: [GenericError](../chaincode/errors.md#GenericError))
+        - => error is returned
+          - If the number of given parameters differs from expected.
     - TransactionError :: Json (refer to: [DetailedError](../chaincode/errors.md#DetailedError))
         - => error is returned
           - If the given parameters could not be parsed.

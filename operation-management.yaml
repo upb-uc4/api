@@ -1,25 +1,26 @@
 openapi: "3.0.0"
 info:
-  description: "This is the Matriculation API for UC4."
+  description: "This is the Operation API for UC4."
   version: "0.15.1"
   title: "UC4"
-  
+
 servers:
-  - url: https://uc4.cs.upb.de/api/experimental/matriculation-management
-  - url: https://uc4.cs.upb.de/api/develop/matriculation-management
-  - url: https://uc4.cs.upb.de/api/production/matriculation-management
-  
+  - url: https://uc4.cs.upb.de/api/experimental/operation-management
+  - url: https://uc4.cs.upb.de/api/develop/operation-management
+  - url: https://uc4.cs.upb.de/api/production/operation-management
+
 tags:
 - name: "Version Management"
   description: "Everything about the Version"
   externalDocs:
     description: "Find out more"
     url: "https://github.com/upb-uc4"
-- name: "Matriculation Management"
-  description: "Everything about the user"
+- name: "Operation Management"
+  description: "Everything about the Operations"
   externalDocs:
     description: "Find out more"
     url: "https://github.com/upb-uc4"
+
 paths:
   /version:
     get:
@@ -28,6 +29,7 @@ paths:
       summary: "Get version"
       description: "Returns the version of the current service"
       operationId: "getVersion"
+
       responses:
         "200":
           description: "OK"
@@ -49,32 +51,231 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonHyperledgerVersion'
-  /matriculation/{username}/unsigned_proposal:
+  /operations:
+    get:
+      tags:
+      - "Operation Management"
+      summary: "Get Operations"
+      description: "Returns all courses, optionally filtered by query parameters"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "getAllCourses"
+      parameters:
+      - name: "selfInitiated"
+        in: "query"
+        description: "Flag that determines, if only operations initiated by yourself are fetched"
+        required: false
+        schema:
+          type: 'boolean'
+      - name: "selfActionRequired"
+        in: "query"
+        description: "Flag that determines, if only operations that you can approve/reject are fetched"
+        required: false
+        schema:
+          type: 'boolean'
+      - name: "states"
+        in: "query"
+        description: "Comma-seperated list of operation states to filter by (PENDING, FINISHED, or REJECTED)"
+        required: false
+        schema:
+          type: 'string'
+      - name: "watchlistOnly"
+        in: "query"
+        description: "Flag that determines, if only operations from the watchlist are fetched. If not set, defaults to false"
+        required: false
+        schema:
+          type: 'boolean'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/Operation'
+        "400":
+            description: |
+              Bad Request    
+              types: MalformedLoginToken, MultipleAuthorizationError
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges, OwnerMismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+            description: |
+              Unprocessable Entity   
+              types: LoginTokenSignatureInvalid
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+  /operations/{operationId}:
+    get:
+      tags:
+      - "Operation Management"
+      summary: "Find Operation by OperationId"
+      description: "Find operation by OperationId"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "findByOperationId"
+      parameters:
+      - name: "operationId"
+        in: "path"
+        description: "Id of Operation to fetch"
+        required: true
+        schema:
+          type: "string"
+      responses:
+          "200":
+            description: "OK"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Operation'
+          "400":
+            description: |
+              Bad Request    
+              types: MalformedLoginToken, MultipleAuthorizationError
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "401":
+            description: |
+              Unauthorized  
+              types: JwtAuthorization, LoginTokenExpired
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "403":
+            description: |
+              Forbidden  
+              types: NotEnoughPrivileges, OwnerMismatch
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "404":
+            description: |
+              Not Found  
+              types: KeyNotFound
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+          "422":
+            description: |
+              Unprocessable Entity   
+              types: LoginTokenSignatureInvalid
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+    delete:
+      tags:
+      - "Operation Management"
+      summary: "Remove an operation from watchlist"
+      description: "Removes an operation from watchlist. Operation will still be on chain."
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      operationId: "removeOperation"
+      parameters:
+      - name: "operationId"
+        in: "path"
+        description: "ID of Operation to delete"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+            description: |
+              Bad Request    
+              types: MalformedLoginToken, MultipleAuthorizationError
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges, OwnerMismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: KeyNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+            description: |
+              Unprocessable Entity   
+              types: LoginTokenSignatureInvalid
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericError'
+  /operations/{operationId}/unsigned_proposal_reject:
     post:
       tags:
-      - "Matriculation Management"
-      summary: "Get unsigned proposal for the \"AddEntry\" transaction"
-      description: "Get proposal for approving the matriculation transaction with the given information. The transaction can enroll the student in the given semester, in the given fieldOfStudy, if it is signed and submitted by all parties."
-      operationId: "getProposalAddEntryApproval"
-      parameters:
-      - in: "path"
-        name: "username"
-        required: true
-        schema: 
-          type: "string"
+      - "Operation Management"
+      summary: "Get unsigned proposal for rejecting an operation"
+      description: "Get proposal for rejecting the operation with the given operationId. The operation will move to state REJECTED, if the rejecting party's approval was required."
+      operationId: "getProposalReject"
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
       requestBody:
-        description: "PutMessageMatriculation, containing the semester the student want to be enrolled in, and the corresponding fieldOfStudy."
+        description: "RejectMessageJson, containing the reason the operation is rejected."
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MatriculationAddEntryProposalQuery'
+              $ref: '#/components/schemas/JsonRejectMessage'
             examples:
-              PutMessageMatriculation:
-                $ref: '#/components/examples/ExamplePutMessageMatriculation'
+              ExampleRejectMessage:
+                $ref: '#/components/examples/ExampleRejectMessage'
+      parameters:
+      - in: "path"
+        name: "operationId"
+        required: true
+        schema: 
+          type: "string"
       responses:
         "200":
           description: "OK"
@@ -83,8 +284,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnsignedProposal'
               examples:
-                UnsignedProposalAddEntry:
+                ExampleUnsignedProposal:
                   $ref: '#/components/examples/ExampleUnsignedProposal'
+                
         "400":
           description: | 
             Bad Request  
@@ -121,25 +323,25 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/GenericError'
                   - $ref: '#/components/schemas/DetailedError'
-  /matriculation/signed_proposal:
+  /operations/signed_proposal:
     post:
       tags:
-      - "Matriculation Management"
-      summary: "Submit signed proposal for matriculation transaction"
-      description: "Submit proposal for matriculation transaction. The transaction will enroll the student in the given semester, in the given fieldOfStudy."
+      - "Operation Management"
+      summary: "Submit signed proposal for operation transaction"
+      description: "Submit proposal for operation transaction."
       operationId: "submitProposal"
       security:
         - uc4_token_login: [] 
         - uc4_token_login_header: []
       requestBody:
-        description: "SignedProposal, containing the semester the student want to be enrolled in, and the corresponding fieldOfStudy, signed by the student."
+        description: "SignedProposal"
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SignedProposal'
             examples:
-              ExampleSignedProposal:
+              ExampleRejectMessage:
                 $ref: '#/components/examples/ExampleSignedProposal'
       responses:
         "200":
@@ -179,12 +381,12 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/GenericError'
                   - $ref: '#/components/schemas/DetailedError'
-  /matriculation/signed_transaction:
+  /operations/signed_transaction:
     post:
       tags:
-      - "Matriculation Management"
-      summary: "Submit signed transaction for matriculation transaction"
-      description: "Submit a signed matriculation transaction. The transaction will enroll the student in the given semester, in the given fieldOfStudy."
+      - "Operation Management"
+      summary: "Submit signed transaction for operation transaction"
+      description: "Submit a signed operation transaction."
       operationId: "submitTransaction"
       security:
         - uc4_token_login: [] 
@@ -230,72 +432,7 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/GenericError'
                   - $ref: '#/components/schemas/DetailedError'
-  /matriculation/{username}:
-    get:
-      tags:
-      - "Matriculation Management"
-      security:
-        - uc4_token_login: [] 
-        - uc4_token_login_header: []
-      summary: "Get MatriculationData for the specified student"
-      description: "Get MatriculationData of specified student."
-      operationId: "getMatriculationData"
-      parameters:
-      - in: "path"
-        name: "username"
-        required: true
-        schema: 
-          type: "string"
-      responses:
-          "200":
-            description: "OK"
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/MatriculationData'
-                examples:
-                  MatriculationData:
-                    $ref: '#/components/examples/ExampleMatriculationData'
-          "400":
-            description: |
-              Bad Request    
-              types: MalformedLoginToken, MultipleAuthorizationError
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "401":
-            description: |
-              Unauthorized  
-              types: JwtAuthorization, LoginTokenExpired
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "403":
-            description: |
-              Forbidden  
-              types: NotEnoughPrivileges, OwnerMismatch
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "404":
-            description: |
-              Not Found  
-              types: HLNotFound
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/GenericError'
-          "422":
-            description: |
-              Unprocessable Entity  
-              types: LoginTokenSignatureInvalid
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/DetailedError'
+    
 components:
   securitySchemes:
     uc4_token_login:
@@ -306,31 +443,55 @@ components:
       type: http
       scheme: bearer
   schemas:
-    MatriculationAddEntryProposalQuery:
+    Operation:
       type: "object"
       properties:
-        matriculation:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubjectMatriculation'
-    MatriculationData:
-      type: "object"
-      properties:
-        enrollmentId:
+        operationId:
           type: string
-        matriculationStatus:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubjectMatriculation'
-    SubjectMatriculation:
+        transactionInfo:
+          $ref: '#/components/schemas/TransactionInfo'
+        state:
+          type: string
+          enum: ["PENDING", "FINISHED", "REJECTED"]
+        reason:
+          type: string
+        initiator:
+          type: string
+        initiatedTimestamp:
+          type: string
+        lastModifiedTimestamp:
+          type: string
+        existingApprovals:
+          $ref: '#/components/schemas/ApprovalList'
+        missingApprovals:
+          $ref: '#/components/schemas/ApprovalList'
+    TransactionInfo:
       type: "object"
       properties:
-        fieldOfStudy:
+        contractName:
           type: string
-        semesters:
+        transactionName:
+          type: string
+        parameters:
           type: array
           items:
             type: string
+    ApprovalList:
+      type: "object"
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+        groups:
+          type: array
+          items:
+            type: string
+    JsonRejectMessage:
+      type: "object"
+      properties:
+        rejectMessage:
+          type: string
     UnsignedProposal:
       allOf:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-proposals.yaml#/components/schemas/UnsignedProposal'
@@ -347,14 +508,6 @@ components:
       allOf:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-proposals.yaml#/components/schemas/SignedTransaction'
         - type: object
-    GenericError:
-      allOf:
-        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
-        - type: object
-    DetailedError:
-      allOf:
-        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
-        - type: object
     JsonServiceVersion:
       type: object
       properties:
@@ -367,33 +520,35 @@ components:
           type: string
         chaincodeVersion:
           type: string
+    GenericError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/GenericError'
+        - type: object
+    DetailedError:
+      allOf:
+        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/errors.yaml#/components/schemas/DetailedError'
+        - type: object
   examples:
-    ExamplePutMessageMatriculation:
-      summary: "Example for PutMessageMatriculation"
+    ExampleRejectMessage:
+      summary: "Example for RejectMessage"
       value:
-        matriculation:
-          - fieldOfStudy: "Bachelor Computer Science v4"
-            semesters:
-              - "SS2020"
-          - fieldOfStudy: "Bachelor Philosophy v1"
-            semesters: 
-              - "SS2020"
+        rejectMessage: "Insufficient funds."
     ExampleUnsignedProposal:
-      summary: "Example for UnsignedProposal for AddEntry"
+      summary: "Example for UnsignedProposal"
       value:
         unsignedProposal: "CpUJCmoIAxABGgsIgL22/AUQ+NbCWSIJbXljaGFubmVsKkBhMzUwNzA1YWNiMGVmNDUyMzQxN2RjYTRkMTA0ZDUxNmYzMmMxNTgwNzhiYTA4Yzk0NmU1OGRkZWIzZWJhYTJmOgoSCBIGdWM0LWNjEqYICokICgdvcmcxTVNQEv0HLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN4akNDQW0yZ0F3SUJBZ0lVYkFLNmdwb1BGaTQxeEloY1Z5YkdXZUV0cXpBd0NnWUlLb1pJemowRUF3SXcKWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRSwpFd3RJZVhCbGNteGxaR2RsY2pFUE1BMEdBMVVFQ3hNR1JtRmljbWxqTVJFd0R3WURWUVFERXdoeVkyRXRiM0puCk1UQWVGdzB5TURFd01Ua3hNelU0TURCYUZ3MHlNVEV3TVRreE5EQXpNREJhTURneERqQU1CZ05WQkFzVEJXRmsKYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNRwpCeXFHU000OUFnRUdDQ3FHU000OUF3RUhBMElBQktab1BNRVpYa1VUdHV3R3VZYmE3UWJHcWpxSFRuVnEyeGVDCklERG1kYmMyUkhBMjBEZjMwY3VUN1dHMVJzdGIyWmpoRS9ESWhVQjRlUzMwbkxTRFJobWpnZ0VyTUlJQkp6QU8KQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3RwpBMVVkRXdFQi93UUNNQUF3SFFZRFZSME9CQllFRk5pbndnNkRveXliS09veEUweENkT2VkOTUraE1COEdBMVVkCkl3UVlNQmFBRkhFN1lISTJwVFhRaWZ4R3o5c2l2cURYTGV1Yk1DZ0dBMVVkRVFRaE1CK0NIWE5qWVd4aExYSmwKWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1GawpiV2x1SWpvaWRISjFaU0lzSW1obUxrRm1abWxzYVdGMGFXOXVJam9pSWl3aWFHWXVSVzV5YjJ4c2JXVnVkRWxFCklqb2ljMk5oYkdFdGNtVm5hWE4wY21GMGFXOXVMV0ZrYldsdUxXOXlaekVpTENKb1ppNVVlWEJsSWpvaVlXUnQKYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQQorN0p2amFHd25RUUNJRUJKTVpUUnc5WmdhVjNpS084S2t6WEw5TGdnUkpIam5pSFVOdWpZME1WVAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tChIYTH47gBwXl+errTr7n7m2byTjHtQteNtsEssICsgICsUICAESCBIGdWM0LWNjGrYICh5VQzQuQ2VydGlmaWNhdGU6YWRkQ2VydGlmaWNhdGUKAzEwMQqOCC0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLVxuTUlJQ3hqQ0NBbTJnQXdJQkFnSVViQUs2Z3BvUEZpNDF4SWhjVnliR1dlRXRxekF3Q2dZSUtvWkl6ajBFQXdJd1xuWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRS1xuRXd0SWVYQmxjbXhsWkdkbGNqRVBNQTBHQTFVRUN4TUdSbUZpY21sak1SRXdEd1lEVlFRREV3aHlZMkV0YjNKblxuTVRBZUZ3MHlNREV3TVRreE16VTRNREJhRncweU1URXdNVGt4TkRBek1EQmFNRGd4RGpBTUJnTlZCQXNUQldGa1xuYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNR1xuQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJLWm9QTUVaWGtVVHR1d0d1WWJhN1FiR3FqcUhUblZxMnhlQ1xuSUREbWRiYzJSSEEyMERmMzBjdVQ3V0cxUnN0YjJaamhFL0RJaFVCNGVTMzBuTFNEUmhtamdnRXJNSUlCSnpBT1xuQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3R1xuQTFVZEV3RUIvd1FDTUFBd0hRWURWUjBPQkJZRUZOaW53ZzZEb3l5YktPb3hFMHhDZE9lZDk1K2hNQjhHQTFVZFxuSXdRWU1CYUFGSEU3WUhJMnBUWFFpZnhHejlzaXZxRFhMZXViTUNnR0ExVWRFUVFoTUIrQ0hYTmpZV3hoTFhKbFxuWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1Ga1xuYldsdUlqb2lkSEoxWlNJc0ltaG1Ma0ZtWm1sc2FXRjBhVzl1SWpvaUlpd2lhR1l1Ulc1eWIyeHNiV1Z1ZEVsRVxuSWpvaWMyTmhiR0V0Y21WbmFYTjBjbUYwYVc5dUxXRmtiV2x1TFc5eVp6RWlMQ0pvWmk1VWVYQmxJam9pWVdSdFxuYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQVxuKzdKdmphR3duUVFDSUVCSk1aVFJ3OVpnYVYzaUtPOEtrelhMOUxnZ1JKSGpuaUhVTnVqWTBNVlRcbi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS1cbg=="
     ExampleSignedProposal:
-      summary: "Example for SignedProposal for AddEntry"
+      summary: "Example for SignedProposal"
       value:
         unsignedProposal: "CpUJCmoIAxABGgsIgL22/AUQ+NbCWSIJbXljaGFubmVsKkBhMzUwNzA1YWNiMGVmNDUyMzQxN2RjYTRkMTA0ZDUxNmYzMmMxNTgwNzhiYTA4Yzk0NmU1OGRkZWIzZWJhYTJmOgoSCBIGdWM0LWNjEqYICokICgdvcmcxTVNQEv0HLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN4akNDQW0yZ0F3SUJBZ0lVYkFLNmdwb1BGaTQxeEloY1Z5YkdXZUV0cXpBd0NnWUlLb1pJemowRUF3SXcKWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRSwpFd3RJZVhCbGNteGxaR2RsY2pFUE1BMEdBMVVFQ3hNR1JtRmljbWxqTVJFd0R3WURWUVFERXdoeVkyRXRiM0puCk1UQWVGdzB5TURFd01Ua3hNelU0TURCYUZ3MHlNVEV3TVRreE5EQXpNREJhTURneERqQU1CZ05WQkFzVEJXRmsKYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNRwpCeXFHU000OUFnRUdDQ3FHU000OUF3RUhBMElBQktab1BNRVpYa1VUdHV3R3VZYmE3UWJHcWpxSFRuVnEyeGVDCklERG1kYmMyUkhBMjBEZjMwY3VUN1dHMVJzdGIyWmpoRS9ESWhVQjRlUzMwbkxTRFJobWpnZ0VyTUlJQkp6QU8KQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3RwpBMVVkRXdFQi93UUNNQUF3SFFZRFZSME9CQllFRk5pbndnNkRveXliS09veEUweENkT2VkOTUraE1COEdBMVVkCkl3UVlNQmFBRkhFN1lISTJwVFhRaWZ4R3o5c2l2cURYTGV1Yk1DZ0dBMVVkRVFRaE1CK0NIWE5qWVd4aExYSmwKWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1GawpiV2x1SWpvaWRISjFaU0lzSW1obUxrRm1abWxzYVdGMGFXOXVJam9pSWl3aWFHWXVSVzV5YjJ4c2JXVnVkRWxFCklqb2ljMk5oYkdFdGNtVm5hWE4wY21GMGFXOXVMV0ZrYldsdUxXOXlaekVpTENKb1ppNVVlWEJsSWpvaVlXUnQKYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQQorN0p2amFHd25RUUNJRUJKTVpUUnc5WmdhVjNpS084S2t6WEw5TGdnUkpIam5pSFVOdWpZME1WVAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tChIYTH47gBwXl+errTr7n7m2byTjHtQteNtsEssICsgICsUICAESCBIGdWM0LWNjGrYICh5VQzQuQ2VydGlmaWNhdGU6YWRkQ2VydGlmaWNhdGUKAzEwMQqOCC0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLVxuTUlJQ3hqQ0NBbTJnQXdJQkFnSVViQUs2Z3BvUEZpNDF4SWhjVnliR1dlRXRxekF3Q2dZSUtvWkl6ajBFQXdJd1xuWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRS1xuRXd0SWVYQmxjbXhsWkdkbGNqRVBNQTBHQTFVRUN4TUdSbUZpY21sak1SRXdEd1lEVlFRREV3aHlZMkV0YjNKblxuTVRBZUZ3MHlNREV3TVRreE16VTRNREJhRncweU1URXdNVGt4TkRBek1EQmFNRGd4RGpBTUJnTlZCQXNUQldGa1xuYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNR1xuQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJLWm9QTUVaWGtVVHR1d0d1WWJhN1FiR3FqcUhUblZxMnhlQ1xuSUREbWRiYzJSSEEyMERmMzBjdVQ3V0cxUnN0YjJaamhFL0RJaFVCNGVTMzBuTFNEUmhtamdnRXJNSUlCSnpBT1xuQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3R1xuQTFVZEV3RUIvd1FDTUFBd0hRWURWUjBPQkJZRUZOaW53ZzZEb3l5YktPb3hFMHhDZE9lZDk1K2hNQjhHQTFVZFxuSXdRWU1CYUFGSEU3WUhJMnBUWFFpZnhHejlzaXZxRFhMZXViTUNnR0ExVWRFUVFoTUIrQ0hYTmpZV3hoTFhKbFxuWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1Ga1xuYldsdUlqb2lkSEoxWlNJc0ltaG1Ma0ZtWm1sc2FXRjBhVzl1SWpvaUlpd2lhR1l1Ulc1eWIyeHNiV1Z1ZEVsRVxuSWpvaWMyTmhiR0V0Y21WbmFYTjBjbUYwYVc5dUxXRmtiV2x1TFc5eVp6RWlMQ0pvWmk1VWVYQmxJam9pWVdSdFxuYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQVxuKzdKdmphR3duUVFDSUVCSk1aVFJ3OVpnYVYzaUtPOEtrelhMOUxnZ1JKSGpuaUhVTnVqWTBNVlRcbi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS1cbg=="
         signature: "MEUCIQDSJnJ7Sltv5P2i7efpbT9H2xKfP4fKsQ/xd4TuC8egWwIgbYnEGLV3WD/+9tOzYYfzJ2nSXc4urSxDQJcgmRlgzGo="
     ExampleSignedTransaction:
-      summary: "Example for SignedTransaction for AddEntry"
+      summary: "Example for SignedTransaction"
       value:
         unsignedTransaction: "CpUJCmoIAxABGgsIgL22/AUQ+NbCWSIJbXljaGFubmVsKkBhMzUwNzA1YWNiMGVmNDUyMzQxN2RjYTRkMTA0ZDUxNmYzMmMxNTgwNzhiYTA4Yzk0NmU1OGRkZWIzZWJhYTJmOgoSCBIGdWM0LWNjEqYICokICgdvcmcxTVNQEv0HLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN4akNDQW0yZ0F3SUJBZ0lVYkFLNmdwb1BGaTQxeEloY1Z5YkdXZUV0cXpBd0NnWUlLb1pJemowRUF3SXcKWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRSwpFd3RJZVhCbGNteGxaR2RsY2pFUE1BMEdBMVVFQ3hNR1JtRmljbWxqTVJFd0R3WURWUVFERXdoeVkyRXRiM0puCk1UQWVGdzB5TURFd01Ua3hNelU0TURCYUZ3MHlNVEV3TVRreE5EQXpNREJhTURneERqQU1CZ05WQkFzVEJXRmsKYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNRwpCeXFHU000OUFnRUdDQ3FHU000OUF3RUhBMElBQktab1BNRVpYa1VUdHV3R3VZYmE3UWJHcWpxSFRuVnEyeGVDCklERG1kYmMyUkhBMjBEZjMwY3VUN1dHMVJzdGIyWmpoRS9ESWhVQjRlUzMwbkxTRFJobWpnZ0VyTUlJQkp6QU8KQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3RwpBMVVkRXdFQi93UUNNQUF3SFFZRFZSME9CQllFRk5pbndnNkRveXliS09veEUweENkT2VkOTUraE1COEdBMVVkCkl3UVlNQmFBRkhFN1lISTJwVFhRaWZ4R3o5c2l2cURYTGV1Yk1DZ0dBMVVkRVFRaE1CK0NIWE5qWVd4aExYSmwKWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1GawpiV2x1SWpvaWRISjFaU0lzSW1obUxrRm1abWxzYVdGMGFXOXVJam9pSWl3aWFHWXVSVzV5YjJ4c2JXVnVkRWxFCklqb2ljMk5oYkdFdGNtVm5hWE4wY21GMGFXOXVMV0ZrYldsdUxXOXlaekVpTENKb1ppNVVlWEJsSWpvaVlXUnQKYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQQorN0p2amFHd25RUUNJRUJKTVpUUnc5WmdhVjNpS084S2t6WEw5TGdnUkpIam5pSFVOdWpZME1WVAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tChIYTH47gBwXl+errTr7n7m2byTjHtQteNtsEssICsgICsUICAESCBIGdWM0LWNjGrYICh5VQzQuQ2VydGlmaWNhdGU6YWRkQ2VydGlmaWNhdGUKAzEwMQqOCC0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLVxuTUlJQ3hqQ0NBbTJnQXdJQkFnSVViQUs2Z3BvUEZpNDF4SWhjVnliR1dlRXRxekF3Q2dZSUtvWkl6ajBFQXdJd1xuWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRS1xuRXd0SWVYQmxjbXhsWkdkbGNqRVBNQTBHQTFVRUN4TUdSbUZpY21sak1SRXdEd1lEVlFRREV3aHlZMkV0YjNKblxuTVRBZUZ3MHlNREV3TVRreE16VTRNREJhRncweU1URXdNVGt4TkRBek1EQmFNRGd4RGpBTUJnTlZCQXNUQldGa1xuYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNR1xuQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJLWm9QTUVaWGtVVHR1d0d1WWJhN1FiR3FqcUhUblZxMnhlQ1xuSUREbWRiYzJSSEEyMERmMzBjdVQ3V0cxUnN0YjJaamhFL0RJaFVCNGVTMzBuTFNEUmhtamdnRXJNSUlCSnpBT1xuQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3R1xuQTFVZEV3RUIvd1FDTUFBd0hRWURWUjBPQkJZRUZOaW53ZzZEb3l5YktPb3hFMHhDZE9lZDk1K2hNQjhHQTFVZFxuSXdRWU1CYUFGSEU3WUhJMnBUWFFpZnhHejlzaXZxRFhMZXViTUNnR0ExVWRFUVFoTUIrQ0hYTmpZV3hoTFhKbFxuWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1Ga1xuYldsdUlqb2lkSEoxWlNJc0ltaG1Ma0ZtWm1sc2FXRjBhVzl1SWpvaUlpd2lhR1l1Ulc1eWIyeHNiV1Z1ZEVsRVxuSWpvaWMyTmhiR0V0Y21WbmFYTjBjbUYwYVc5dUxXRmtiV2x1TFc5eVp6RWlMQ0pvWmk1VWVYQmxJam9pWVdSdFxuYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQVxuKzdKdmphR3duUVFDSUVCSk1aVFJ3OVpnYVYzaUtPOEtrelhMOUxnZ1JKSGpuaUhVTnVqWTBNVlRcbi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS1cbg=="
         signature: "MEUCIQDSJnJ7Sltv5P2i7efpbT9H2xKfP4fKsQ/xd4TuC8egWwIgbYnEGLV3WD/+9tOzYYfzJ2nSXc4urSxDQJcgmRlgzGo="
     ExampleUnsignedTransaction:
-      summary: "Example for UnsignedTransaction for AddEntry"
+      summary: "Example for UnsignedTransaction"
       value:
         unsignedTransaction: "CpUJCmoIAxABGgsIgL22/AUQ+NbCWSIJbXljaGFubmVsKkBhMzUwNzA1YWNiMGVmNDUyMzQxN2RjYTRkMTA0ZDUxNmYzMmMxNTgwNzhiYTA4Yzk0NmU1OGRkZWIzZWJhYTJmOgoSCBIGdWM0LWNjEqYICokICgdvcmcxTVNQEv0HLS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN4akNDQW0yZ0F3SUJBZ0lVYkFLNmdwb1BGaTQxeEloY1Z5YkdXZUV0cXpBd0NnWUlLb1pJemowRUF3SXcKWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRSwpFd3RJZVhCbGNteGxaR2RsY2pFUE1BMEdBMVVFQ3hNR1JtRmljbWxqTVJFd0R3WURWUVFERXdoeVkyRXRiM0puCk1UQWVGdzB5TURFd01Ua3hNelU0TURCYUZ3MHlNVEV3TVRreE5EQXpNREJhTURneERqQU1CZ05WQkFzVEJXRmsKYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNRwpCeXFHU000OUFnRUdDQ3FHU000OUF3RUhBMElBQktab1BNRVpYa1VUdHV3R3VZYmE3UWJHcWpxSFRuVnEyeGVDCklERG1kYmMyUkhBMjBEZjMwY3VUN1dHMVJzdGIyWmpoRS9ESWhVQjRlUzMwbkxTRFJobWpnZ0VyTUlJQkp6QU8KQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3RwpBMVVkRXdFQi93UUNNQUF3SFFZRFZSME9CQllFRk5pbndnNkRveXliS09veEUweENkT2VkOTUraE1COEdBMVVkCkl3UVlNQmFBRkhFN1lISTJwVFhRaWZ4R3o5c2l2cURYTGV1Yk1DZ0dBMVVkRVFRaE1CK0NIWE5qWVd4aExYSmwKWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1GawpiV2x1SWpvaWRISjFaU0lzSW1obUxrRm1abWxzYVdGMGFXOXVJam9pSWl3aWFHWXVSVzV5YjJ4c2JXVnVkRWxFCklqb2ljMk5oYkdFdGNtVm5hWE4wY21GMGFXOXVMV0ZrYldsdUxXOXlaekVpTENKb1ppNVVlWEJsSWpvaVlXUnQKYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQQorN0p2amFHd25RUUNJRUJKTVpUUnc5WmdhVjNpS084S2t6WEw5TGdnUkpIam5pSFVOdWpZME1WVAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tChIYTH47gBwXl+errTr7n7m2byTjHtQteNtsEssICsgICsUICAESCBIGdWM0LWNjGrYICh5VQzQuQ2VydGlmaWNhdGU6YWRkQ2VydGlmaWNhdGUKAzEwMQqOCC0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLVxuTUlJQ3hqQ0NBbTJnQXdJQkFnSVViQUs2Z3BvUEZpNDF4SWhjVnliR1dlRXRxekF3Q2dZSUtvWkl6ajBFQXdJd1xuWURFTE1Ba0dBMVVFQmhNQ1ZWTXhGekFWQmdOVkJBZ1REazV2Y25Sb0lFTmhjbTlzYVc1aE1SUXdFZ1lEVlFRS1xuRXd0SWVYQmxjbXhsWkdkbGNqRVBNQTBHQTFVRUN4TUdSbUZpY21sak1SRXdEd1lEVlFRREV3aHlZMkV0YjNKblxuTVRBZUZ3MHlNREV3TVRreE16VTRNREJhRncweU1URXdNVGt4TkRBek1EQmFNRGd4RGpBTUJnTlZCQXNUQldGa1xuYldsdU1TWXdKQVlEVlFRREV4MXpZMkZzWVMxeVpXZHBjM1J5WVhScGIyNHRZV1J0YVc0dGIzSm5NVEJaTUJNR1xuQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJLWm9QTUVaWGtVVHR1d0d1WWJhN1FiR3FqcUhUblZxMnhlQ1xuSUREbWRiYzJSSEEyMERmMzBjdVQ3V0cxUnN0YjJaamhFL0RJaFVCNGVTMzBuTFNEUmhtamdnRXJNSUlCSnpBT1xuQmdOVkhROEJBZjhFQkFNQ0E2Z3dIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUF3R1xuQTFVZEV3RUIvd1FDTUFBd0hRWURWUjBPQkJZRUZOaW53ZzZEb3l5YktPb3hFMHhDZE9lZDk1K2hNQjhHQTFVZFxuSXdRWU1CYUFGSEU3WUhJMnBUWFFpZnhHejlzaXZxRFhMZXViTUNnR0ExVWRFUVFoTUIrQ0hYTmpZV3hoTFhKbFxuWjJsemRISmhkR2x2YmkxaFpHMXBiaTF2Y21jeE1INEdDQ29EQkFVR0J3Z0JCSEo3SW1GMGRISnpJanA3SW1Ga1xuYldsdUlqb2lkSEoxWlNJc0ltaG1Ma0ZtWm1sc2FXRjBhVzl1SWpvaUlpd2lhR1l1Ulc1eWIyeHNiV1Z1ZEVsRVxuSWpvaWMyTmhiR0V0Y21WbmFYTjBjbUYwYVc5dUxXRmtiV2x1TFc5eVp6RWlMQ0pvWmk1VWVYQmxJam9pWVdSdFxuYVc0aWZYMHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdZdUR6d0I2dU00RnhUTHdWVlRpeGcvWUFTS1U0a0RDQVxuKzdKdmphR3duUVFDSUVCSk1aVFJ3OVpnYVYzaUtPOEtrelhMOUxnZ1JKSGpuaUhVTnVqWTBNVlRcbi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS1cbg=="
     ExampleMatriculationData:
@@ -408,7 +563,6 @@ components:
           - fieldOfStudy: "Philosophy"
             semesters: 
               - "SS2020"
-       
 externalDocs:
   description: "Find out more about Swagger"
-  url: "http://swagger.io"
+  url: "http://swagger.io" 

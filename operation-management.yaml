@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Operation API for UC4."
-  version: "0.15.1"
+  version: "0.16.1"
   title: "UC4"
 
 servers:
@@ -250,6 +250,68 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/GenericError'
+  /operations/{operationId}/unsigned_proposal_approve:
+    post:
+      tags:
+      - "Operation Management"
+      summary: "Get unsigned proposal for approving an operation"
+      description: "Get proposal for approving the operation with the given operationId. The operation will move to state FINISHED, once all the missing approvals are present, and the transaction succeeded."
+      operationId: "getProposalApprove"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      parameters:
+      - in: "path"
+        name: "operationId"
+        required: true
+        schema: 
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnsignedProposal'
+              examples:
+                ExampleUnsignedProposal:
+                  $ref: '#/components/examples/ExampleUnsignedProposal'
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: OwnerMismatch, NotEnoughPrivileges
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid, HLUnprocessableEntity
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
   /operations/{operationId}/unsigned_proposal_reject:
     post:
       tags:

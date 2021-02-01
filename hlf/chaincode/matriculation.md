@@ -8,6 +8,12 @@ The Errors returned are defined [here](errors.md#Errors).
 
 ### Add Matriculation Data
 - ID = addMatriculationData
+- Required Approvals
+  - Users
+    - matriculationData.enrollmentId
+  - Groups
+    - Admin
+    - System
 - Send
     - matriculationData :: [MatriculationData](#MatriculationData)
 - Receive
@@ -114,6 +120,12 @@ The Errors returned are defined [here](errors.md#Errors).
 This method adds a single entry to the list of semesters in the MatriculationData, to provide secure updates.
 
 - ID = addEntriesToMatriculationData
+- Required Approvals
+  - Users
+    - enrollmentId
+  - Groups
+    - Admin
+    - System
 - Send
     - enrollmentId :: String
     - matriculation :: List\<[SubjectMatriculation](#SubjectMatriculation)\>

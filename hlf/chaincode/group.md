@@ -10,6 +10,9 @@ The Errors returned are defined [here](errors.md#Errors).
 
 ### Add User To Group
 - ID = addUserToGroup
+- Required Approvals
+  - Users
+    - lagom-scala-admin-org1 (hyperledger attr. (set when enrolling))
 - Send
     - enrollmentId :: String
     - groupId :: String

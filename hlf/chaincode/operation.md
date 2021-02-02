@@ -114,7 +114,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the current model. This error should only occur if the model changes while the old ledger state remains without modification.
 
-- [GenericError](errors.md#GenericError) 
+    - [GenericError](errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",

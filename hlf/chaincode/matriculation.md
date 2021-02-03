@@ -8,6 +8,12 @@ The Errors returned are defined [here](errors.md#Errors).
 
 ### Add Matriculation Data
 - ID = addMatriculationData
+- Required Approvals
+  - Users
+    - matriculationData.enrollmentId
+  - Groups
+    - Admin
+    - System
 - Send
     - matriculationData :: [MatriculationData](#MatriculationData)
 - Receive
@@ -30,8 +36,6 @@ The Errors returned are defined [here](errors.md#Errors).
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.  
        For detailed informations see [matriculationData checks](#matriculationDataChecks).
 
-
-
     - [GenericError](errors.md#GenericError) 
       ```json
       {
@@ -39,7 +43,17 @@ The Errors returned are defined [here](errors.md#Errors).
         "title": "There is already a MatriculationData for the given enrollmentId",
       }
       ```
-    - Description: This error is returned, if a matriculation data with the given enrollmentId is already present on the ledger.
+      - Description: This error is returned, if a matriculation data with the given enrollmentId is already present on the ledger.
+
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLInsufficientApprovals",
+        "title": "The approvals present on the ledger do not suffice to execute this transaction"
+      }
+      ```
+      - Description: This error is returned, if the required approvals are not present.
+
 
 
 
@@ -106,6 +120,12 @@ The Errors returned are defined [here](errors.md#Errors).
 This method adds a single entry to the list of semesters in the MatriculationData, to provide secure updates.
 
 - ID = addEntriesToMatriculationData
+- Required Approvals
+  - Users
+    - enrollmentId
+  - Groups
+    - Admin
+    - System
 - Send
     - enrollmentId :: String
     - matriculation :: List\<[SubjectMatriculation](#SubjectMatriculation)\>
@@ -147,6 +167,16 @@ This method adds a single entry to the list of semesters in the MatriculationDat
       }
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the curent model. This error should only occurr if the model changes while the old ledger state remains without modification.
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLInsufficientApprovals",
+        "title": "The approvals present on the ledger do not suffice to execute this transaction"
+      }
+      ```
+      - Description: This error is returned, if the required approvals are not present.
+
 
 ## <a id="Models" />Models
 

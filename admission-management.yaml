@@ -61,6 +61,79 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonHyperledgerVersion'
+  /admissions/unsigned_add_proposal:
+    post:
+      tags:
+      - "Admission Management"
+      summary: "Fetch a proposal for admitting a student to a course or an exam"
+      description: "Fetch a proposal for admitting the student to either the course or the exam specified by the object. AdmissionId, EnrollmentID and timestamp will be set in the returned proposal. Only invokable by Students."
+      operationId: "getProposalAddAdmission"
+      security:
+        - uc4_token_login: []
+        - uc4_token_login_header: []
+      requestBody:
+        description: "Admission object from which the proposal is constructed"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseAdmission'
+            examples:
+              AddCourseAdmission:
+                $ref: '#/components/examples/ExampleCourseAdmissionPost'
+              AddExamAdmission:
+                $ref: '#/components/examples/ExampleExamAdmissionPost'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnsignedProposal'
+              examples:
+                ExampleUnsignedProposal:
+                  $ref: '#/components/examples/ExampleUnsignedProposal'
+          headers:
+            Location:
+              schema:
+                type: string
+                description: "URI of the newly created Admission"
+        "400":
+          description: | 
+            Bad Request  
+            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges, OwnerMismatch
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity  
+            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid
+          content:
+            application/json: 
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GenericError'
+                  - $ref: '#/components/schemas/DetailedError'
   /admissions/unsigned_drop_proposal:
     post:
       tags:
@@ -198,77 +271,7 @@ paths:
             application/json: 
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /admissions/courses/unsigned_add_proposal:
-    post:
-      tags:
-      - "Course Admission Management"
-      summary: "Fetch a proposal for admitting a student to a course"
-      description: "Fetch a proposal for admitting the student to the course with the given courseId. AdmissionId, EnrollmentID and timestamp will be set in the returned proposal. Only invokable by Students."
-      operationId: "getProposalAddCourseAdmission"
-      security:
-        - uc4_token_login: []
-        - uc4_token_login_header: []
-      requestBody:
-        description: "Admission object from which the proposal is constructed"
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CourseAdmission'
-            examples:
-              AddCourseAdmission:
-                $ref: '#/components/examples/ExampleCourseAdmissionPost'
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnsignedProposal'
-              examples:
-                ExampleUnsignedProposal:
-                  $ref: '#/components/examples/ExampleUnsignedProposal'
-          headers:
-            Location:
-              schema:
-                type: string
-                description: "URI of the newly created Admission"
-        "400":
-          description: | 
-            Bad Request  
-            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:  
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: NotEnoughPrivileges, OwnerMismatch
-          content:
-            application/json:  
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid
-          content:
-            application/json: 
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
+  
   /admissions/exams:
     get:
       tags:
@@ -339,78 +342,6 @@ paths:
             application/json: 
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /admissions/exams/unsigned_add_proposal:
-    post:
-      tags:
-      - "Exam Admission Management"
-      summary: "Fetch a proposal for admitting a student to an exam"
-      description: "Fetch a proposal for admitting the student to the exam with the given examId. AdmissionId, EnrollmentID and timestamp will be set in the returned proposal. Only invokable by Students."
-      operationId: "getProposalAddExamAdmission"
-      security:
-        - uc4_token_login: []
-        - uc4_token_login_header: []
-      requestBody:
-        description: "Admission object from which the proposal is constructed"
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExamAdmission'
-            examples:
-              AddCourseAdmission:
-                $ref: '#/components/examples/ExampleExamAdmissionPost'
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnsignedProposal'
-              examples:
-                ExampleUnsignedProposal:
-                  $ref: '#/components/examples/ExampleUnsignedProposal'
-          headers:
-            Location:
-              schema:
-                type: string
-                description: "URI of the newly created Admission"
-        "400":
-          description: | 
-            Bad Request  
-            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:  
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "403":
-          description: |
-            Forbidden  
-            types: NotEnoughPrivileges, OwnerMismatch
-          content:
-            application/json:  
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid
-          content:
-            application/json: 
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-  
 components:
   securitySchemes:
     uc4_token_login:

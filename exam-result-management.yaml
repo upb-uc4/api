@@ -5,9 +5,9 @@ info:
   title: "UC4"
 
 servers:
-  - url: https://uc4.cs.upb.de/api/experimental/examresult-management
-  - url: https://uc4.cs.upb.de/api/develop/examresult-management
-  - url: https://uc4.cs.upb.de/api/production/examresult-management
+  - url: https://uc4.cs.upb.de/api/experimental/exam-result-management
+  - url: https://uc4.cs.upb.de/api/develop/exam-result-management
+  - url: https://uc4.cs.upb.de/api/production/exam-result-management
 
 tags:
 - name: "Version Management"
@@ -51,7 +51,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonHyperledgerVersion'
-  /examresults:
+  /exam_results:
     get:
       tags:
       - "Exam Result Management"
@@ -115,7 +115,7 @@ paths:
             application/json: 
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /examresults/unsigned_add_proposal:
+  /exam_results/unsigned_add_proposal:
     post:
       tags:
       - "Exam Result Management"

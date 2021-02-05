@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Report API for UC4."
-  version: "0.15.1"
+  version: "0.17.1"
   title: "UC4"
 
 servers:
@@ -17,6 +17,11 @@ tags:
     url: "https://github.com/upb-uc4"
 - name: "Report Management"
   description: "Everything about the Reports"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/upb-uc4"
+- name: "Certificate Management"
+  description: "Everything about Certificates"
   externalDocs:
     description: "Find out more"
     url: "https://github.com/upb-uc4"
@@ -37,7 +42,77 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JsonVersionNumber'
-
+  /certificates/{username}/enrollment:
+    get:
+      tags:
+      - "Certificate Management"
+      summary: "Get a user's certificate of enrollment"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      description: "Get a user's certificate of enrollment."
+      operationId: "getEnrollmentCertificate"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The user whose archive is requested"
+        required: true
+        schema:
+          type: "string"
+      - name: "semester"
+        in: "query"
+        description: "Base64Url encoded semester for which a certificate of enrollment is requested. If no semester is specified, a certificate for the current semester will be generated."
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: |
+            Bad Request    
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges, OwnerMismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "404":
+          description: |
+            Not Found  
+            types: HLNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
   /reports/{username}/archive:
     get:
       tags:

@@ -21,3 +21,7 @@ urls:
       url: https://raw.githubusercontent.com/upb-uc4/api/develop/group-management.yaml
     - name: Report-Management
       url: https://raw.githubusercontent.com/upb-uc4/api/develop/report-management.yaml
+    - name: Exam-Management
+      url: https://raw.githubusercontent.com/upb-uc4/api/develop/exam-management.yaml
+    - name: Exam-Result-Management
+      url: https://raw.githubusercontent.com/upb-uc4/api/develop/exam-result-management.yaml

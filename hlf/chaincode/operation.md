@@ -126,7 +126,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - [GenericError](errors.md#GenericError) 
       ```json
       {
-        "type": "HLApprovalImpossible",
+        "type": "HLRejectionImpossible",
         "title": "The operation is not in pending state"
       }
       ```

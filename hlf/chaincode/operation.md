@@ -74,8 +74,8 @@ The Errors returned are defined [here](errors.md#Errors).
     - [GenericError](errors.md#GenericError) 
       ```json
       {
-        "type": "HLRejectionDenied",
-        "title": "You are not allowed to reject the given operation"
+        "type": "HLApprovalDenied",
+        "title": "You are not allowed to approve the given operation"
       }
       ```
        - Description: This error is returned, if the user trying to reject is not allowed to reject the operation.
@@ -83,20 +83,11 @@ The Errors returned are defined [here](errors.md#Errors).
     - [GenericError](errors.md#GenericError) 
       ```json
       {
-        "type": "HLRejectionImpossible",
+        "type": "HLApprovalImpossible",
         "title": "The operation is not in pending state"
       }
       ```
        - Description: This error is returned, if the user is trying to reject an operation that is not pending
-
-    - [GenericError](errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLApprovalDenied",
-        "title": "You are not allowed to approve the given operation"
-      }
-      ```
-       - Description: This error is returned, if the user trying to approve is not allowed to approve the operation.
 
     - [DetailedError](errors.md#DetailedError) 
       ```json
@@ -131,6 +122,15 @@ The Errors returned are defined [here](errors.md#Errors).
       }
       ```
        - Description: This error is returned, if the user trying to reject is not allowed to reject the operation.
+
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLRejectionImpossible",
+        "title": "The operation is not in pending state"
+      }
+      ```
+       - Description: This error is returned, if the user is trying to reject an operation that is not pending
 
     - [GenericError](errors.md#GenericError) 
       ```json

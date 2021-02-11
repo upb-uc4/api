@@ -64,7 +64,7 @@ The ADMIN can then
 ```scala
 val (approvalResult: String, proposalBytes: Array[Byte]) = certificateConnection.getProposalAddCertificate(userCertificate, enrollmentId, certificate)
 ```
-The approvalResult is a JsonObject [OperationData](../chaincode/operation.md#OperationData).
+The approvalResult is a JsonObject [OperationData](../chaincode/contracts/operation.md#OperationData).
 The proposalBytes have to be relayed to the USER to sign it.
 **_IMPORTANT: When asking for a proposal, the credentials used for setting up the initial connection are used to approve the transaction as well (in this case as the ADMIN)_**
 
@@ -85,7 +85,7 @@ val transactionBytes = certificateConnection.getUnsignedTransaction(proposalByte
 ```scala
 val (approvalResult, realTransactionResult) = certificateConnection.submitSignedTransaction(transactionBytes: Array[Byte], signatureBytes: Array[Byte])
 ```
-The approvalResult is a JsonObject [OperationData](../chaincode/operation.md#OperationData).
+The approvalResult is a JsonObject [OperationData](../chaincode/contracts/operation.md#OperationData).
 The realTransactionResult is the chaincode response to the desired transaction
 (e.g. an InsufficientApproval Error, or information about the successfully changed ledger state)
 

@@ -2,7 +2,7 @@
 
 In the following, the chaincode api for the "Operation"-Chaincode is described.
 This contains all Transactions and Models provided for this domain.
-The Errors returned are defined [here](errors.md#Errors).
+The Errors returned are defined [here](../errors.md#Errors).
 
 ## Transactions
 
@@ -16,7 +16,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - operationData :: [OperationData](#OperationData) 
       -  Description: Success, returns the list of approvals.
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLParameterNumberError",
@@ -25,7 +25,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
        - Description: This error is returned, if the given number of parameters for the specified transaction does not match the number of required parameters.
     
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLApprovalDenied",
@@ -34,7 +34,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
        - Description: This error is returned, if the user trying to approve is not allowed to approve the operation.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -59,7 +59,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - operationData :: [OperationData](#OperationData) 
       -  Description: Success, returns the list of operations.
     
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLRejectionDenied",
@@ -68,7 +68,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
        - Description: This error is returned, if the user trying to reject is not allowed to reject the operation.
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLUnprocessableLedgerState",
@@ -77,7 +77,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the current model. This error should only occur if the model changes while the old ledger state remains without modification.
 
-- [GenericError](errors.md#GenericError) 
+- [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -85,7 +85,7 @@ The Errors returned are defined [here](errors.md#Errors).
       }
       ```
       - Description: This error is returned, if there is no operation for the specified operationId present on the ledger.
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -109,7 +109,7 @@ The Errors returned are defined [here](errors.md#Errors).
 - Receive
     - operationData :: [OperationData](#OperationData)
 
-- [GenericError](errors.md#GenericError) 
+- [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -117,7 +117,7 @@ The Errors returned are defined [here](errors.md#Errors).
       }
       ```
       - Description: This error is returned, if there is no operation for the specified operationId present on the ledger.
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLUnprocessableLedgerState",
@@ -126,7 +126,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the current model. This error should only occur if the model changes while the old ledger state remains without modification.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",

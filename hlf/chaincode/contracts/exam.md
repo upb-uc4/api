@@ -2,7 +2,7 @@
 
 In the following, the chaincode api for the "Exam"-Chaincode is described.
 This contains all Transactions and Models provided for this domain.
-The Errors returned are defined [here](errors.md#Errors).
+The Errors returned are defined [here](../errors.md#Errors).
 
 ## ContractName "UC4.Exam"
 
@@ -21,7 +21,7 @@ The Errors returned are defined [here](errors.md#Errors).
 - Receive
     - [Exam](#Exam)
       -  Description: Done; returns final object on ledger.
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -38,7 +38,7 @@ The Errors returned are defined [here](errors.md#Errors).
          - if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.  
             For detailed informations see [Input Checks](#Checks).
     
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLInsufficientApprovals",
@@ -66,7 +66,7 @@ The Errors returned are defined [here](errors.md#Errors).
 
       - Empty List if none could be found.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",

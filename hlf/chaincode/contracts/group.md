@@ -2,7 +2,7 @@
 
 In the following, the chaincode api for the "Group"-Chaincode is described.
 This contains all Transactions and Models provided for this domain.
-The Errors returned are defined [here](errors.md#Errors).
+The Errors returned are defined [here](../errors.md#Errors).
 
 ## ContractName "UC4.Group"
 
@@ -16,7 +16,7 @@ The Errors returned are defined [here](errors.md#Errors).
 - Receive
     - ""
       -  Description: Done; returns empty String on success.
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -34,7 +34,7 @@ The Errors returned are defined [here](errors.md#Errors).
             For detailed informations see [parameter checks](#parameterChecks).
          - if the given parameters produce some [semantic error](#semanticChecks).
     
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLInsufficientApprovals",
@@ -53,7 +53,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - ""
       -  Description: Done; returns empty String on success.
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -62,7 +62,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if there is no match for the given enrollmentId and groupId.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -79,7 +79,7 @@ The Errors returned are defined [here](errors.md#Errors).
       For detailed informations see [parameter checks](#parameterChecks).
       (enrollmentId, groupId)
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLInsufficientApprovals",
@@ -96,7 +96,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - ""
       -  Description: Done; returns empty String on success.
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -105,7 +105,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the enrollmentId is not present in any group.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -122,7 +122,7 @@ The Errors returned are defined [here](errors.md#Errors).
       For detailed informations see [parameter checks](#parameterChecks).
       (enrollmentId)
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLInsufficientApprovals",
@@ -140,7 +140,7 @@ The Errors returned are defined [here](errors.md#Errors).
       - Description: Exhaustive List of all Groups.
       Empty if none could be found.
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLUnprocessableLedgerState",
@@ -159,7 +159,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - userList :: List\<String\>
       - Description: Exhaustive List of all users in a group.
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLUnprocessableLedgerState",
@@ -168,7 +168,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the curent model. This error should only occurr if the model changes while the old ledger state remains without modification.
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -177,7 +177,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the groupId does not exist on the ledger.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -203,7 +203,7 @@ The Errors returned are defined [here](errors.md#Errors).
           - Description: Exhaustive List of all groupIds the user is part of.
             Empty, if user is not part of any group.
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLUnprocessableLedgerState",
@@ -212,7 +212,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the curent model. This error should only occurr if the model changes while the old ledger state remains without modification.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",

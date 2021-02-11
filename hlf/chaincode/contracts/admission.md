@@ -2,7 +2,7 @@
 
 In the following, the chaincode api for the "Admission"-Chaincode is described.
 This contains all Transactions and Models provided for this domain.
-The Errors returned are defined [here](errors.md#Errors).
+The Errors returned are defined [here](../errors.md#Errors).
 
 ## ContractName "UC4.Admission"
 
@@ -16,7 +16,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - Subclass of [AbstractAdmission](#AbstractAdmission)
       -  Description: Done, returns the submitted data, decorated with an admissionId.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -34,7 +34,7 @@ The Errors returned are defined [here](errors.md#Errors).
             For detailed informations see [parameter checks](#parameterChecks).
          - if the given parameters produce some [semantic error](#semanticChecks).
     
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLInsufficientApprovals",
@@ -52,7 +52,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - ""
       -  Description: Done, returns the submitted data.
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -61,7 +61,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the admissionId is not present on the ledger.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -78,7 +78,7 @@ The Errors returned are defined [here](errors.md#Errors).
       For detailed informations see [parameter checks](#parameterChecks).
       (admissionId)
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLInsufficientApprovals",
@@ -100,7 +100,7 @@ The Errors returned are defined [here](errors.md#Errors).
       inputs "enrollmentId", "courseId", "moduleId".
       Empty if no match could be found.
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLUnprocessableLedgerState",
@@ -109,7 +109,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the curent model. This error should only occurr if the model changes while the old ledger state remains without modification.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -137,7 +137,7 @@ The Errors returned are defined [here](errors.md#Errors).
       inputs "admissionIds", "enrollmentId", "examIds".
       Empty if no match could be found.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",

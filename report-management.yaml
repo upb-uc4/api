@@ -61,7 +61,7 @@ paths:
           type: "string"
       - name: "semester"
         in: "query"
-        description: "Base64Url encoded semester for which a certificate of enrollment is requested. If no semester is specified, a certificate for the current semester will be generated."
+        description: "Base64Url encoded semester for which a certificate of enrollment is requested. If no semester is specified, a certificate for the latest semester will be generated."
         required: false
         schema:
           type: "string"

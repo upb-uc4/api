@@ -188,11 +188,11 @@ The Errors returned are defined [here](errors.md#Errors).
 {
   "admissionId": "0123456:ExampleCourse",
   "enrollmentId": "0123456",
-  "timestamp": "2004-06-14T23:34:30",
+  "timestamp": "2004-06-14T23:34:30.123Z",
   "type": "Course"
 }
 ```
-with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
+with date in format specified in \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSSZ\>.
 
 ### <a id="CourseAdmission" />CourseAdmission
 ```json
@@ -205,20 +205,20 @@ with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
   "type": "Course"
 }
 ```
-with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
+with date in format specified in \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSSZ\>
 
 
 ### <a id="ExamAdmission" />ExamAdmission
 ```json
 {
-  "admissionId": "0123456:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+  "admissionId": "0123456:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00.123Z",
   "enrollmentId": "0123456",
-  "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+  "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00.123Z",
   "timestamp": "2004-06-14T23:34:30",
   "type": "Exam"
 }
 ```
-with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
+with date in format specified in \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSSZ\>
 
 ## <a id="Checks" />Input Checks
 ### <a id="parameterChecks" />Parameters
@@ -233,8 +233,6 @@ with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
   - Check, if not null or an empty String.
 - **examId**
   - Check, if not null or an empty String.
-- **timestamp**
-  - Check, if valid date-String YYYY-MM-DDThh:mm:ss
 - **type**
   - Check, if one of valid Inputs ("Course", "Exam")
 - **admissionIds**
@@ -256,7 +254,7 @@ with date in format specified in \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>.
   - Check, if **enrollmentId** is not admitted to the same exam already.
   - Check, if **enrollmentId** is admitted to the **couseId**, referenced in the exam behind the examId.
   - Check, if the **examId** is currently admittable
-
+  - Check, if the **timestamp** is not too old (max 60 seconds from now)
 
 - **dropAdmission**
   - Check, if the **examId** is currently droppable

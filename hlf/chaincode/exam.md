@@ -87,18 +87,18 @@ The Errors returned are defined [here](errors.md#Errors).
 ### <a id="Exam" />Exam
 ```json
 {
-  "examId": "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00",
+  "examId": "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00.123Z",
   "courseId": "ExampleCourse",
   "lecturerEnrollmentId": "0123456",
   "moduleId": "M.1",
   "type": "Written Exam",
-  "date": "2021-02-12T10:00:00",
+  "date": "2021-02-12T10:00:00.123Z",
   "ects": 6,
-  "admittableUntil": "2021-01-12T23:59:59",
-  "droppableUntil": "2021-02-05T23:59:59"
+  "admittableUntil": "2021-01-12T23:59:59.123Z",
+  "droppableUntil": "2021-02-05T23:59:59.123Z"
 }
 ```
-with all dates in format specified in  \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
+with all dates in format specified in  \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSSZ\>
 
 ## <a id="Checks" />Input Checks
 ### <a id="parameterChecks" />Parameters
@@ -112,13 +112,13 @@ with all dates in format specified in  \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
 - **type**
   - AnyOf("Written Exam")
 - **date**
-  - Check, if valid date-String YYYY-MM-DDThh:mm:ss
+  - Check, if valid date-String YYYY-MM-DDThh:mm:ss.SSSZ
 - **ects**
   - Check, if format is integer and value not negative
 - **admittableUntil**
-  - Check, if valid date-String YYYY-MM-DDThh:mm:ss
+  - Check, if valid date-String YYYY-MM-DDThh:mm:ss.SSSZ
 - **droppableUntil**
-  - Check, if valid date-String YYYY-MM-DDThh:mm:ss
+  - Check, if valid date-String YYYY-MM-DDThh:mm:ss.SSSZ
 - **examIds**
   - Check, if valid jsonList of String.
 - **courseIds**
@@ -130,9 +130,9 @@ with all dates in format specified in  \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
 - **types**
   - Check, if valid jsonList of String.
 - **admittableAt**
-  - Check, if valid date-String YYYY-MM-DDThh:mm:ss
+  - Check, if valid date-String YYYY-MM-DDThh:mm:ss.SSSZ
 - **droppableAt**
-  - Check, if valid date-String YYYY-MM-DDThh:mm:ss
+  - Check, if valid date-String YYYY-MM-DDThh:mm:ss.SSSZ
   
 
 ### <a id="semanticChecks" />SemanticCheck

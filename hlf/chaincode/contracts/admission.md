@@ -10,6 +10,11 @@ The Errors returned are defined [here](../errors.md#Errors).
 
 ### Add Admission
 - ID = addAdmission
+- Required Approvals
+  - Users
+    - jsonAdmission.enrollmentId
+  - Groups
+    - System
 - Send
     - jsonAdmission :: [AbstractAdmission](#AbstractAdmission)
 - Receive
@@ -42,10 +47,24 @@ The Errors returned are defined [here](../errors.md#Errors).
       }
       ```
       - Description: This error is returned, if the required approvals are not present.
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLExecutionImpossible",
+        "title": "The operation is not in pending state"
+      }
+      ```
+       - Description: This error is returned, if the operation for this transaction is not pending.
 
 
 ### Drop Admission
 - ID = dropAdmission
+- Required Approvals
+  - Users
+    - related enrollmentId
+  - Groups
+    - System
 - Send
     - admissionId :: String
 - Receive
@@ -86,6 +105,15 @@ The Errors returned are defined [here](../errors.md#Errors).
       }
       ```
       - Description: This error is returned, if the required approvals are not present.
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLExecutionImpossible",
+        "title": "The operation is not in pending state"
+      }
+      ```
+       - Description: This error is returned, if the operation for this transaction is not pending.
 
 
 ### Get Course Admissions

@@ -65,16 +65,17 @@ The ADMIN can then
 val (approvalResult: String, proposalBytes: Array[Byte]) = certificateConnection.getProposalAddCertificate(userCertificate, enrollmentId, certificate)
 ```
 The approvalResult is a JsonObject [OperationData](../chaincode/contracts/operation.md#OperationData).
-The proposalBytes have to be relayed to the USER to sign it.
+The proposalBytes have to be relayed to the USER to sign it. The proposal itself is for the transaction defined in [ApproveOperation](./operation.md#ApproveOperation); an approval for the initiated transaction, to be signed by the user.
 **_IMPORTANT: When asking for a proposal, the credentials used for setting up the initial connection are used to approve the transaction as well (in this case as the ADMIN)_**
 
-- pass the proposalBytes on to the USER who wants to sign it
-- have the USER create his signature for the "unsigned" proposalBytes
+- pass the proposalBytes with approvalResult on to the USER who wants to sign it
+- have the USER create their signature for the "unsigned" proposalBytes
 - receive the signature from the USER (together with the original proposalBytes)
 
-- submit the signed proposal ("unsigned" proposalBytes, signatureBytes) to retrieve an usigned Transaction
+- submit the signed proposal ("unsigned" proposalBytes, signatureBytes) to retrieve an usigned Transaction.
+> While the proposal is fetched from the specific connections (e.g. MatriculationConnection, CertificateConnection, ...), the getUnsignedTransaction, which submits the signed proposal, is called on the OperationConnection.
 ```scala
-val transactionBytes = certificateConnection.getUnsignedTransaction(proposalBytes: Array[Byte], signatureBytes: Array[Byte])
+val transactionBytes = operationConnection.getUnsignedTransaction(proposalBytes: Array[Byte], signatureBytes: Array[Byte])
 ```
 
 - pass the transactionBytes on to the USER who wants to sign it
@@ -82,18 +83,38 @@ val transactionBytes = certificateConnection.getUnsignedTransaction(proposalByte
 - receive the signature from the USER (together with the original transactionBytes)
 
 - submit the signed transaction ("unsigned" transactionBytes, signatureBytes)
+>The Connection receiving the signedTransaction is always the OperationConnection.
 ```scala
-val (approvalResult, realTransactionResult) = certificateConnection.submitSignedTransaction(transactionBytes: Array[Byte], signatureBytes: Array[Byte])
-```
-The approvalResult is a JsonObject [OperationData](../chaincode/contracts/operation.md#OperationData).
-The realTransactionResult is the chaincode response to the desired transaction
-(e.g. an InsufficientApproval Error, or information about the successfully changed ledger state)
+val approvalResult = operationConnection.submitSignedTransaction(transactionBytes: Array[Byte], signatureBytes: Array[Byte])
 
-The approval of the User has been stored on the ApprovalContract.
-An attempt has been made to execute the "real" transaction (e.g. "AddCertificate")
+val transactionResult = operationConnection.executeTransaction(jsonOperationData: String, timeoutMilliseconds: int = 5000)
+```
+The approvalResult is a JsonObject [OperationData](../chaincode/contracts/operation.md#OperationData). 
+Invoking executeTransactionFromOperation executes the transaction described by the transactionInfo in the OperationData.
+In case of a NetworkException, the transaction is retried until the specified timeout is reached.
+The transactionResult is the chaincode response to the desired transaction
+(e.g. an InsufficientApproval Error, or information about the successfully changed ledger state).
+
+If submitSignedTransaction succeeds, the approval of the User has been stored on the OperationContract.  
+If executeTransaction succeeds, the "real" transaction (e.g. "AddCertificate") is executed.  
+If the approval or the "real" transaction fails due to the transaction itself being invalid (e.g. due to changed ledger state), the operation is rejected by the chain.
 
 ========================  
-The entire process from "getProposal" to "submitSignedTransaction" has to be repeated for EVERY participant whose approval is needed on chain.
-If all required approvals are present, the "real" transaction (e.g. "AddCertificate") will have been executed.
+
+The initiator of an operation calls "getProposal[TransactionX]", "getUnsignedTransaction", "submitSignedTransaction", and "executeTransaction" as described above.
+
+Every subsequent approval is given by fetching the corresponding proposal for [ApproveOperation](./operation.md#ApproveOperation), identified by operationId.
+```scala
+val proposal = operationConnection.getProposalApproveOperation(operationId: String)
+```
+Rejection is performed analogously, by fetching a proposal for [RejectOperation](./operation.md#RejectOperation), identified by operationId. Also, a rejectMessage must be supplied.
+```scala
+val proposal = operationConnection.getProposalRejectOperation(operationId: String, rejectMessage: String)
+```
+
+The USER then proceeds with "getUnsignedTransaction", "submitSignedTransaction", "executeTransaction" as before.
+
+If not all required approvals are present, the "executeTransaction" (e.g. "AddCertificate") will fail (i.e. with InsufficientApproval Error).  
+If all required approvals are present if the transaction is still valid, "executeTransaction" will perform the desired transaction on chain.
 
 For additional insight in the General hlf-api, please refer to its .Readme - File.

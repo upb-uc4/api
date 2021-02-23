@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Configuration API for UC4."
-  version: "0.15.1"
+  version: "0.17.1"
   title: "UC4"
 
 servers:
@@ -140,6 +140,14 @@ components:
           items:
             type: string
         courseTypes:
+          type: array
+          items:
+            type: string
+        examTypes:
+          type: array
+          items:
+            type: string
+        grades:
           type: array
           items:
             type: string

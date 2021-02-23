@@ -8,6 +8,12 @@ The Errors returned are defined [here](../errors.md#Errors).
 
 ### Add Matriculation Data
 - ID = addMatriculationData
+- Required Approvals
+  - Users
+    - matriculationData.enrollmentId
+  - Groups
+    - Admin
+    - System
 - Send
     - matriculationData :: [MatriculationData](#MatriculationData)
 - Receive
@@ -47,6 +53,15 @@ The Errors returned are defined [here](../errors.md#Errors).
       }
       ```
       - Description: This error is returned, if the required approvals are not present.
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLExecutionImpossible",
+        "title": "The operation is not in pending state"
+      }
+      ```
+       - Description: This error is returned, if the operation for this transaction is not pending.
 
 
 
@@ -114,6 +129,12 @@ The Errors returned are defined [here](../errors.md#Errors).
 This method adds a single entry to the list of semesters in the MatriculationData, to provide secure updates.
 
 - ID = addEntriesToMatriculationData
+- Required Approvals
+  - Users
+    - enrollmentId
+  - Groups
+    - Admin
+    - System
 - Send
     - enrollmentId :: String
     - matriculation :: List\<[SubjectMatriculation](#SubjectMatriculation)\>
@@ -164,6 +185,15 @@ This method adds a single entry to the list of semesters in the MatriculationDat
       }
       ```
       - Description: This error is returned, if the required approvals are not present.
+    
+    - [GenericError](errors.md#GenericError) 
+      ```json
+      {
+        "type": "HLExecutionImpossible",
+        "title": "The operation is not in pending state"
+      }
+      ```
+       - Description: This error is returned, if the operation for this transaction is not pending.
 
 
 ## <a id="Models" />Models

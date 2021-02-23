@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Matriculation API for UC4."
-  version: "0.15.1"
+  version: "0.16.1"
   title: "UC4"
   
 servers:
@@ -121,115 +121,6 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/GenericError'
                   - $ref: '#/components/schemas/DetailedError'
-  /matriculation/signed_proposal:
-    post:
-      tags:
-      - "Matriculation Management"
-      summary: "Submit signed proposal for matriculation transaction"
-      description: "Submit proposal for matriculation transaction. The transaction will enroll the student in the given semester, in the given fieldOfStudy."
-      operationId: "submitProposal"
-      security:
-        - uc4_token_login: [] 
-        - uc4_token_login_header: []
-      requestBody:
-        description: "SignedProposal, containing the semester the student want to be enrolled in, and the corresponding fieldOfStudy, signed by the student."
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SignedProposal'
-            examples:
-              ExampleSignedProposal:
-                $ref: '#/components/examples/ExampleSignedProposal'
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnsignedTransaction'
-              examples:
-                UnsignedTransaction:
-                  $ref: '#/components/examples/ExampleUnsignedTransaction'
-        "400":
-          description: | 
-            Bad Request  
-            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid, HLUnprocessableEntity
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-  /matriculation/signed_transaction:
-    post:
-      tags:
-      - "Matriculation Management"
-      summary: "Submit signed transaction for matriculation transaction"
-      description: "Submit a signed matriculation transaction. The transaction will enroll the student in the given semester, in the given fieldOfStudy."
-      operationId: "submitTransaction"
-      security:
-        - uc4_token_login: [] 
-        - uc4_token_login_header: []
-      requestBody:
-        description: "SignedTransaction, containing the semester the student wants to be enrolled in, and the corresponding fieldOfStudy."
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SignedTransaction'
-            examples:
-              ExampleSignedTransaction:
-                $ref: '#/components/examples/ExampleSignedTransaction'
-      responses:
-        "202":
-          description: "Accepted"
-        "400":
-          description: | 
-            Bad Request  
-            types: MalformedLoginToken, Deserialization, JsonValidation, MultipleAuthorizationError
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
-        "401":
-          description: |
-            Unauthorized  
-            types: JwtAuthorization, LoginTokenExpired
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-        "422":
-          description: |
-            Unprocessable Entity  
-            types: Validation, ValidationTimeout, LoginTokenSignatureInvalid, HLUnprocessableEntity
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenericError'
-                  - $ref: '#/components/schemas/DetailedError'
   /matriculation/{username}:
     get:
       tags:
@@ -334,18 +225,6 @@ components:
     UnsignedProposal:
       allOf:
         - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-proposals.yaml#/components/schemas/UnsignedProposal'
-        - type: object
-    SignedProposal:
-      allOf:
-        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-proposals.yaml#/components/schemas/SignedProposal'
-        - type: object
-    UnsignedTransaction:
-      allOf:
-        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-proposals.yaml#/components/schemas/UnsignedTransaction'
-        - type: object
-    SignedTransaction:
-      allOf:
-        - $ref: 'https://raw.githubusercontent.com/upb-uc4/api/develop/hyperledger-proposals.yaml#/components/schemas/SignedTransaction'
         - type: object
     GenericError:
       allOf:

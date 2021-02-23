@@ -2,7 +2,7 @@
 
 In the following, the chaincode api for the "Certificate"-Chaincode is described.
 This contains all Transactions and Models provided for this domain.
-The Errors returned are defined [here](errors.md#Errors).
+The Errors returned are defined [here](../errors.md#Errors).
 
 ## Transactions
 
@@ -15,7 +15,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - certificate :: String
       -  Description: Success, returns the submitted certificate.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -31,7 +31,7 @@ The Errors returned are defined [here](errors.md#Errors).
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.  
        For detailed informations see [Input Checks](#Checks).
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLConflict",
@@ -50,7 +50,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - certificate :: String
       -  Description: Done, returns the newly submitted certificate.
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -59,7 +59,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the enrollmentId is not present on the ledger.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -82,7 +82,7 @@ The Errors returned are defined [here](errors.md#Errors).
 - Receive
     - certificate :: String
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -90,7 +90,7 @@ The Errors returned are defined [here](errors.md#Errors).
       }
       ```
       - Description: This error is returned, if the enrollmentId is not present on the ledger.
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLUnprocessableLedgerState",
@@ -99,7 +99,7 @@ The Errors returned are defined [here](errors.md#Errors).
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the curent model. This error should only occurr if the model changes while the old ledger state remains without modification.
     
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",

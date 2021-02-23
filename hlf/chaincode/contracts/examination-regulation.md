@@ -2,7 +2,7 @@
 
 In the following, the chaincode api for the "ExaminationRegulation"-Chaincode is described.
 This contains all Transactions and Models provided for this domain.
-The Errors returned are defined [here](errors.md#Errors).
+The Errors returned are defined [here](../errors.md#Errors).
 
 ## Transactions
 
@@ -15,7 +15,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - examinationRegulation :: [ExaminationRegulation](#ExaminationRegulation)
       -  Description: Success, returns the examination regulation.
 
-    - [DetailedError](errors.md#DetailedError) 
+    - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
         "type": "HLUnprocessableEntity",
@@ -31,7 +31,7 @@ The Errors returned are defined [here](errors.md#Errors).
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.
        For detailed informations see [examinationRegulation checks](#examinationRegulationChecks).
        
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLConflict",
@@ -48,7 +48,7 @@ The Errors returned are defined [here](errors.md#Errors).
 - Receive
     - examinationRegulations :: List\<[ExaminationRegulation](#ExaminationRegulation)\>
       - if no name is given (i.e. empty list etc.) return all examination regulations
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLUnprocessableLedgerState",
@@ -66,7 +66,7 @@ The Errors returned are defined [here](errors.md#Errors).
     - examinationRegulation :: [ExaminationRegulation](#ExaminationRegulation)
       - Description: updated "active"-state
       
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -74,7 +74,7 @@ The Errors returned are defined [here](errors.md#Errors).
       }
       ```
       - Description: This error is returned, if the examination regulation for the name is not present on the ledger.
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLUnprocessableLedgerState",

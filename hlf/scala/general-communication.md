@@ -64,7 +64,7 @@ The ADMIN can then
 ```scala
 val (approvalResult: String, proposalBytes: Array[Byte]) = certificateConnection.getProposalAddCertificate(userCertificate, enrollmentId, certificate)
 ```
-The approvalResult is a JsonObject [OperationData](../chaincode/operation.md#OperationData).
+The approvalResult is a JsonObject [OperationData](../chaincode/contracts/operation.md#OperationData).
 The proposalBytes have to be relayed to the USER to sign it. The proposal itself is for the transaction defined in [ApproveOperation](./operation.md#ApproveOperation); an approval for the initiated transaction, to be signed by the user.
 **_IMPORTANT: When asking for a proposal, the credentials used for setting up the initial connection are used to approve the transaction as well (in this case as the ADMIN)_**
 
@@ -89,7 +89,7 @@ val approvalResult = operationConnection.submitSignedTransaction(transactionByte
 
 val transactionResult = operationConnection.executeTransaction(jsonOperationData: String, timeoutMilliseconds: int = 5000)
 ```
-The approvalResult is a JsonObject [OperationData](../chaincode/operation.md#OperationData). 
+The approvalResult is a JsonObject [OperationData](../chaincode/contracts/operation.md#OperationData). 
 Invoking executeTransactionFromOperation executes the transaction described by the transactionInfo in the OperationData.
 In case of a NetworkException, the transaction is retried until the specified timeout is reached.
 The transactionResult is the chaincode response to the desired transaction

@@ -63,8 +63,8 @@ In the following, the specific error that can be returned by every transaction n
 - [GenericError](#GenericError) 
   ```json
   {
-    "type": "HLParticipationDenied",
-    "title": "You are not allowed to participate in the given operation"
+    "type": "HLAccessDenied",
+    "title": "You are not allowed to execute in the given transaction"
   }
   ```
     - Description: This error is returned, if the user trying to execute the transaction is not allowed to participate in the operation.

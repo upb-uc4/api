@@ -54,7 +54,7 @@ In the following, the specific error that can be returned by every transaction n
 - [GenericError](#GenericError) 
   ```json
   {
-    "type": "HLExecutionImpossible",
+    "type": "HLParticipationImpossible",
     "title": "The operation is not in pending state"
   }
   ```

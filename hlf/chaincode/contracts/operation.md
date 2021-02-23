@@ -89,7 +89,7 @@ The Errors returned are defined [here](../errors.md#Errors).
       ```
        - Description: This error is returned, if the user is trying to reject an operation that is not pending
 
-    - [GenericError](../errors.md#GenericError) 
+- [GenericError](../errors.md#GenericError) 
       ```json
       {
         "type": "HLNotFound",
@@ -97,7 +97,6 @@ The Errors returned are defined [here](../errors.md#Errors).
       }
       ```
       - Description: This error is returned, if there is no operation for the specified operationId present on the ledger.
-    
     - [DetailedError](../errors.md#DetailedError) 
       ```json
       {
@@ -211,8 +210,8 @@ with the String given to the hash function being UTF8 encoded.
     ]"
   },
   "initiator" : "EnrollmentID_001"
-  "initiatedTimestamp" : "2004-06-14T23:34:30" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
-  "lastModifiedTimestamp" : "2004-06-14T23:34:30" \<DATE ISO 8601 YYYY-MM-DDThh:mm:ss\>
+  "initiatedTimestamp" : "2004-06-14T23:34:30.123Z"
+  "lastModifiedTimestamp" : "2004-06-14T23:34:30.123Z"
   "state" : "(PENDING|FINISHED|REJECTED)",
   "reason" : "(A User denied with the following message: <message>
               |The Transaction failed with an error of type: 'HLConflict')",
@@ -234,6 +233,7 @@ with the String given to the hash function being UTF8 encoded.
   }
 }
 ```
+with all timestamps conforming to regular datetime format specified in [Date & Time](./general.md#Date&Time)
 
 ### <a id="ApprovalList" />ApprovalList
 ```json

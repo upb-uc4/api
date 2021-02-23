@@ -53,7 +53,7 @@ Gets the full List of existing Operations.
 Applies filters to match operationId, enrollmendId, state.
 If any of theses parameter is empty, its filter will not be applied.
 - Returns
-    - OperationsList :: List\<String Json (refer to: [OperationData](../../chaincode/operation.md#OperationData))\> 
+    - OperationsList :: List\<String Json (refer to: [OperationData](../../chaincode/contracts/operation.md#OperationData))\> 
       - Description: Returns the full list of existing Operations matching the filter parameters.
         All filters are applied consecutively (logical AND).
       - If all these parameters are empty, the exhaustive list of all existing Operations is returned.

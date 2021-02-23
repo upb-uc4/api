@@ -202,8 +202,8 @@ with the String given to the hash function being UTF8 encoded.
     ]"
   },
   "initiator" : "EnrollmentID_001"
-  "initiatedTimestamp" : "2004-06-14T23:34:30.123Z" \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSSZ\>
-  "lastModifiedTimestamp" : "2004-06-14T23:34:30.123Z" \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSSZ\>
+  "initiatedTimestamp" : "2004-06-14T23:34:30.123Z"
+  "lastModifiedTimestamp" : "2004-06-14T23:34:30.123Z"
   "state" : "(PENDING|FINISHED|REJECTED)",
   "reason" : "(A User denied with the following message: <message>
               |The Transaction failed with an error of type: 'HLConflict')",
@@ -225,6 +225,7 @@ with the String given to the hash function being UTF8 encoded.
   }
 }
 ```
+with all timestamps conforming to regular datetime format specified in [Date & Time](./general.md#Date&Time)
 
 ### <a id="ApprovalList" />ApprovalList
 ```json

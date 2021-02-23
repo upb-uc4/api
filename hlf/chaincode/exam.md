@@ -98,7 +98,7 @@ The Errors returned are defined [here](errors.md#Errors).
   "droppableUntil": "2021-02-05T23:59:59.123Z"
 }
 ```
-with all dates in format specified in  \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSSZ\>
+with all datetimes conforming to regular datetime format specified in [Date & Time](./general.md#Date&Time)
 
 ## <a id="Checks" />Input Checks
 ### <a id="parameterChecks" />Parameters
@@ -112,13 +112,13 @@ with all dates in format specified in  \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSS
 - **type**
   - AnyOf("Written Exam")
 - **date**
-  - Check, if valid date-String YYYY-MM-DDThh:mm:ss.SSSZ
+  - Check, if valid datetime as defined in [Date & Time](./general.md#Date&Time)
 - **ects**
   - Check, if format is integer and value not negative
 - **admittableUntil**
-  - Check, if valid date-String YYYY-MM-DDThh:mm:ss.SSSZ
+  - Check, if valid datetime as defined in [Date & Time](./general.md#Date&Time)
 - **droppableUntil**
-  - Check, if valid date-String YYYY-MM-DDThh:mm:ss.SSSZ
+  - Check, if valid datetime as defined in [Date & Time](./general.md#Date&Time)
 - **examIds**
   - Check, if valid jsonList of String.
 - **courseIds**
@@ -130,9 +130,9 @@ with all dates in format specified in  \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSS
 - **types**
   - Check, if valid jsonList of String.
 - **admittableAt**
-  - Check, if valid date-String YYYY-MM-DDThh:mm:ss.SSSZ
+  - Check, if valid datetime as defined in [Date & Time](./general.md#Date&Time)
 - **droppableAt**
-  - Check, if valid date-String YYYY-MM-DDThh:mm:ss.SSSZ
+  - Check, if valid datetime as defined in [Date & Time](./general.md#Date&Time)
   
 
 ### <a id="semanticChecks" />SemanticCheck

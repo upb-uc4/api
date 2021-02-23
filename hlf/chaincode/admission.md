@@ -192,7 +192,7 @@ The Errors returned are defined [here](errors.md#Errors).
   "type": "Course"
 }
 ```
-with date in format specified in \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSSZ\>.
+with date conforming to regular datetime format specified in [Date & Time](./general.md#Date&Time)
 
 ### <a id="CourseAdmission" />CourseAdmission
 ```json
@@ -201,11 +201,11 @@ with date in format specified in \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSSZ\>.
   "enrollmentId": "0123456",
   "courseId": "ExampleCourse",
   "moduleId": "M.1",
-  "timestamp": "2004-06-14T23:34:30",
+  "timestamp": "2004-06-14T23:34:30.123Z",
   "type": "Course"
 }
 ```
-with date in format specified in \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSSZ\>
+with timestamp conforming to regular datetime format specified in [Date & Time](./general.md#Date&Time)
 
 
 ### <a id="ExamAdmission" />ExamAdmission
@@ -214,11 +214,11 @@ with date in format specified in \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSSZ\>
   "admissionId": "0123456:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00.123Z",
   "enrollmentId": "0123456",
   "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00.123Z",
-  "timestamp": "2004-06-14T23:34:30",
+  "timestamp": "2004-06-14T23:34:30.123Z",
   "type": "Exam"
 }
 ```
-with date in format specified in \<DATE ISO 8601 YYYY-MM-DD'T'hh:mm:ss.SSSZ\>
+with timestamp conforming to regular datetime format specified in [Date & Time](./general.md#Date&Time)
 
 ## <a id="Checks" />Input Checks
 ### <a id="parameterChecks" />Parameters

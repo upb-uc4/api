@@ -40,7 +40,8 @@ reason:
 
 # Specific Errors
 
-In the following, the specific error that can be returned by every transaction not part of the [OperationContract](./contracts/operation.md#OperationApi)  due to our operation workflow.
+In the following, the specific error that can be returned by every transaction due to our operation workflow.
+
 
 - [GenericError](#GenericError) 
   ```json

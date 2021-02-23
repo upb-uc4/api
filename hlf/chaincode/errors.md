@@ -36,3 +36,35 @@ name:
 
 reason:
 - a textual representation of why the parameter is invalid
+
+
+# Specific Errors
+
+In the following, the specific error that can be returned by every transaction not part of the [OperationContract](./contracts/operation.md#OperationApi)  due to our operation workflow.
+
+- [GenericError](#GenericError) 
+  ```json
+  {
+    "type": "HLInsufficientApprovals",
+    "title": "The approvals present on the ledger do not suffice to execute this transaction"
+  }
+  ```
+  - Description: This error is returned, if the required approvals are not present.
+
+- [GenericError](#GenericError) 
+  ```json
+  {
+    "type": "HLExecutionImpossible",
+    "title": "The operation is not in pending state"
+  }
+  ```
+  - Description: This error is returned, if the operation for this transaction is not pending.
+
+- [GenericError](#GenericError) 
+  ```json
+  {
+    "type": "HLParticipationDenied",
+    "title": "You are not allowed to participate in the given operation"
+  }
+  ```
+    - Description: This error is returned, if the user trying to execute the transaction is not allowed to participate in the operation.

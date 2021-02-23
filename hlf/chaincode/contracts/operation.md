@@ -1,4 +1,4 @@
-# Hyperledger Operation Api
+# <a id="OperationApi" />Hyperledger Operation Api
 
 In the following, the chaincode api for the "Operation"-Chaincode is described.
 This contains all Transactions and Models provided for this domain.
@@ -31,16 +31,16 @@ The Errors returned are defined [here](../errors.md#Errors).
     - [GenericError](../errors.md#GenericError) 
       ```json
       {
-        "type": "HLApprovalDenied",
-        "title": "You are not allowed to approve the given operation"
+        "type": "HLParticipationDenied",
+        "title": "You are not allowed to participate in the given operation"
       }
       ```
-       - Description: This error is returned, if the user trying to approve is not allowed to approve the operation.
+       - Description: This error is returned, if the user trying to approve is not allowed to participate the operation.
 
     - [GenericError](../errors.md#GenericError) 
       ```json
       {
-        "type": "HLApprovalImpossible",
+        "type": "HLParticipationImpossible",
         "title": "The operation is not in pending state"
       }
       ```
@@ -74,16 +74,16 @@ The Errors returned are defined [here](../errors.md#Errors).
     - [GenericError](../errors.md#GenericError) 
       ```json
       {
-        "type": "HLApprovalDenied",
-        "title": "You are not allowed to approve the given operation"
+        "type": "HLParticipationDenied",
+        "title": "You are not allowed to participate in the given operation"
       }
       ```
-       - Description: This error is returned, if the user trying to reject is not allowed to reject the operation.
+       - Description: This error is returned, if the user trying to reject is not allowed to participate in the operation.
 
     - [GenericError](../errors.md#GenericError) 
       ```json
       {
-        "type": "HLApprovalImpossible",
+        "type": "HLParticipationImpossible",
         "title": "The operation is not in pending state"
       }
       ```
@@ -123,19 +123,19 @@ The Errors returned are defined [here](../errors.md#Errors).
     - operationData :: [OperationData](#OperationData) 
       -  Description: Success, returns the list of operations.
 
-    - [GenericError](errors.md#GenericError) 
+    - [GenericError](../errors.md#GenericError) 
       ```json
       {
-        "type": "HLRejectionDenied",
-        "title": "You are not allowed to reject the given operation"
+        "type": "HLParticipationDenied",
+        "title": "You are not allowed to participate in the given operation"
       }
       ```
-       - Description: This error is returned, if the user trying to reject is not allowed to reject the operation.
+       - Description: This error is returned, if the user trying to reject is not allowed to participate in the operation.
 
 - [GenericError](../errors.md#GenericError) 
       ```json
       {
-        "type": "HLRejectionImpossible",
+        "type": "HLParticipationImpossible",
         "title": "The operation is not in pending state"
       }
       ```

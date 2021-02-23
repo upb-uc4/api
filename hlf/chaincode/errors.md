@@ -40,7 +40,9 @@ reason:
 
 # Specific Errors
 
-In the following, the specific error that can be returned by every transaction due to our operation workflow.
+## <a id="AllTransactions" />All Transactions
+
+In the following, the specific errors that can be returned by every transaction due to our operation workflow are defined.
 
 
 - [GenericError](#GenericError) 
@@ -55,17 +57,22 @@ In the following, the specific error that can be returned by every transaction d
 - [GenericError](#GenericError) 
   ```json
   {
+    "type": "HLAccessDenied",
+    "title": "You are not allowed to execute the given transaction"
+  }
+  ```
+    - Description: This error is returned, if the user trying to execute the transaction is not allowed to participate in the operation.
+
+
+## <a id="AllOperations" />All Operations
+
+In the following, the specific errors that can additionally be returned by every operation are defined.
+
+- [GenericError](#GenericError) 
+  ```json
+  {
     "type": "HLParticipationImpossible",
     "title": "The operation is not in pending state"
   }
   ```
   - Description: This error is returned, if the operation for this transaction is not pending.
-
-- [GenericError](#GenericError) 
-  ```json
-  {
-    "type": "HLAccessDenied",
-    "title": "You are not allowed to execute in the given transaction"
-  }
-  ```
-    - Description: This error is returned, if the user trying to execute the transaction is not allowed to participate in the operation.

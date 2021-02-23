@@ -38,6 +38,8 @@ The Errors returned are defined [here](../errors.md#Errors).
          - if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.  
             For detailed informations see [Input Checks](#Checks).
     
+    - additionally all [operation errors](../errors.md#AllOperations) can be thrown
+    
 
 ### Get Exam Result Entries
 - ID = getExamResultEntries

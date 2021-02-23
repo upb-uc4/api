@@ -44,6 +44,8 @@ The Errors returned are defined [here](../errors.md#Errors).
       }
       ```
       - Description: This error is returned, if a matriculation data with the given enrollmentId is already present on the ledger.
+    
+    - additionally all [operation errors](../errors.md#AllOperations) can be thrown
 
 
 
@@ -158,6 +160,8 @@ This method adds a single entry to the list of semesters in the MatriculationDat
       }
       ```
       - Description: This error is returned, if the state of data on the ledger is not consistent with the curent model. This error should only occurr if the model changes while the old ledger state remains without modification.
+
+    - additionally all [operation errors](../errors.md#AllOperations) can be thrown
 
 
 ## <a id="Models" />Models

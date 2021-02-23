@@ -39,6 +39,7 @@ The Errors returned are defined [here](../errors.md#Errors).
             For detailed informations see [parameter checks](#parameterChecks).
          - if the given parameters produce some [semantic error](#semanticChecks).
     
+    - additionally all [operation errors](../errors.md#AllOperations) can be thrown
 
 
 ### Drop Admission
@@ -79,6 +80,8 @@ The Errors returned are defined [here](../errors.md#Errors).
       - Description: This error is returned, if the given parameters are not well formatted, they are listed in invalidParams.  
       For detailed informations see [parameter checks](#parameterChecks).
       (admissionId)
+    
+    - additionally all [operation errors](../errors.md#AllOperations) can be thrown
 
 
 

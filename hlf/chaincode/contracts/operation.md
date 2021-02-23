@@ -27,24 +27,6 @@ The Errors returned are defined [here](../errors.md#Errors).
       }
       ```
        - Description: This error is returned, if the given number of parameters for the specified transaction does not match the number of required parameters.
-    
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLParticipationDenied",
-        "title": "You are not allowed to participate in the given operation"
-      }
-      ```
-       - Description: This error is returned, if the user trying to approve is not allowed to participate the operation.
-
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLParticipationImpossible",
-        "title": "The operation is not in pending state"
-      }
-      ```
-       - Description: This error is returned, if the user is trying to approve an operation that is not pending.
 
     - [DetailedError](../errors.md#DetailedError) 
       ```json
@@ -70,24 +52,6 @@ The Errors returned are defined [here](../errors.md#Errors).
 - Receive
     - operationData :: [OperationData](#OperationData) 
       -  Description: Success, returns the list of operations.
-    
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLParticipationDenied",
-        "title": "You are not allowed to participate in the given operation"
-      }
-      ```
-       - Description: This error is returned, if the user trying to reject is not allowed to participate in the operation.
-
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLParticipationImpossible",
-        "title": "The operation is not in pending state"
-      }
-      ```
-       - Description: This error is returned, if the user is trying to reject an operation that is not pending
 
     - [GenericError](../errors.md#GenericError) 
       ```json
@@ -122,24 +86,6 @@ The Errors returned are defined [here](../errors.md#Errors).
 - Receive
     - operationData :: [OperationData](#OperationData) 
       -  Description: Success, returns the list of operations.
-
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLParticipationDenied",
-        "title": "You are not allowed to participate in the given operation"
-      }
-      ```
-       - Description: This error is returned, if the user trying to reject is not allowed to participate in the operation.
-
-- [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLParticipationImpossible",
-        "title": "The operation is not in pending state"
-      }
-      ```
-       - Description: This error is returned, if the user is trying to reject an operation that is not pending
 
     - [GenericError](../errors.md#GenericError) 
       ```json

@@ -22,41 +22,25 @@ components:
     UnsignedTransaction:
       type: "object"
       properties:
-        unsignedTransaction:
+        unsignedTransactionJwt:
           type: string
-          format: Base64
-        token:
-          type: string
-          format: Base64
     SignedTransaction:
       type: "object"
       properties:
-        unsignedTransaction:
+        unsignedTransactionJwt:
           type: string
-          format: Base64
-        token:
-          type: string
-          format: Base64
         signature:
           type: string
     UnsignedProposal:
       type: "object"
       properties:
-        unsignedProposal:
+        unsignedProposalJwt:
           type: string
-          format: Base64
-        token:
-          type: string
-          format: Base64
     SignedProposal:
       type: "object"
       properties:
-        unsignedProposal:
+        unsignedProposalJwt:
           type: string
-          format: Base64
-        token:
-          type: string
-          format: Base64
         signature:
           type: string
 externalDocs:

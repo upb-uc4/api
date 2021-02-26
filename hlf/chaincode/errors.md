@@ -42,8 +42,21 @@ reason:
 
 ## <a id="AllTransactions" />All Transactions
 
-In the following, the specific errors that can be returned by every transaction due to our operation workflow are defined.
+In the following, the specific errors that can be returned by every transaction.
 
+- [GenericError](#GenericError) 
+  ```json
+  {
+    "type": "HLAccessDenied",
+    "title": "You are not allowed to execute the given transaction"
+  }
+  ```
+    - Description: This error is returned, if the user is not allowed to execute the transaction.
+
+## <a id="AllOperations" />All Operations
+
+In the following, the specific errors that can additionally be returned by every operation are defined.
+An operation is a transaction requiring multiple approvals.
 
 - [GenericError](#GenericError) 
   ```json
@@ -53,20 +66,6 @@ In the following, the specific errors that can be returned by every transaction 
   }
   ```
   - Description: This error is returned, if the required approvals are not present.
-
-- [GenericError](#GenericError) 
-  ```json
-  {
-    "type": "HLAccessDenied",
-    "title": "You are not allowed to execute the given transaction"
-  }
-  ```
-    - Description: This error is returned, if the user trying to execute the transaction is not allowed to participate in the operation.
-
-
-## <a id="AllOperations" />All Operations
-
-In the following, the specific errors that can additionally be returned by every operation are defined.
 
 - [GenericError](#GenericError) 
   ```json

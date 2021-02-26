@@ -71,7 +71,7 @@ In the following, the specific errors that can additionally be returned by every
 - [GenericError](#GenericError) 
   ```json
   {
-    "type": "HLParticipationImpossible",
+    "type": "HLExecutionImpossible",
     "title": "The operation is not in pending state"
   }
   ```

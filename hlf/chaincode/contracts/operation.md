@@ -1,4 +1,4 @@
-# Hyperledger Operation Api
+# <a id="OperationApi" />Hyperledger Operation Api
 
 In the following, the chaincode api for the "Operation"-Chaincode is described.
 This contains all Transactions and Models provided for this domain.
@@ -27,24 +27,6 @@ The Errors returned are defined [here](../errors.md#Errors).
       }
       ```
        - Description: This error is returned, if the given number of parameters for the specified transaction does not match the number of required parameters.
-    
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLApprovalDenied",
-        "title": "You are not allowed to approve the given operation"
-      }
-      ```
-       - Description: This error is returned, if the user trying to approve is not allowed to approve the operation.
-
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLApprovalImpossible",
-        "title": "The operation is not in pending state"
-      }
-      ```
-       - Description: This error is returned, if the user is trying to approve an operation that is not pending.
 
     - [DetailedError](../errors.md#DetailedError) 
       ```json
@@ -74,20 +56,11 @@ The Errors returned are defined [here](../errors.md#Errors).
     - [GenericError](../errors.md#GenericError) 
       ```json
       {
-        "type": "HLApprovalDenied",
-        "title": "You are not allowed to approve the given operation"
+        "type": "HLUnprocessableLedgerState",
+        "title": "The state on the ledger does not conform to the specified format"
       }
       ```
-       - Description: This error is returned, if the user trying to reject is not allowed to reject the operation.
-
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLApprovalImpossible",
-        "title": "The operation is not in pending state"
-      }
-      ```
-       - Description: This error is returned, if the user is trying to reject an operation that is not pending
+      - Description: This error is returned, if the state of data on the ledger is not consistent with the current model. This error should only occur if the model changes while the old ledger state remains without modification.
 
 - [GenericError](../errors.md#GenericError) 
       ```json
@@ -112,6 +85,15 @@ The Errors returned are defined [here](../errors.md#Errors).
       ```
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.  
        For detailed informations see [Input Checks](#Checks).
+    
+    - [GenericError](#GenericError) 
+      ```json
+      {
+        "type": "HLExecutionImpossible",
+        "title": "The operation is not in pending state"
+      }
+      ```
+      - Description: This error is returned, if the operation for this transaction is not pending.
 
 ### RejectOperation
 - ID = rejectOperation
@@ -121,24 +103,6 @@ The Errors returned are defined [here](../errors.md#Errors).
 - Receive
     - operationData :: [OperationData](#OperationData) 
       -  Description: Success, returns the list of operations.
-
-    - [GenericError](errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLRejectionDenied",
-        "title": "You are not allowed to reject the given operation"
-      }
-      ```
-       - Description: This error is returned, if the user trying to reject is not allowed to reject the operation.
-
-- [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLRejectionImpossible",
-        "title": "The operation is not in pending state"
-      }
-      ```
-       - Description: This error is returned, if the user is trying to reject an operation that is not pending
 
     - [GenericError](../errors.md#GenericError) 
       ```json
@@ -172,6 +136,15 @@ The Errors returned are defined [here](../errors.md#Errors).
       ```
        - Description: This error is returned, if the given parameters could not be parsed. If some attributes are not well formatted, they are listed in invalidParams.  
        For detailed informations see [Input Checks](#Checks).
+    
+    - [GenericError](#GenericError) 
+      ```json
+      {
+        "type": "HLExecutionImpossible",
+        "title": "The operation is not in pending state"
+      }
+      ```
+      - Description: This error is returned, if the operation for this transaction is not pending.
 
 ### GetOperations
 - ID = getOperations

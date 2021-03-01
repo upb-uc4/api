@@ -39,23 +39,7 @@ The Errors returned are defined [here](../errors.md#Errors).
             For detailed informations see [parameter checks](#parameterChecks).
          - if the given parameters produce some [semantic error](#semanticChecks).
     
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLInsufficientApprovals",
-        "title": "The approvals present on the ledger do not suffice to execute this transaction"
-      }
-      ```
-      - Description: This error is returned, if the required approvals are not present.
-    
-    - [GenericError](errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLExecutionImpossible",
-        "title": "The operation is not in pending state"
-      }
-      ```
-       - Description: This error is returned, if the operation for this transaction is not pending.
+    - additionally all [operation errors](../errors.md#AllOperations) can be thrown
 
 
 ### Drop Admission
@@ -96,24 +80,9 @@ The Errors returned are defined [here](../errors.md#Errors).
       - Description: This error is returned, if the given parameters are not well formatted, they are listed in invalidParams.  
       For detailed informations see [parameter checks](#parameterChecks).
       (admissionId)
-
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLInsufficientApprovals",
-        "title": "The approvals present on the ledger do not suffice to execute this transaction"
-      }
-      ```
-      - Description: This error is returned, if the required approvals are not present.
     
-    - [GenericError](errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLExecutionImpossible",
-        "title": "The operation is not in pending state"
-      }
-      ```
-       - Description: This error is returned, if the operation for this transaction is not pending.
+    - additionally all [operation errors](../errors.md#AllOperations) can be thrown
+
 
 
 ### Get Course Admissions

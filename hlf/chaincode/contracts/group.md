@@ -36,15 +36,6 @@ The Errors returned are defined [here](../errors.md#Errors).
          - if the given parameters could not be parsed. If some attributes within the json are not well formatted, they are listed in invalidParams.  
             For detailed informations see [parameter checks](#parameterChecks).
          - if the given parameters produce some [semantic error](#semanticChecks).
-    
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLInsufficientApprovals",
-        "title": "The approvals present on the ledger do not suffice to execute this transaction"
-      }
-      ```
-      - Description: This error is returned, if the required approvals are not present.
 
 
 ### Remove From Group
@@ -82,14 +73,6 @@ The Errors returned are defined [here](../errors.md#Errors).
       For detailed informations see [parameter checks](#parameterChecks).
       (enrollmentId, groupId)
 
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLInsufficientApprovals",
-        "title": "The approvals present on the ledger do not suffice to execute this transaction"
-      }
-      ```
-      - Description: This error is returned, if the required approvals are not present.
 
 ### Remove User From All Groups
 - ID = removeUserFromAllGroups
@@ -124,15 +107,6 @@ The Errors returned are defined [here](../errors.md#Errors).
       - Description: This error is returned, if the given parameters are not well formatted, they are listed in invalidParams.  
       For detailed informations see [parameter checks](#parameterChecks).
       (enrollmentId)
-
-    - [GenericError](../errors.md#GenericError) 
-      ```json
-      {
-        "type": "HLInsufficientApprovals",
-        "title": "The approvals present on the ledger do not suffice to execute this transaction"
-      }
-      ```
-      - Description: This error is returned, if the required approvals are not present.
 
 
 

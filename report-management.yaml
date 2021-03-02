@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   description: "This is the Report API for UC4."
-  version: "0.17.1"
+  version: "0.19.1"
   title: "UC4"
 
 servers:
@@ -55,7 +55,7 @@ paths:
       parameters:
       - name: "username"
         in: "path"
-        description: "The user whose archive is requested"
+        description: "The user whose certificate of enrollment is requested"
         required: true
         schema:
           type: "string"
@@ -101,6 +101,63 @@ paths:
           description: |
             Not Found  
             types: HLNotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "422":
+          description: |
+            Unprocessable Entity   
+            types: LoginTokenSignatureInvalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+  /certificates/{username}/transcript_of_records:
+    get:
+      tags:
+      - "Certificate Management"
+      summary: "Get a user's signed transcript of records"
+      security:
+        - uc4_token_login: [] 
+        - uc4_token_login_header: []
+      description: "Get a user's signed transcript of records."
+      operationId: "getTranscriptOfRecords"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The user whose transcript of records is requested"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: |
+            Bad Request    
+            types: MalformedLoginToken, MultipleAuthorizationError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "401":
+          description: |
+            Unauthorized  
+            types: JwtAuthorization, LoginTokenExpired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        "403":
+          description: |
+            Forbidden  
+            types: NotEnoughPrivileges, OwnerMismatch
           content:
             application/json:
               schema:

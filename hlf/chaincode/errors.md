@@ -42,7 +42,7 @@ reason:
 
 ## <a id="AllTransactions" />All Transactions
 
-In the following, the specific errors that can be returned by every transaction.
+In the following, the specific errors that can be returned by every transaction are defined.
 
 - [GenericError](#GenericError) 
   ```json
@@ -52,6 +52,15 @@ In the following, the specific errors that can be returned by every transaction.
   }
   ```
     - Description: This error is returned, if the user is not allowed to execute the transaction.
+
+- [GenericError](#GenericError) 
+  ```json
+  {
+    "type": "HLTransactionTimestampInvalid",
+    "title": "The transaction you submitted contains a timestamp differing more than two minutes from the current system time."
+  }
+  ```
+    - Description: This error is returned, if the timestamp differs more than two minutes from current system time.
 
 ## <a id="AllOperations" />All Operations
 

@@ -130,6 +130,12 @@ paths:
         required: true
         schema:
           type: "string"
+      - name: "exam_reg_name"
+        in: "query"
+        description: "The name of the examination regulation, for which to create the transcript of records"
+        required: true
+        schema:
+          type: "string"
       responses:
         "200":
           description: "OK"

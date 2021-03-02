@@ -57,7 +57,8 @@ In the following, the specific errors that can be returned by every transaction 
   ```json
   {
     "type": "HLTransactionTimestampInvalid",
-    "title": "The transaction you submitted contains a timestamp differing more than two minutes from the current system time."
+    "title": "The transaction you submitted contains a timestamp differing more than two minutes from the current system time"
+
   }
   ```
     - Description: This error is returned, if the timestamp differs more than two minutes from current system time.

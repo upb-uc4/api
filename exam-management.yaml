@@ -73,7 +73,7 @@ paths:
           type: "string"
       - name: "lecturerIds"
         in: "query"
-        description: "Comma separated list of LecturerIds to filter by"
+        description: "Comma separated list of enrollmentIds of lecturers to filter by"
         required: false
         schema:
           type: "string"
